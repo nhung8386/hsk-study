@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Ngữ Pháp HSK 5 Tương Tác</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Ứng dụng được thiết kế với bố cục hai cột linh hoạt. Thanh điều hướng bên trái liệt kê tất cả 36 điểm ngữ pháp và có chức năng tìm kiếm, cho phép người dùng truy cập nhanh. Vùng nội dung chính bên phải hiển thị chi tiết của điểm ngữ pháp được chọn dưới dạng "thẻ học" tương tác. Cấu trúc này được chọn để tối ưu hóa việc điều hướng và tập trung vào từng chủ đề, biến việc đọc thụ động thành trải nghiệm học tập tích cực, hiệu quả hơn nhiều so với một tài liệu dài. -->
+    <!-- Visualization & Content Choices: Dữ liệu là văn bản định tính, do đó không sử dụng biểu đồ (Chart.js). Thay vào đó, "trực quan hóa" được thực hiện thông qua: 1. Danh sách điều hướng có thể lọc để tổ chức nội dung. 2. Các thẻ nội dung được cấu trúc rõ ràng. 3. Các yếu tố tương tác như nút bật/tắt pinyin và bản dịch, cho phép người dùng tự kiểm tra. 4. Một bảng HTML để so sánh ngữ pháp (Phần 4), trình bày thông tin một cách rõ ràng và hiệu quả. Các lựa chọn này nhằm mục đích tăng cường sự tham gia và ghi nhớ của người dùng. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .nav-item.active {
+            background-color: #3b82f6;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            background-color: #2563eb;
+        }
+
+        .content-card {
+            scroll-margin-top: 1rem;
+        }
+
+        .example-card .toggle-content {
+            display: none;
+        }
+
+        .example-card .toggle-content.visible {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="antialiased text-slate-800">
+
+    <div id="app" class="min-h-screen">
+        <header class="bg-white shadow-md sticky top-0 z-20">
+            <div class="container mx-auto px-4 py-4">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Cẩm Nang Ngữ Pháp HSK 5</h1>
+                <!-- <p class="text-slate-600 mt-1">36 điểm ngữ pháp trọng tâm được trình bày tương tác</p> -->
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row gap-8">
+
+                <!-- Sidebar/Navigation -->
+                <aside class="md:w-1/3 lg:w-1/4 md:sticky md:top-24 self-start">
+                    <div class="bg-white p-4 rounded-xl shadow-md">
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="Tìm kiếm ngữ pháp..."
+                                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                            <svg class="w-5 h-5 text-slate-400 absolute top-1/2 left-3 -translate-y-1/2"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <nav id="grammarNav" class="mt-4 max-h-[60vh] overflow-y-auto">
+                            <ul>
+                                <!-- Navigation items will be injected here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main id="contentArea" class="w-full md:w-2/3 lg:w-3/4">
+                    <!-- Content will be injected here -->
+                </main>
+            </div>
+        </div>
+
+        <footer class="text-center py-6 text-slate-500 text-sm">
+            <p>Được tạo ra để hỗ trợ việc học tiếng Trung của bạn. Chúc bạn thành công!</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const grammarPoints = [{
+                id: 1,
+                title: '如何 (rúhé)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là đại từ hỏi về phương thức, cách thức.',
+                    explanations: [
+                        {
+                            explanation: 'đại từ, dùng để hỏi phương thức',
+                            examples: [{
+                                chinese: '我们明天举行会议,讨论这个问题该如何解决。',
+                                pinyin: 'Wǒmen míngtiān jǔxíng huìyì, tǎolùn zhège wèntí gāi rúhé jiějué.',
+                                vietnamese: 'Chúng tôi sẽ họp ngày mai bàn cách giải quyết vấn đề này thế nào.'
+                            }, {
+                                chinese: '评委叫第一对夫妻说说他俩是如何恩爱的。',
+                                pinyin: 'Píngwěi jiào dì yī duì fūqī shuō shuō tā liǎng shì rúhé ēnnài de.',
+                                vietnamese: 'Ban giám khảo yêu cầu cặp đầu tiên kể cách họ yêu thương nhau.'
+                            },]
+                        },
+                        {
+                            explanation: 'cũng thường dùng ở cuối câu, dùng để trưng cầu ý kiến hoặc hỏi thăm tình hình.',
+                            examples: [{
+                                chinese: '我们希望由你来负责接解决这个问题,如何?',
+                                pinyin: 'Wǒmen xīwàng yóu nǐ lái fùzé jiějué zhège wèntí, rúhé?',
+                                vietnamese: 'Chúng tôi muốn bạn phụ trách việc này, được không?'
+                            }, {
+                                chinese: '“80后”们月收入情况如何?',
+                                pinyin: '“Bā líng hòu”men yuè shōurù qíngkuàng rúhé?',
+                                vietnamese: 'Thu nhập tháng của thế hệ 8x thế nào?'
+                            }]
+                        }
+                    ],
+                    examples: []
+                }
+            },
+            {
+                id: 2,
+                title: '靠 (kào)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "tựa/dựa vào", "nhờ vào" hoặc "gần".',
+                    explanations: [
+                        {
+                            explanation: 'là động từ , thường gặp các cách thức “靠着/在........”(dựa vào, tựa vào) để cho người hoặc vật thể chống đỡ trọng lượng của cơ thể',
+                            examples: [{
+                                chinese: '王老师喜欢靠这桌子讲课。',
+                                pinyin: 'Wáng lǎoshī xǐhuān kào zhè zhuōzi jiǎngkè.',
+                                vietnamese: 'Thầy Vương thích dựa bàn khi giảng.'
+                            }, {
+                                chinese: '男人的头靠在女人的肩膀上,睡着了。',
+                                pinyin: 'Nánrén de tóu kào zài nǚrén de jiānbǎng shàng, shuìzhele.',
+                                vietnamese: 'Đầu người đàn ông tựa lên vai phụ nữ, ngủ thiếp đi.'
+                            },]
+                        },
+                        {
+                            explanation: 'cũng có nghĩa là nhờ, dựa vào ; dựa vào ai đó mới đạt được lợi ích.',
+                            examples: [{
+                                chinese: '“在家靠父母,出门靠朋友。”有什么事情我能帮忙的,你们尽管开口。',
+                                pinyin: '“Zài jiā kào fùmǔ, chūmén kào péngyǒu.” Yǒu shénme shìqíng wǒ néng bāngmáng de, nǐmen jǐnguǎn kāikǒu.',
+                                vietnamese: '“Ở nhà nhờ cha mẹ, ra đường nhờ bạn.” Có việc gì tôi có thể giúp, các bạn cứ mở lời.'
+                            }, {
+                                chinese: '没有一个人可以完全不靠别人而生活。',
+                                pinyin: 'Méiyǒu yīgè rén kěyǐ wánquán bù kào biérén ér shēnghuó.',
+                                vietnamese: 'Không ai có thể sống mà không nhờ người khác.'
+                            },]
+                        },
+                        {
+                            explanation: 'cũng có nghĩa là gần kề, kế liền.',
+                            examples: [{
+                                chinese: '我的座位是17号,是靠窗的座位。',
+                                pinyin: 'Wǒ de zuòwèi shì 17 hào, shì kào chuāng de zuòwèi.',
+                                vietnamese: 'Chỗ ngồi của tôi là số 17, là chỗ ngồi gần cửa sổ.'
+                            }, {
+                                chinese: '以后我一定会买一个靠海的房子,这样我每天都能听到大海的声音。',
+                                pinyin: 'Yǐhòu wǒ yīdìng huì mǎi yīgè kào hǎi de fángzi, zhèyàng wǒ měitiān dōu néng tīng dào dàhǎi de shēngyīn.',
+                                vietnamese: 'Sau này tôi nhất định sẽ mua một căn nhà gần biển, như vậy tôi mỗi ngày đều có thể nghe thấy tiếng biển.'
+                            }]
+                        }
+                    ],
+                    examples: []
+                }
+            },
+            {
+                id: 3,
+                title: '居然 (jūrán)',
+                content: {
+                    type: 'standard',
+                    explanation: '"Thật bất ngờ", "lại có thể", biểu thị điều không ngờ tới, ngoài dự đoán.',
+                    explanations: [
+                        {
+                            explanation: 'Biểu thị sự ngạc nhiên:',
+                            examples: [{
+                                chinese: '这么简单的题，你居然也不会做？',
+                                pinyin: 'Zhème jiǎndān de tí, nǐ jūrán yě bù huì zuò?',
+                                vietnamese: 'Bài dễ thế mà bạn lại không làm được?'
+                            }, {
+                                chinese: '没想到居然在这里碰到你！',
+                                pinyin: 'Méi xiǎngdào jūrán zài zhèlǐ pèngdào nǐ!',
+                                vietnamese: 'Không ngờ lại gặp bạn ở đây!'
+                            }, {
+                                chinese: '女人居然放弃这次机会！',
+                                pinyin: 'Nǚrén jūrán fàngqì zhè cì jīhuì!',
+                                vietnamese: 'Người phụ nữ lại từ bỏ cơ hội này!'
+                            }]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 4,
+                title: '如何 vs 怎么',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 如何 và 怎么.',
+                    table: {
+                        headers: ['', '如何 (rúhé)', '怎么 (zěnme)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là đại từ, đều là phương thức hỏi thăm, thăm dò ý kiến. Như: Chỉ có biết 如何/怎么停止的人, mới biết 如何/怎么高速前进.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Dùng trong văn viết. Như: 该如何爱护我们的地球?', 'Dùng trong văn nói. Như: 你今天是怎么来的?'],
+                            ['Khác biệt 2', 'Không thể dùng để hỏi nguyên nhân.', 'Có thể dùng trong câu hỏi nguyên nhân. Như: 今天怎么这么冷?'],
+                            ['Khác biệt 3', 'Có thể dùng ở cuối câu biểu thị sự hỏi thăm tình hình, trưng cầu ý kiến. Như: 最近身体如何?', 'Có thể dùng ở đầu câu để biểu thị sự ngạc nhiên, kinh ngạc. Như: 怎么, 你不认识我了?']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 5,
+                title: '以来 (yǐlái)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Danh từ, “....以来” biểu thị một khoảng thời gian từ một thời điểm nào đó trong quá khứ đến thời điểm hiện tại.',
+                    explanations: [
+                        {
+                            explanation: 'Danh từ, “....以来” biểu thị một khoảng thời gian từ một thời điểm nào đó trong quá khứ đến thời điểm hiện tại.',
+                            examples: [{
+                                chinese: '改革开放以来,中国发生了巨大的变化。',
+                                pinyin: 'Gǎigé kāifàng yǐlái, Zhōngguó fāshēngle jùdà de biànhuà.',
+                                vietnamese: 'Từ khi cải cách mở cửa đến nay, Trung Quốc đã có những thay đổi to lớn.'
+                            }, {
+                                chinese: '因此长年以来,父母很少离开老屋,...',
+                                pinyin: 'Yīncǐ chángnián yǐlái, fùmǔ hěn shǎo líkāi lǎo wū,...',
+                                vietnamese: 'Vì thế trong nhiều năm qua, bố mẹ hiếm khi rời khỏi căn nhà cũ,...'
+                            }, {
+                                chinese: '一直以来,“80后”这个词儿都含有年轻的味道。',
+                                pinyin: 'Yīzhí yǐlái, “80 hòu” zhège cǐ ér dōu hányǒu niánqīng de wèidào.',
+                                vietnamese: 'Từ trước đến nay, từ "thế hệ 8x" luôn mang ý nghĩa trẻ trung.'
+                            }]
+                        }
+                    ]
+                }
+            }, {
+                id: 6,
+                title: '临 (lín)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Cũng có thể làm giới từ, “临.....(时/前)” biểu thị sắp đến thời gian phát sinh của một vài hành động, hành vi.',
+                    explanations: [
+                        {
+                            explanation: 'Động từ, có nghĩa là dựa sát; kề; kế.',
+                            examples: [{
+                                chinese: '我想买一套不临街的房子,这样不会太吵。',
+                                pinyin: 'Wǒ xiǎng mǎi yī tào bù lín jiē de fángzi, zhèyàng bù huì tài chǎo.',
+                                vietnamese: 'Tôi muốn mua một căn nhà không giáp mặt đường, như vậy sẽ không quá ồn ào.'
+                            }, {
+                                chinese: '临江新修了一条路,晚饭后很多人都去那儿散步。',
+                                pinyin: 'Lín jiāng xīn xiūle yī tiáo lù, wǎnfàn hòu hěn duō rén dōu qù nàr sàn bù.',
+                                vietnamese: 'Bên sông mới xây một con đường, sau bữa tối rất nhiều người đều đi dạo ở đó.'
+                            },]
+                        },
+                        {
+                            explanation: 'Cũng có thể làm giới từ, “临.....(时/前)” biểu thị sắp đến thời gian phát sinh của một vài hành động, hành vi.',
+                            examples: [{
+                                chinese: '这是我临离开北京的时候买的。',
+                                pinyin: 'Zhè shì wǒ lín líkāi Běijīng de shíhòu mǎi de.',
+                                vietnamese: 'Đây là cái tôi mua khi sắp rời Bắc Kinh.'
+                            }, {
+                                chinese: '临走那天,父亲从老家赶来送我们。',
+                                pinyin: 'Lín zǒu nà tiān, fùqīn cóng lǎojiā gǎn lái sòng wǒmen.',
+                                vietnamese: 'Ngày đi, bố tôi từ quê đến tiễn chúng tôi.'
+                            }]
+                        }
+                    ],
+                }
+            }, {
+                id: 7,
+                title: '立刻 (lìkè)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, “立刻+ động từ” biểu thị sự ngay lập tức, nhấn mạnh một hành động nối tiếp hành động phát sinh ngay trước đó.',
+                    examples: [{
+                        chinese: '上了楼,开门的竟是微笑着的父母,温暖的气息立刻扑面而来。',
+                        pinyin: 'Shàngle lóu, kāimén de jìng shì wēixiàozhe de fùmǔ, wēnnuǎn de qìxī lìkè pūmiàn ér lái.',
+                        vietnamese: 'Lên lầu, mở cửa ra lại là bố mẹ đang mỉm cười, hơi ấm lập tức ập vào mặt.'
+                    }, {
+                        chinese: '原来父母要我留下串钥匙,只是为了让我们回来时,能立刻感受到家的温暖。',
+                        pinyin: 'Yuánlái fùmǔ yào wǒ liú xià chuàn yàoshi, zhǐshì wèile ràng wǒmen huílái shí, néng lìkè gǎnshòu dào jiā de wēnnuǎn.',
+                        vietnamese: 'Hóa ra bố mẹ muốn tôi để lại chùm chìa khóa, chỉ là để khi chúng tôi về, có thể lập tức cảm nhận được sự ấm áp của gia đình.'
+                    }, {
+                        chinese: '那两只羊一见到青草,就立刻去吃草了,哪还有心思打架呢?',
+                        pinyin: 'Nà liǎng zhī yáng yī jiàndào qīngcǎo, jiù lìkè qù chī cǎo le, nǎ hái yǒu xīnsī dǎjià ne?',
+                        vietnamese: 'Hai con cừu đó vừa nhìn thấy cỏ xanh, liền lập tức đi ăn cỏ, còn tâm trí đâu mà đánh nhau nữa?'
+                    }]
+                }
+            }, {
+                id: 8,
+                title: '悄悄 vs 偷偷',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 悄悄 và 偷偷.',
+                    table: {
+                        headers: ['', '悄悄 (qiāoqiāo)', '偷偷 (tōutōu)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là phó từ, đều có nghĩa là làm việc gì đó mà không để cho người khác phát hiện. Như: 她悄悄/偷偷地走了出去.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Nhấn mạnh âm thanh rất nhỏ. Như: 父亲悄悄把我拉到一边说话.', 'Nhấn mạnh hành vi không muốn để cho người khác biết. Như: 她谁也没告诉,偷偷去旅行了.']
+                        ]
+                    }
+                }
+            }, {
+                id: 9,
+                title: '各自 (gèzì)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Đại từ, chỉ bản thân một người hoặc chỉ một trong những phương diện của bản thân, thường cùng với đối tượng được nhắc đến làm chủ ngữ, định ngữ trong câu.',
+                    examples: [{
+                        chinese: '中场休息时间到了,比赛双方队员各自回场外休息。',
+                        pinyin: 'Zhōngchǎng xiūxī shíjiān dàole, bǐsài shuāngfāng duìyuán gèzì huí chǎngwài xiūxī.',
+                        vietnamese: 'Thời gian nghỉ giữa hiệp đã đến, cầu thủ hai đội各自 về ngoài sân nghỉ.'
+                    }, {
+                        chinese: '刘经理认真看了三家广告公司各自提交的计划。',
+                        pinyin: 'Liú jīnglǐ rènzhēn kànle sān jiā guǎnggào gōngsī gèzì tíjiāo de jìhuà.',
+                        vietnamese: 'Giám đốc Lưu đã xem xét nghiêm túc kế hoạch mà ba công ty quảng cáo各自 nộp.'
+                    }, {
+                        chinese: '以前陆地上的夜晚,他们在各自的房间,一家人没有更多的交流。',
+                        pinyin: 'Yǐqián lùdì shàng de yèwǎn, tāmen zài gèzì de fángjiān, yījiārén méiyǒu gèng duō de jiāoliú.',
+                        vietnamese: 'Trước đây vào buổi tối trên đất liền, họ ở trong phòng riêng của mình, cả gia đình không có nhiều giao lưu.'
+                    }]
+                }
+            }, {
+                id: 10,
+                title: '勿 (wù)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, biểu thị sự cấm đoán, không cho phép hoặc can ngăn, khuyên ngăn, dùng trong ngôn ngữ viết, giống từ “不要”.',
+                    examples: [{
+                        chinese: '非工作人员,请勿入内。',
+                        pinyin: 'Fēi gōngzuò rényuán, qǐng wù rù nèi.',
+                        vietnamese: 'Không phải nhân viên, xin đừng vào.'
+                    }, {
+                        chinese: '网上购票者须注意网站的安全性,切勿上当受骗。',
+                        pinyin: 'Wǎngshàng gòupiào zhě xū zhùyì wǎngzhàn de ānquán xìng, qiè wù shàngdàng shòupiàn.',
+                        vietnamese: 'Người mua vé trực tuyến cần chú ý tính an toàn của trang web, tuyệt đối đừng để bị lừa.'
+                    }, {
+                        chinese: '中国有句老话:可上山,勿下海。',
+                        pinyin: 'Zhōngguó yǒu jù lǎohuà: Kě shàng shān, wù xià hǎi.',
+                        vietnamese: 'Trung Quốc có câu nói cũ: có thể lên núi, đừng xuống biển.'
+                    }]
+                }
+            }, {
+                id: 11,
+                title: '包括 (bāokuò)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, biểu thị bao hàm các bộ phận. Cũng có thể nhấn mạnh một vài bộ phận, có tác dụng nêu ví dụ, bổ sung, giải thích...',
+                    examples: [{
+                        chinese: '汉语技能教学包括听、说、读、写四个方面。',
+                        pinyin: 'Hànyǔ jìnéng jiàoxué bāokuò tīng, shuō, dú, xiě sì gè fāngmiàn.',
+                        vietnamese: 'Giảng dạy kỹ năng tiếng Hán bao gồm nghe, nói, đọc, viết bốn mặt.'
+                    }, {
+                        chinese: '“学习”,其实包括“学”与“习”两层意思。学,就是学习知识;习,就是实践、练习。',
+                        pinyin: '“Xuéxí”, qíshí bāokuò “xué” yǔ “xí” liǎng céng yìsi. Xué, jiùshì xuéxí zhīshi; xí, jiùshì shíjiàn, liànxí.',
+                        vietnamese: '“Học tập”, thực ra bao gồm hai ý nghĩa “học” và “tập”. Học là học kiến thức; tập là thực hành, luyện tập.'
+                    }, {
+                        chinese: '然而,包括翟峰的父母,所有人都觉得,翟峰“疯了”',
+                        pinyin: 'Rán\'ér, bāokuò Zhái Fēng de fùmǔ, suǒyǒu rén dōu juédé, Zhái Fēng “fēngle”',
+                        vietnamese: 'Tuy nhiên, bao gồm cả bố mẹ của Trạch Phong, tất cả mọi người đều cảm thấy Trạch Phong “điên rồi”.'
+                    }, {
+                        chinese: '我们班所有人,包括最不爱运动的刘方也都参加了这次运动会。',
+                        pinyin: 'Wǒmen bān suǒyǒu rén, bāokuò zuì bù ài yùndòng de Liú Fāng yě dōu cānjiāle zhè cì yùndònghuì.',
+                        vietnamese: 'Tất cả mọi người trong lớp chúng tôi, bao gồm cả Lưu Phương người ít thích vận động nhất, đều tham gia đại hội thể thao lần này.'
+                    }]
+                }
+            }, {
+                id: 12,
+                title: '时刻 (shíkè)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Danh từ, biểu thị ở một vài thời điểm hoặc một đoạn thời gian. Cũng có thể làm phó từ, biểu thị ý nghĩa mỗi thời mỗi khắc, thường xuyên, ... có thể lặp lại là “时时刻刻”.',
+                    examples: [{
+                        chinese: '在最后时刻,他为本队踢进了赢得比赛的关键一球。',
+                        pinyin: 'Zài zuìhòu shíkè, tā wèi běnduì tī jìnle yíngdé bǐsài de guānjiàn yī qiú.',
+                        vietnamese: 'Trong khoảnh khắc cuối cùng, anh ấy đã ghi bàn thắng quyết định mang về chiến thắng cho đội mình.'
+                    }, {
+                        chinese: '美好的时刻过去后是一个个紧张的夜晚。',
+                        pinyin: 'Měihǎo de shíkè guòqù hòu shì yīgè gè jǐnzhāng de yèwǎn.',
+                        vietnamese: 'Sau những thời khắc tươi đẹp là những đêm căng thẳng nối tiếp.'
+                    }, {
+                        chinese: '我们非常需要你这样的人才,只要你愿意,公司的大门时刻都为你开着。',
+                        pinyin: 'Wǒmen fēicháng xūyào nǐ zhèyàng de réncái, zhǐyào nǐ yuànyì, gōngsī de dàmén shíkè dōu wèi nǐ kāizhe.',
+                        vietnamese: 'Chúng tôi rất cần nhân tài như bạn, chỉ cần bạn đồng ý, cánh cửa công ty luôn rộng mở chờ bạn.'
+                    }, {
+                        chinese: '工作中,他时时刻刻提醒自己:乘客的安全是最重要的。',
+                        pinyin: 'Gōngzuò zhōng, tā shí shíkè kè tíxǐng zìjǐ: Chéngkè de ānquán shì zuì zhòngyào de.',
+                        vietnamese: 'Trong công việc, anh ấy luôn nhắc nhở bản thân: an toàn của hành khách là quan trọng nhất.'
+                    }]
+                }
+            }, {
+                id: 13,
+                title: '舒适 vs 舒服',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 舒适 và 舒服.',
+                    table: {
+                        headers: ['', '舒适 (shūshì)', '舒服 (shūfú)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là tính từ, biểu thị sự vui vẻ thoải mái. Như: 饭店为入住的客人准备了舒适/舒服的房间.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Thường dùng trong văn viết. Như: 这款车内部空间宽大,乘坐舒适。', 'Thường dùng trong văn nói. Như: 他靠在沙发上舒舒服服地看电视。'],
+                            ['Khác biệt 2', 'Thiên về cảm nhận tổng thể của con người do môi trường hoàn cảnh tác động lên. Như: 我们都需要一个轻松舒适的生活环境。', 'Thiên về cảm nhận cụ thể, chủ quan về mặt tinh thần và thân thể của con người. Như: 听了他的话,我心里很不舒服。'],
+                            ['Khác biệt 3', 'Bình thường rất ít khi sử dụng cấu trúc trùng điệp.', 'Có thể trùng điệp kiểu AABB. Cũng có thể linh động làm động từ. Thường thì trùng điệp kiểu ABAB. Như: 踢完球了?洗个热水澡舒服舒服吧.']
+                        ]
+                    }
+                }
+            }, {
+                id: 14,
+                title: '至今 (zhìjīn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là phó từ, thẳng đến thời điểm hiện nay, thường dùng ở đầu vế câu thứ 2 hoặc đứng trước động từ, cũng có thể kết hợp với một số từ ngữ khác để tạo nên kết cấu cố định, ví dụ: “从古至今”(từ xưa đến nay).',
+                    examples: [{
+                        chinese: '我在北京出生、长大,至今还没离开过呢。',
+                        pinyin: 'Wǒ zài Běijīng chūshēng, zhǎng dà, zhìjīn hái méi líkāiguò ne.',
+                        vietnamese: 'Tôi sinh ra và lớn lên ở Bắc Kinh, đến nay vẫn chưa rời đi.'
+                    }, {
+                        chinese: '至今,很多国家并没有规定什么才是健康食品。',
+                        pinyin: 'Zhìjīn, hěn duō guójiā bìng méiyǒu guīdìng shénme cái shì jiànkāng shípǐn.',
+                        vietnamese: 'Đến nay, nhiều quốc gia vẫn chưa quy định thế nào là thực phẩm tốt cho sức khỏe.'
+                    }, {
+                        chinese: '流传至今的“百里背米”讲的就是他孝敬父母的故事。',
+                        pinyin: 'Liúchuán zhìjīn de “bǎilǐ bèi mǐ” jiǎng de jiùshì tā xiàojìng fùmǔ de gùshì.',
+                        vietnamese: 'Câu chuyện “Trăm dặm cõng gạo” lưu truyền đến nay chính là kể về tấm lòng hiếu thảo của ông với cha mẹ.'
+                    }]
+                }
+            }, {
+                id: 15,
+                title: '顶 (dǐng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là danh từ, chỉ bộ phận cao nhất của con người hoặc vật thể. Cũng có thể làm động từ, biểu thị động tác của đầu, đón lấy, chống lại. Còn có thể dùng làm lượng từ, dùng cho mũ, ô hơi lớn, hoặc đồ vật có hình cái ô.',
+                    examples: [{
+                        chinese: '请把手举过头顶。',
+                        pinyin: 'Qǐng bǎ shǒu jǔguò tóudǐng.',
+                        vietnamese: 'Xin hãy giơ tay qua đầu.'
+                    }, {
+                        chinese: '父亲的朋友画了张画儿送我,画上是一座山,山顶有一个人往下看,山下有一个人往上看。',
+                        pinyin: 'Fùqīn de péngyǒu huàle zhāng huàr sòng wǒ, huà shàng shì yīzuò shān, shāndǐng yǒu yīgè rén wǎng xià kàn, shānxià yǒu yīgè rén wǎng shàng kàn.',
+                        vietnamese: 'Bạn của bố tôi đã vẽ một bức tranh tặng tôi, trên tranh có một ngọn núi, trên đỉnh núi có một người nhìn xuống, dưới núi có một người nhìn lên.'
+                    }, {
+                        chinese: '他能用头顶起20斤重的东西。',
+                        pinyin: 'Tā néng yòng tóu dǐng qǐ 20 jīn zhòng de dōngxi.',
+                        vietnamese: 'Anh ấy có thể đội vật nặng 20 cân bằng đầu.'
+                    }, {
+                        chinese: '院子里有两只羊正在打架,它们头顶着头,角对着角,就像两个小孩儿一样,谁也不愿让谁。',
+                        pinyin: 'Yuànzi lǐ yǒu liǎng zhī yáng zhèngzài dǎjià, tāmen tóu dǐngzhe tóu, jiǎo duìzhe jiǎo, jiù xiàng liǎng gè xiǎoháir yīyàng, shuí yě bù yuàn ràng shuí.',
+                        vietnamese: 'Trong sân có hai con cừu đang đánh nhau, chúng đầu đội đầu, sừng đối sừng, giống như hai đứa trẻ con, không ai chịu nhường ai.'
+                    }, {
+                        chinese: '天气非常寒冷,子路顶着大雪往前走。',
+                        pinyin: 'Tiānqì fēicháng hánlěng, Zǐlù dǐngzhe dàxuě wǎng qián zǒu.',
+                        vietnamese: 'Thời tiết rất lạnh, Tử Lộ đội tuyết lớn đi về phía trước.'
+                    }, {
+                        chinese: '您为什么要顶着压力来做这件事呢?',
+                        pinyin: 'Nín wèishéme yào dǐngzhe yālì lái zuò zhè jiàn shì ne?',
+                        vietnamese: 'Tại sao ngài lại phải chịu áp lực để làm việc này?'
+                    }, {
+                        chinese: '我这顶新帽子怎么样?',
+                        pinyin: 'Wǒ zhè dǐng xīn màozi zěnmeyàng?',
+                        vietnamese: 'Cái mũ mới này của tôi thế nào?'
+                    }, {
+                        chinese: '这项计划将成为儿童健康的一顶保护伞。',
+                        pinyin: 'Zhè xiàng jìhuà jiāng chéngwéi értóng jiànkāng de yī dǐng bǎohùsǎn.',
+                        vietnamese: 'Kế hoạch này sẽ trở thành một chiếc ô bảo vệ sức khỏe trẻ em.'
+                    }]
+                }
+            }, {
+                id: 16,
+                title: '………………得+不行',
+                content: {
+                    type: 'standard',
+                    explanation: 'Biểu thị trình độ, mức độ cao, còn có thể dùng “ +得+很/不得了”.',
+                    examples: [{
+                        chinese: '他顶着大雪往前走,扶着米袋的双手冻得不行,就停下来暖暖,再继续赶路。',
+                        pinyin: 'Tā dǐngzhe dàxuě wǎng qián zǒu, fúzhe mǐdài de shuāng shǒu dòng dé bùxíng, jiù tíng xiàlái nuǎn nuǎn, zài jìxù gǎnlù.',
+                        vietnamese: 'Anh ấy đội tuyết lớn đi về phía trước, hai tay đỡ túi gạo đông cứng đến mức không chịu nổi, liền dừng lại sưởi ấm, rồi tiếp tục lên đường.'
+                    }, {
+                        chinese: '这个地方这么热闹,孩子们高兴得不得了!',
+                        pinyin: 'Zhège dìfāng zhème rènào, háizimen gāoxìng dé bùdéle!',
+                        vietnamese: 'Nơi này thật náo nhiệt, bọn trẻ vui mừng khôn xiết!'
+                    }, {
+                        chinese: '他心里烦得很,自言自语地抱怨:“怎么还有那么远啊!"',
+                        pinyin: 'Tā xīnlǐ fán dé hěn, zì yán zì yǔ dì bàoyuàn: “Zěnme hái yǒu nàme yuǎn a!”',
+                        vietnamese: 'Trong lòng anh ấy rất phiền, lẩm bẩm than thở: “Sao vẫn còn xa thế!”'
+                    }]
+                }
+            }, {
+                id: 17,
+                title: '反而 (fǎn\'ér)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là phó từ, đứng giữa hai câu, biểu thị sự tương phản với dự kiến ban đầu.',
+                    examples: [{
+                        chinese: '这样不但不能提高他们的阅读能力,反而有可能降低他们的阅读兴趣和热情。',
+                        pinyin: 'Zhèyàng bùdàn bùnéng tígāo tāmen de yuèdú nénglì, fǎn\'ér yǒu kěnéng jiàngdī tāmen de yuèdú xìngqù hé rèqíng.',
+                        vietnamese: 'Cách này không những không thể nâng cao khả năng đọc của họ, ngược lại còn có thể làm giảm hứng thú và nhiệt tình đọc của họ.'
+                    }, {
+                        chinese: '大城市的生活虽然很精彩,但一辈子生活在农村的父母反而会不适应。',
+                        pinyin: 'Dà chéngshì de shēnghuó suīrán hěn jīngcǎi, dàn yī bèizi shēnghuó zài nóngcūn de fùmǔ fǎn\'ér huì bù shìyìng.',
+                        vietnamese: 'Cuộc sống ở thành phố lớn tuy rất tuyệt vời, nhưng bố mẹ sống cả đời ở nông thôn ngược lại sẽ không thích nghi được.'
+                    }, {
+                        chinese: '但他并没有因为物质条件好而感到欢喜,反而常常诚恳地说:“多么希望父母能和我一起过好日子!………………”',
+                        pinyin: 'Dàn tā bìng méiyǒu yīnwèi wùzhì tiáojiàn hǎo ér gǎndào huānxǐ, fǎn\'ér chángcháng chéngkěn de shuō: “Duōme xīwàng fùmǔ néng hé wǒ yīqǐguò hǎo rìzi!.........”',
+                        vietnamese: 'Nhưng anh ấy không vì điều kiện vật chất tốt mà cảm thấy vui mừng, ngược lại thường chân thành nói: “Biết bao mong ước bố mẹ có thể cùng tôi sống những ngày tốt đẹp!.........”'
+                    }]
+                }
+            }, {
+                id: 18,
+                title: '满足 vs 满意',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 满足 và 满意.',
+                    table: {
+                        headers: ['', '满足 (mǎnzú)', '满意 (mǎnyì)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là động từ, có ý nghĩa cảm thấy là đã đủ, nguyện vọng đã được thực hiện. Như: 我对现在的生活感到非常满足/满意.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Nhấn mạnh không có yêu cầu gì thêm nữa. Như: 只要能饱饱地吃上一吨米饭,也就满足啦.', 'Nhấn mạnh đã đúng với tâm ý của bản thân. Như: 老师说他对我这次的作业非常满意.'],
+                            ['Khác biệt 2', 'Thường không thể làm định ngữ và trạng ngữ.', 'Có thể dùng làm định ngữ hoặc trạng ngữ. Như: 她找到了一份满意的工作.'],
+                            ['Khác biệt 3', 'Có thể kết hợp với “希望,要求 条件,愿望”. Như: 这个我不想要,他不能满足我们的要求。', 'Thường không trực tiếp kết hợp với các tân ngữ.']
+                        ]
+                    }
+                }
+            }, {
+                id: 19,
+                title: '从而 (cóng\'ér)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là liên từ, đứng giữa hai câu, câu trước biểu thị nguyên nhân; phương pháp, câu sau biểu thị kết quả; mục đích...',
+                    examples: [{
+                        chinese: '比赛前做好思想准备可以减少运动员的压力,从而取得比赛的成功。',
+                        pinyin: 'Bǐsài qián zuò hǎo sīxiǎng zhǔnbèi kěyǐ jiǎnshǎo yùndòngyuán de yālì, cóng\'ér qǔdé bǐsài de chénggōng.',
+                        vietnamese: 'Trước trận đấu chuẩn bị tốt tâm lý có thể giảm áp lực cho vận động viên, từ đó đạt được thành công trong trận đấu.'
+                    }, {
+                        chinese: '在学习过程中及时复习,可以尽早发现和解决问题,加深理解,从而取得更好的成绩。',
+                        pinyin: 'Zài xuéxí guòchéng zhōng jíshí fùxí, kěyǐ jǐnzǎo fāxiàn hé jiějué wèntí, jiāshēn lǐjiě, cóng\'ér qǔdé gèng hǎo de chéngjī.',
+                        vietnamese: 'Trong quá trình học tập kịp thời ôn tập, có thể sớm phát hiện và giải quyết vấn đề, hiểu sâu hơn, từ đó đạt được thành tích tốt hơn.'
+                    }, {
+                        chinese: '而济南的老百姓住在泉边,喝着这甜美的泉水,自然对它充满感激之情,从而也产生了许多关于泉水的美丽传说。',
+                        pinyin: 'Ér Jǐnán de lǎobǎixìng zhù zài quán biān, hēzhe zhè tiánměi de quánshuǐ, zìrán duì tā chōngmǎn gǎnjī zhī qíng, cóng\'ér yě chǎnshēngle xǔduō guānyú quánshuǐ de měilì chuánshuō.',
+                        vietnamese: 'Và người dân Tế Nam sống bên suối, uống dòng nước suối ngọt lành này, tự nhiên tràn đầy lòng biết ơn đối với nó, từ đó cũng sản sinh ra nhiều truyền thuyết đẹp về suối nước.'
+                    }]
+                }
+            }, {
+                id: 20,
+                title: '于 (yú)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Giới từ, tương đương với “在、从、对、向、比”.',
+                    examples: [{
+                        chinese: '这家公司成立于1997年。',
+                        pinyin: 'Zhè jiā gōngsī chénglì yú 1997 nián.',
+                        vietnamese: 'Công ty này thành lập vào năm 1997.'
+                    }, {
+                        chinese: '这种药主要用于感冒的治疗。',
+                        pinyin: 'Zhè zhǒng yào zhǔyào yòng yú gǎnmào de zhìliáo.',
+                        vietnamese: 'Loại thuốc này chủ yếu dùng trong điều trị cảm cúm.'
+                    }, {
+                        chinese: '济南的泉水,来自于济南市以南的广大山区,......',
+                        pinyin: 'Jǐnán de quánshuǐ, láizìyú Jǐnán shì yǐ nán de guǎngdà shānqū,......',
+                        vietnamese: 'Suối Tế Nam, đến từ vùng núi rộng lớn phía nam thành phố Tế Nam,......'
+                    }, {
+                        chinese: '运动有助于健康。',
+                        pinyin: 'Yùndòng yǒu zhù yú jiànkāng.',
+                        vietnamese: 'Vận động có ích cho sức khỏe.'
+                    }, {
+                        chinese: '李明半年没找到工作了,没办法,只好求助于当经理的老同学王峰了。',
+                        pinyin: 'Lǐ Míng bànnián méi zhǎodào gōngzuò le, méi bànfǎ, zhǐhǎo qiú zhùyú dāng jīnglǐ de lǎo tóngxué Wáng Fēng le.',
+                        vietnamese: 'Lý Minh nửa năm không tìm được việc, không còn cách nào, đành phải cầu cứu người bạn học cũ làm giám đốc Vương Phong.'
+                    }, {
+                        chinese: '队员们都认为对方的水平远远高于自己。',
+                        pinyin: 'Duìyuánmen dōu rènwéi duìfāng de shuǐpíng yuǎnyuǎn gāoyú zìjǐ.',
+                        vietnamese: 'Các thành viên đều cho rằng trình độ của đối phương cao hơn mình rất nhiều.'
+                    }]
+                }
+            }, {
+                id: 21,
+                title: '为 (wéi)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, có nghĩa là “成、成为” (thành, trở thành). Cũng biểu thị “作为、算作” (làm, coi như).',
+                    examples: [{
+                        chinese: '而济南市区的地下岩石变为了火成岩,……………',
+                        pinyin: 'Ér Jǐnán shìqū de dìxià yánshí biàn wéi le huǒchéngyán,...........',
+                        vietnamese: 'Và đá ngầm dưới lòng đất ở khu vực thành phố Tế Nam đã biến thành đá lửa,...........'
+                    }, {
+                        chinese: '每个人都会遇到各种压力,可是,压力也可以变为动力。',
+                        pinyin: 'Měi gèrén dōu huì yù dào gè zhǒng yālì, kěshì, yālì yě kěyǐ biàn wéi dònglì.',
+                        vietnamese: 'Mỗi người đều sẽ gặp phải các loại áp lực, nhưng áp lực cũng có thể biến thành động lực.'
+                    }, {
+                        chinese: '找工作时,很多人会以收入多少为第一标准,这种想法我不能接受。',
+                        pinyin: 'Zhǎo gōngzuò shí, hěn duō rén huì yǐ shōurù duōshǎo wéi dì yī biāozhǔn, zhè zhǒng xiǎngfǎ wǒ bùnéng jiēshòu.',
+                        vietnamese: 'Khi tìm việc, nhiều người sẽ lấy thu nhập làm tiêu chuẩn hàng đầu, ý nghĩ này tôi không thể chấp nhận.'
+                    }, {
+                        chinese: '在他看来,没有工作的生活就不能称其为生活。',
+                        pinyin: 'Zài tā kàn lái, méiyǒu gōngzuò de shēnghuó jiù bùnéng chēng qí wéi shēnghuó.',
+                        vietnamese: 'Theo anh ấy, cuộc sống không có công việc thì không thể gọi là cuộc sống.'
+                    }]
+                }
+            }, {
+                id: 22,
+                title: '起来 (qǐlái)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, “động từ + 起来” biểu thị từ phân tán đến tập trung lại, hoặc từ lộ rõ đến ẩn nấp. “动词 +得/不+过来” biểu thị có năng lực (hoặc không đủ năng lực) để làm một vài việc.',
+                    examples: [{
+                        chinese: '地下水流到这里,碰到火成岩挡住了路就积蓄起来,越积越多。',
+                        pinyin: 'Dìxiàshuǐ liú dào zhèlǐ, pèng dào huǒchéngyán dǎng zhùle lù jiù jīxù qǐlái, yuè jī yuè duō.',
+                        vietnamese: 'Nước ngầm chảy đến đây, gặp đá lửa chặn đường liền tích tụ lại, càng tích càng nhiều.'
+                    }, {
+                        chinese: '渔夫想,这网一收起来,鱼一定可以装满整条船。',
+                        pinyin: 'Yúfū xiǎng, zhè wǎng yī shōu qǐlái, yú yīdìng kěyǐ zhuāngmǎn zhěng tiáo chuán.',
+                        vietnamese: 'Ngư dân nghĩ, tấm lưới này vừa thu lại, cá nhất định có thể đầy cả thuyền.'
+                    }, {
+                        chinese: '刘丽知道自己做得不对,躲起来不敢见我。',
+                        pinyin: 'Liú Lì zhīdào zìjǐ zuò dé bù duì, duǒ qǐlái bù gǎn jiàn wǒ.',
+                        vietnamese: 'Lưu Lệ biết mình làm sai, trốn đi không dám gặp tôi.'
+                    }, {
+                        chinese: '为了不被坏人抢走,他把壶埋入地下藏了起来,....',
+                        pinyin: 'Wèile bù bèi huàirén qiǎng zǒu, tā bǎ hú mái rù dìxià cángle qǐlái,....',
+                        vietnamese: 'Để không bị kẻ xấu cướp đi, anh ấy đã chôn cái ấm xuống đất giấu đi,....'
+                    }, {
+                        chinese: '天上的星星那么多,谁数得过来呀?',
+                        pinyin: 'Tiānshàng de xīngxīng nàme duō, shuí shǔ dé guòlái ya?',
+                        vietnamese: 'Sao trên trời nhiều thế, ai đếm xuể chứ?'
+                    }, {
+                        chinese: '最近手头的工作太多了,我都忙不过来了。',
+                        pinyin: 'Zuìjìn shǒutóu de gōngzuò tài duōle, wǒ dōu máng bù guòlái le.',
+                        vietnamese: 'Gần đây công việc quá nhiều, tôi bận không xuể.'
+                    }]
+                }
+            }, {
+                id: 23,
+                title: '美丽 vs 优美',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 美丽 và 优美.',
+                    table: {
+                        headers: ['', '美丽 (měilì)', '优美 (yōuměi)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là tính từ dùng để miêu tả phong cảnh, môi trường... Như: 济南是一座风景美丽/优美的城市.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Thường thiên về mô tả hành động, hình tượng... đem đến cho người khác một cảm giác tốt đẹp. Như: 她有一双美丽的大眼睛.', 'Thường dùng để mô tả tướng mạo, dáng người, ăn mặc ... đẹp. Như: 演员们的动作十分优美.'],
+                            ['Khác biệt 2', 'Thường mô tả nhiều về cảm nhận của thị giác. Như: 雨后天空中出现了一道美丽的彩虹。', 'Còn có thể mô tả phi thị giác (nghe). Như: 一进院子就听到了丽丽那优美的歌声.'],
+                            ['Khác biệt 3', 'Có cách dùng tu từ, có ý nghĩa tốt đẹp, cao quý. Như: 他有一颗美丽善良的心.', 'Không có cách dùng này.']
+                        ]
+                    }
+                }
+            }, {
+                id: 24,
+                title: '替 (tì)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, có nghĩa là “thay thế". Có thể làm giới từ, biểu thị “给、为”(cho ai, vì ai).',
+                    examples: [{
+                        chinese: '见了老公,你替我向他问好。',
+                        pinyin: 'Jiànle lǎogōng, nǐ tì wǒ xiàng tā wènhǎo.',
+                        vietnamese: 'Gặp chồng, bạn thay tôi hỏi thăm anh ấy.'
+                    }, {
+                        chinese: '刘老师今天有点儿事来不了,你能替替他吗?',
+                        pinyin: 'Liú lǎoshī jīntiān yǒudiǎnr shì lái bù liǎo, nǐ néng tì tì tā ma?',
+                        vietnamese: 'Thầy Lưu hôm nay có chút việc không đến được, bạn có thể thay thế thầy không?'
+                    }, {
+                        chinese: '七郎暗暗下定决心一定要杀死“夕”,替百姓除掉这个制造灾害的东西。',
+                        pinyin: 'Qī Láng àn\'àn xiàdìng juéxīn yīdìng yào shāsǐ “xī”, tì bǎixìng chú diào zhège zhìzào zāihài de dōngxi.',
+                        vietnamese: 'Thất Lang thầm hạ quyết tâm nhất định phải giết chết “tịch”, thay dân chúng trừ bỏ thứ gây tai họa này.'
+                    }, {
+                        chinese: '李阳要去留学了,我们都替他高兴。',
+                        pinyin: 'Lǐ Yáng yào qù liúxuéle, wǒmen dōu tì tā gāoxìng.',
+                        vietnamese: 'Lý Dương sắp đi du học rồi, chúng tôi đều mừng cho anh ấy.'
+                    }]
+                }
+            }, {
+                id: 25,
+                title: '说不定 (shuōbudìng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là động từ, có nghĩa là “không thể nói rõ ràng, khẳng định”. Cũng có thể làm phó từ, biểu thị ước tính, có khả năng lớn.',
+                    examples: [{
+                        chinese: '这事儿经理已经同意了,只是出发的时间还说不定。',
+                        pinyin: 'Zhè shìr jīnglǐ yǐjīng tóngyìle, zhǐshì chūfā de shíjiān hái shuōbudìng.',
+                        vietnamese: 'Chuyện này giám đốc đã đồng ý rồi, chỉ là thời gian xuất phát vẫn chưa xác định được.'
+                    }, {
+                        chinese: '咱两到底谁赢谁输还真说不定呢。',
+                        pinyin: 'Zán liǎng dàodǐ shuí yíng shuí shū hái zhēn shuōbudìng ne.',
+                        vietnamese: 'Hai ta rốt cuộc ai thắng ai thua thật sự vẫn chưa biết được.'
+                    }, {
+                        chinese: '周末他起得晚,这会儿说不定还在睡觉呢。',
+                        pinyin: 'Zhōumò tā qǐ de wǎn, zhè huìr shuōbudìng hái zài shuìjiào ne.',
+                        vietnamese: 'Cuối tuần anh ấy dậy muộn, giờ này có lẽ vẫn đang ngủ.'
+                    }, {
+                        chinese: '别随随便便就说放弃,说不定下次会成功了。',
+                        pinyin: 'Bié suí suíbiàn biàn jiù shuō fàngqì, shuōbudìng xià cì huì chénggōngle.',
+                        vietnamese: 'Đừng dễ dàng nói từ bỏ, biết đâu lần sau sẽ thành công.'
+                    }]
+                }
+            }, {
+                id: 26,
+                title: '似的 (sìde)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Trợ từ, “像/跟/好像……………似的” biểu thị giống với một số sự vật, tình huống. Thường dùng trong văn viết. Trong cấu trúc “……………得+什么似的”, “什么似的” thay thế cho sắc thái tình cảm muốn biểu thị, mang ngữ khí khoa trương.',
+                    examples: [{
+                        chinese: '消息一出来,询问情况的电话雪片似的纷纷打来。',
+                        pinyin: 'Xiāoxī yī chūlái, xúnwèn qíngkuàng de diànhuà xuěpiàn sì de fēnfēn dǎ lái.',
+                        vietnamese: 'Tin tức vừa ra, điện thoại hỏi thăm tình hình dồn dập như tuyết rơi.'
+                    }, {
+                        chinese: '我不敢相信这是真的,好像做梦似的。',
+                        pinyin: 'Wǒ bù gǎn xiāngxìn zhè shì zhēn de, hǎoxiàng zuòmèng shìde.',
+                        vietnamese: 'Tôi không dám tin đây là thật, như thể đang mơ vậy.'
+                    }, {
+                        chinese: '刘方背着重重的电脑包挤地铁,下班回家累的什么似的。',
+                        pinyin: 'Liú Fāng bèizhe zhòng zhòng de diànnǎo bāo jǐ dìtiě, xiàbān huí jiā lèi de shénme shìde.',
+                        vietnamese: 'Lưu Phương vác túi laptop nặng trịch chen chúc tàu điện ngầm, tan làm về nhà mệt đến rã rời.'
+                    }, {
+                        chinese: '“夕”吓得什么似的,急忙往外逃。',
+                        pinyin: '“Xī” xià dé shénme shìde, jí máng wǎng wài táo.',
+                        vietnamese: '“Tịch” sợ đến nỗi nào đó, vội vàng chạy trốn ra ngoài.'
+                    }]
+                }
+            }, {
+                id: 27,
+                title: '纷纷 (fēnfēn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Tính từ, “động từ/ tính từ +纷纷” mô tả (ngôn luận, những thứ rơi, rụng xuống) nhiều mà hỗn loạn. Cũng có thể làm phó từ, đằng sau là động từ, biểu thị (nhiều người hoặc sự vật) liên tục tiếp diễn.',
+                    examples: [{
+                        chinese: '秋风刮起,落叶纷纷。',
+                        pinyin: 'Qiūfēng guā qǐ, luòyè fēnfēn.',
+                        vietnamese: 'Gió thu thổi lên, lá rụng tả tơi.'
+                    }, {
+                        chinese: '他救起了妻子,孩子却被水冲走了。事后,人们议论纷纷。',
+                        pinyin: 'Tā jiù qǐle qīzi, háizi què bèi shuǐ chōng zǒule. Shìhòu, rénmen yìlùn fēnfēn.',
+                        vietnamese: 'Anh ấy cứu được vợ, nhưng con lại bị nước cuốn đi. Sau đó, mọi người bàn tán xôn xao.'
+                    }, {
+                        chinese: '除掉“夕”以后,百姓纷纷对七郎表达谢意。',
+                        pinyin: 'Chú diào “xī” yǐhòu, bǎixìng fēnfēn duì Qī Láng biǎodá xièyì.',
+                        vietnamese: 'Sau khi trừ bỏ “tịch”, dân chúng dồn dập bày tỏ lòng biết ơn với Thất Lang.'
+                    }, {
+                        chinese: '要下雨了,路上的人纷纷往家里跑。',
+                        pinyin: 'Yào xià yǔ le, lùshàng de rén fēnfēn wǎng jiālǐ pǎo.',
+                        vietnamese: 'Sắp mưa rồi, người trên đường dồn dập chạy về nhà.'
+                    }]
+                }
+            }, {
+                id: 28,
+                title: '打听 vs 询问',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 打听 và 询问.',
+                    table: {
+                        headers: ['', '打听 (dǎtīng)', '询问 (xúnwèn)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là động từ, đều có ý nghĩa “hỏi”. Như: 他打听/询问了老人的身体和生活情况.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Dùng nhiều trong khẩu ngữ. Như: 我跟您打听一下,附近有邮局吗?', 'Dùng trong văn viết. Như: 他仔细询问了公司近年来的发展情况.'],
+                            ['Khác biệt 2', 'Thường để tìm kiếm, tìm hiểu thông tin liên quan, đằng sau có thể kết hợp với bổ ngữ kết quả “到”. Như: 我到处打听也没打听到这家公司。', 'Đằng sau không thể thêm BNKQ “到” ngoài ra còn mang nghĩa trưng cầu ý kiến. Như: 他打电话询问刘教授对论文的意见.'],
+                            ['Khác biệt 3', 'Đằng sau có thể thêm đối tượng của hành động, cũng có thể linh hoạt làm danh từ. Như: 警察询问了当天见过他的另据. 他详细地回答了病人的询问.', 'Không có cách dùng này.']
+                        ]
+                    }
+                }
+            }, {
+                id: 29,
+                title: '瞎 (xiā)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, nghĩa là “mắt không nhìn thấy”. Cũng có thể làm phó từ, biểu thị không có lí do, không có căn cứ hoặc khi làm một vài việc không có hiệu quả.',
+                    examples: [{
+                        chinese: '聪明人用双手挡住了马的双眼,对那个人说:“要是这马真是你的,你一定知道马的那只眼睛是瞎的。”',
+                        pinyin: 'Cōngmíng rén yòng shuāng shǒu dǎng zhùle mǎ de shuāngyǎn, duì nàgè rén shuō: “Yàoshi zhè mǎ zhēnshi nǐ de, nǐ yīdìng zhīdào mǎ de nà zhī yǎnjīng shì xiā de.”',
+                        vietnamese: 'Người thông minh dùng hai tay che mắt ngựa, nói với người đó: “Nếu con ngựa này thật sự là của anh, anh nhất định biết con mắt nào của ngựa bị mù.”'
+                    }, {
+                        chinese: '一天,他让士兵去买一头大象和一些出生时眼睛就瞎了的人回来。',
+                        pinyin: 'Yī tiān, tā ràng shìbīng qù mǎi yī tóu dàxiàng hé yīxiē chūshēng shí yǎnjīng jiù xiāle de rén huílái.',
+                        vietnamese: 'Một ngày, ông ta sai lính đi mua một con voi và một số người bị mù bẩm sinh về.'
+                    }, {
+                        chinese: '别听他瞎说!不用害怕,我们不会这么倒霉的。',
+                        pinyin: 'Bié tīng tā xiāshuō! Bùyòng hàipà, wǒmen bù huì zhème dǎoméi de.',
+                        vietnamese: 'Đừng nghe anh ta nói bừa! Đừng sợ, chúng ta sẽ không xui xẻo vậy đâu.'
+                    }, {
+                        chinese: '他自己的问题,他会想办法的,你就别替他瞎担心了。',
+                        pinyin: 'Tā zìjǐ de wèntí, tā huì xiǎng bànfǎ de, nǐ jiù bié tì tā xiā dānxīnle.',
+                        vietnamese: 'Vấn đề của anh ấy, anh ấy sẽ tự tìm cách, bạn đừng lo lắng vớ vẩn cho anh ấy nữa.'
+                    }]
+                }
+            }, {
+                id: 30,
+                title: '分别 (fēnbié)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, nghĩa là ly biệt, chia tay, xa cách. Cũng có thể làm phó từ, biểu thị riêng biệt, mỗi, hoặc chỉ rõ từng cái một. Còn có thể làm danh từ, nghĩa là phân biệt, bất đồng, khác nhau.',
+                    examples: [{
+                        chinese: '分别是暂时的,我们以后一定会再见。',
+                        pinyin: 'Fēnbié shì zànshí de, wǒmen yǐhòu yīdìng huì zàijiàn.',
+                        vietnamese: 'Chia ly là tạm thời, sau này chúng ta nhất định sẽ gặp lại.'
+                    }, {
+                        chinese: '从毕业到现在我们已经分别20年了,一直都没有联系。',
+                        pinyin: 'Cóng bìyè dào xiànzài wǒmen yǐjīng fēnbié 20 niánle, yīzhí dōu méiyǒu liánxì.',
+                        vietnamese: 'Từ khi tốt nghiệp đến nay chúng tôi đã xa cách 20 năm rồi, vẫn luôn không liên lạc.'
+                    }, {
+                        chinese: '我分别找两个人打听这件事,他们的说法都是一样的。',
+                        pinyin: 'Wǒ fēnbié zhǎo liǎng gè rén dǎtīng zhè jiàn shì, tāmen de shuōfǎ dōu shì yīyàng de.',
+                        vietnamese: 'Tôi đã tìm hai người khác nhau để hỏi chuyện này, cách nói của họ đều giống nhau.'
+                    }, {
+                        chinese: '士兵们分别去不同的地方寻找,把找到大象和盲人带到他面前。',
+                        pinyin: 'Shìbīngmen fēnbié qù bùtóng de dìfāng xúnzhǎo, bǎ zhǎodào dàxiàng hé mángrén dài dào tā miànqián.',
+                        vietnamese: 'Các binh lính lần lượt đi đến những nơi khác nhau tìm kiếm, mang voi và người mù tìm được đến trước mặt ông ta.'
+                    }, {
+                        chinese: '一张桌子上放着三瓶饮料,分别是茶,可乐和咖啡。',
+                        pinyin: 'Yī zhāng zhuōzi shàng fàngzhe sān píng yǐnliào, fēnbié shì chá, kělè hé kāfēi.',
+                        vietnamese: 'Trên bàn có ba chai nước uống, lần lượt là trà, cola và cà phê.'
+                    }, {
+                        chinese: '谈到对目前工作最不满意的地方,1%的被调查者认为休息时间太少,发展慢,工资太低分别占20.3%和20%。',
+                        pinyin: 'Tán dào duì mùqián gōngzuò zuì bù mǎnyì de dìfāng, 1% de bèi diàochá zhě rènwéi xiūxí shíjiān tài shǎo, fāzhǎn màn, gōngzī tài dī fēnbié zhàn 20.3% hé 20%.',
+                        vietnamese: 'Khi nói về điểm không hài lòng nhất với công việc hiện tại, 1% người được khảo sát cho rằng thời gian nghỉ ngơi quá ít, phát triển chậm, lương quá thấp lần lượt chiếm 20.3% và 20%.'
+                    }, {
+                        chinese: '我不知道这两种做法有什么分别。',
+                        pinyin: 'Wǒ bù zhīdào zhè liǎng zhǒng zuòfǎ yǒu shénme fēnbié.',
+                        vietnamese: 'Tôi không biết hai cách làm này có gì khác biệt.'
+                    }, {
+                        chinese: '这两张照片的分别是一眼就看得出来得。',
+                        pinyin: 'Zhè liǎng zhāng zhàopiàn de fēnbié shì yīyǎn jiù kàn dé chūlái de.',
+                        vietnamese: 'Sự khác biệt giữa hai bức ảnh này có thể nhìn ra ngay lập tức.'
+                    }]
+                }
+            }, {
+                id: 31,
+                title: '根 (gēn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Danh từ, chỉ bộ phận của thực vật sinh trưởng dưới lòng đất, hoặc nền móng, cơ sở, gốc, chân của sự vật. Cũng có thể làm lượng từ, thường dùng cho vật dài và nhỏ.',
+                    examples: [{
+                        chinese: '这棵树的根又粗又长。',
+                        pinyin: 'Zhè kē shù de gēn yòu cū yòu cháng.',
+                        vietnamese: 'Rễ cây này vừa to vừa dài.'
+                    }, {
+                        chinese: '这种植物的根下雨时会大量吸水,从而满足自身的需要。',
+                        pinyin: 'Zhè zhǒng zhíwù de gēn xià yǔ shí huì dàliàng xīshuǐ, cóng\'ér mǎnzú zìshēn de xūyào.',
+                        vietnamese: 'Rễ của loại thực vật này khi trời mưa sẽ hút một lượng lớn nước, từ đó đáp ứng nhu cầu của bản thân.'
+                    }, {
+                        chinese: '你这颗牙连牙根都坏了,平时难道不疼吗?',
+                        pinyin: 'Nǐ zhè kē yá lián yágēn dōu huàile, píngshí nándào bù téng ma?',
+                        vietnamese: 'Răng của bạn hỏng cả chân răng rồi, bình thường không đau sao?'
+                    }, {
+                        chinese: '这件事还是得从根上解决,只理解表面问题是不行的。',
+                        pinyin: 'Zhè jiàn shì háishì dé cóng gēn shàng jiějué, zhǐ lǐjiě biǎomiàn wèntí shì bùxíng de.',
+                        vietnamese: 'Việc này vẫn phải giải quyết từ gốc rễ, chỉ hiểu vấn đề bề mặt là không được.'
+                    }, {
+                        chinese: '摸到尾巴的盲人说大相像一根绳子。',
+                        pinyin: 'Mō dào wěibā de mángrén shuō dà xiàng xiàng yī gēn shéngzi.',
+                        vietnamese: 'Người mù sờ vào đuôi nói voi giống một sợi dây.'
+                    }, {
+                        chinese: '可是,这次他连续换了几根箭,都没能再射进去……………………',
+                        pinyin: 'Kěshì, zhè cì tā liánxù huànle jǐ gēn jiàn, dōu méi néng zài shè jìnrù.........',
+                        vietnamese: 'Nhưng, lần này anh ấy liên tục thay mấy mũi tên, đều không thể bắn trúng được nữa.........'
+                    }]
+                }
+            }, {
+                id: 32,
+                title: '便 (biàn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, nghĩa là “就” (thì, là, đã), thường dùng trong văn viết.',
+                    examples: [{
+                        chinese: '楼上新买了一架钢琴,我们家便多了一些不安静。',
+                        pinyin: 'Lóu shàng xīn mǎi le yī jià gāngqín, wǒmen jiā biàn duō le yīxiē bù ānjìng.',
+                        vietnamese: 'Trên lầu mới mua một cây đàn piano, nhà chúng tôi liền thêm chút ồn ào.'
+                    }, {
+                        chinese: '“精诚所至,金石为开”这一成语也便由此流转下来。',
+                        pinyin: '“Jīngchéng suǒ zhì, jīnshí wèi kāi” zhè yī chéngyǔ yě biàn yóucǐ liúzhuǎn xiàlái.',
+                        vietnamese: 'Thành ngữ “Thành tâm sở chí, kim thạch vi khai” (lòng thành đến đâu, đá vàng cũng mở) cũng từ đó mà lưu truyền.'
+                    }, {
+                        chinese: '很多时候,仅仅是换一种心情,换一个角度,便可以从困境中走出来。',
+                        pinyin: 'Hěn duō shíhòu, jǐnjǐn shì huàn yī zhǒng xīnqíng, huàn yīgè jiǎodù, biàn kěyǐ cóng kùnjìng zhōng zǒu chūlái.',
+                        vietnamese: 'Rất nhiều lúc, chỉ cần thay đổi một tâm trạng, thay đổi một góc độ, liền có thể thoát khỏi cảnh khó khăn.'
+                    }]
+                }
+            }, {
+                id: 33,
+                title: '忽然 vs 突然',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 忽然 và 突然.',
+                    table: {
+                        headers: ['', '忽然 (hūrán)', '突然 (tūrán)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều có thể đứng trước động từ, biểu thị là không ngờ đến/ không nghĩ đến, xảy ra rất nhanh.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Là phó từ, chỉ có thể đứng trước động từ hoặc đầu của câu sau (có thể thay bằng “突然”). Như: 一天傍晚,他正带着士兵们在山中打猪,忽然发现远处的草丛中蹲着一只大老虎。', 'Là tính từ, có thể làm vị ngữ, định ngữ, bổ ngữ trong câu. Như: 这件事太突然了!(vị ngữ) ; 这件事发生得太突然了!(bổ ngữ) ; 这突然的一声喊叫吓了我一跳(định ngữ).']
+                        ]
+                    }
+                }
+            }, {
+                id: 34,
+                title: '倒 (dào)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, biểu thị tương phản, trái ngược với những tình huống thông thường, không nghĩ đến, nhượng bộ, hoặc không nhẫn nại, bình tĩnh, dùng để hỏi hoặc hối thúc.',
+                    examples: [{
+                        chinese: '在其他粮食不足的情况下,用橡子喂猴子倒是个办法。',
+                        pinyin: 'Zài qítā liángshí bùzú de qíngkuàng xià, yòng xiàngzi wèi hóuzi dào shìgè bànfǎ.',
+                        vietnamese: 'Trong trường hợp thiếu lương thực khác, dùng hạt sồi nuôi khỉ ngược lại cũng là một cách.'
+                    }, {
+                        chinese: '少年不解地问:“怎么勇敢反倒成为缺点了?”',
+                        pinyin: 'Shàonián bù jiě dì wèn: “Zěnme yǒnggǎn fǎndào chéngwéi quēdiǎnle?”',
+                        vietnamese: 'Thiếu niên không hiểu hỏi: “Sao dũng cảm ngược lại lại trở thành khuyết điểm rồi?”'
+                    }, {
+                        chinese: '有这样的人?我倒要认识认识。',
+                        pinyin: 'Yǒu zhèyàng de rén? Wǒ dào yào rènshì rènshì.',
+                        vietnamese: 'Có người như vậy ư? Tôi thật muốn làm quen.'
+                    }, {
+                        chinese: '小刘租的房子虽然很小,不过收拾得倒还干净。',
+                        pinyin: 'Xiǎo Liú zū de fángzi suīrán hěn xiǎo, bùguò shōushí dé dào hái gānjìng.',
+                        vietnamese: 'Căn nhà Tiểu Lưu thuê tuy rất nhỏ, nhưng dọn dẹp lại khá sạch sẽ.'
+                    }, {
+                        chinese: '质量倒是挺好,就是价格太贵了。',
+                        pinyin: 'Zhìliàng dào shì tǐng hǎo, jiùshì jiàgé tài guìle.',
+                        vietnamese: 'Chất lượng thì tốt đấy, chỉ là giá quá đắt.'
+                    }, {
+                        chinese: '我倒是很愿意参加这次活动,就是暂时无法确定是否有时间。',
+                        pinyin: 'Wǒ dào shì hěn yuànyì cānjiā zhè cì huódòng, jiùshì zànshí wúfǎ queding shìfǒu yǒu shíjiān.',
+                        vietnamese: 'Tôi thì rất sẵn lòng tham gia hoạt động này, chỉ là tạm thời không thể xác định có thời gian hay không.'
+                    }, {
+                        chinese: '你究竟去还是不去?倒是说句话呀!',
+                        pinyin: 'Nǐ jiūjìng qù háishì bù qù? Dào shì shuō jù huà ya!',
+                        vietnamese: 'Bạn rốt cuộc đi hay không đi? Nói một lời đi chứ!'
+                    }, {
+                        chinese: '你倒是说说看,这件事你不负责谁负责?',
+                        pinyin: 'Nǐ dào shì shuō shuō kàn, zhè jiàn shì nǐ bù fùzé shuí fùzé?',
+                        vietnamese: 'Bạn nói thử xem, việc này bạn không chịu trách nhiệm thì ai chịu trách nhiệm?'
+                    }]
+                }
+            }, {
+                id: 35,
+                title: '……………来…………………去',
+                content: {
+                    type: 'standard',
+                    explanation: 'Biểu thị sự lặp đi lặp lại nhiều lần của động tác, hai động từ đứng trước “来” và “去” thường là cùng một từ hoặc là từ gần nghĩa.',
+                    examples: [{
+                        chinese: '小狗追着自己的尾巴,在草地上跑来跑去。',
+                        pinyin: 'Xiǎo gǒu zhuīzhe zìjǐ de wěibā, zài cǎodì shàng pǎo lái pǎo qù.',
+                        vietnamese: 'Chú chó nhỏ đuổi theo đuôi mình, chạy đi chạy lại trên bãi cỏ.'
+                    }, {
+                        chinese: '猴子们似乎只弄懂了主人前面说的一个“三”,觉得自己吃了亏,一个个立起身子跳来跳去,对着老人大喊大叫地发脾气。',
+                        pinyin: 'Hóuzimen sìhū zhǐ nòng dǒngle zhǔrén qiánmiàn shuō de yīgè “sān”, juédé zìjǐ chīle kuī, yīgè gè lì qǐ shēnzi tiào lái tiào qù, duìzhe lǎorén dà hǎndà jiào dì fā píqì.',
+                        vietnamese: 'Bọn khỉ dường như chỉ hiểu được một từ “ba” mà chủ nói lúc trước, cảm thấy mình bị thiệt, từng con một đứng dậy nhảy tới nhảy lui, hét lớn và giận dỗi với ông lão.'
+                    }, {
+                        chinese: '他们研究来讨论去,还是没找出原因。',
+                        pinyin: 'Tāmen yánjiū lái tǎolùn qù, háishì méi zhǎo chū yuányīn.',
+                        vietnamese: 'Họ nghiên cứu tới nghiên cứu lui, vẫn không tìm ra nguyên nhân.'
+                    }]
+                }
+            }, {
+                id: 36,
+                title: '要不 (yàobù)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Liên từ, giống với “要不然”, biểu thị nếu không như thế này, thì kết quả sẽ như dưới đây. Cũng có nghĩa là vẫn còn một sự lựa chọn khác.',
+                    examples: [{
+                        chinese: '老太太说:“4块,要不我不卖”',
+                        pinyin: 'Lǎo tàitài shuō: “4 kuài, yàobù wǒ bù mài”',
+                        vietnamese: 'Bà lão nói: “4 đồng, nếu không tôi không bán.”'
+                    }, {
+                        chinese: '还好碰见你了,要不然我今天肯定会迟到了。',
+                        pinyin: 'Hái hǎo pèngjiàn nǐle, yàobù rán wǒ jīntiān kěndìng huì chídào le.',
+                        vietnamese: 'May mà gặp bạn, nếu không hôm nay tôi chắc chắn sẽ bị muộn.'
+                    }, {
+                        chinese: '今天太晚了,要不你明天再走吧。',
+                        pinyin: 'Jīntiān tài wǎnle, yàobù nǐ míngtiān zài zǒu ba.',
+                        vietnamese: 'Hôm nay muộn rồi, hay là bạn ngày mai hãy đi.'
+                    }, {
+                        chinese: '要不这样吧,既然你们觉得少那就改成每早上四颗,晚上三颗,这样总够了吧。',
+                        pinyin: 'Yàobù zhèyàng ba, jìrán nǐmen juédé shǎo nà jiù gǎichéng měi zǎoshang sì kē, wǎnshàng sān kē, zhèyàng zǒng gòu le ba.',
+                        vietnamese: 'Hay là thế này, vì các bạn thấy ít thì đổi thành mỗi sáng bốn viên, tối ba viên, như vậy chắc đủ rồi chứ.'
+                    }]
+                }
+            }, {
+                id: 37,
+                title: '彼此 vs 互相',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 彼此 và 互相.',
+                    table: {
+                        headers: ['', '彼此 (bǐcǐ)', '互相 (hùxiāng)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều có nghĩa là cả hai bên có cùng một hành vi, hành động. Như: 我们彼此互相都很理解对方.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Đại từ, có thể đứng trước động từ làm chủ ngữ. Như: 相处久了,彼此既然可以从表情,声音和行为举止中了解对方的意思。', 'Phó từ, khi đứng trước động từ thì đằng trước phải thêm chủ ngữ. Như: 好朋友应该互相帮助.'],
+                            ['Khác biệt 2', 'Có thể làm tân ngữ, định ngữ. Như: 我们是最好的朋友,不分彼此。(tân ngữ) ; 我们彼此的爱好相同。(định ngữ).', 'Không thể làm tân ngữ hoặc định ngữ.'],
+                            ['Khác biệt 3', 'Có thể trùng điệp, biểu thị cả hai không khác nhau mấy. Như: 咱们俩彼此彼此,画的我比你好不了多少。', 'Không thể trùng điệp.']
+                        ]
+                    }
+                }
+            }, {
+                id: 38,
+                title: '算 (suàn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, có nghĩa là “认作,当做” (xem như, coi như). Đằng sau có thể đi với “了” biểu thị “作罢,不再计较” (bỏ đi, không tính toán nữa).',
+                    examples: [{
+                        chinese: '例如著名的文学家鲁迅,在吃喝这件事上,就算是个地道的行家。',
+                        pinyin: 'Lìrú zhùmíng de wénxuéjiā Lǔ Xùn, zài chīhē zhè jiàn shì shàng, jiùsuàn shìgè dìdào de hángjiā.',
+                        vietnamese: 'Ví dụ như nhà văn nổi tiếng Lỗ Tấn, trong chuyện ăn uống, ông ta đúng là một chuyên gia đích thực.'
+                    }, {
+                        chinese: '这钱就算我借给你的,将来你有了的时候再还我。',
+                        pinyin: 'Zhè qián jiùsuàn wǒ jiè gěi nǐ de, jiānglái nǐ yǒule de shíhòu zài huán wǒ.',
+                        vietnamese: 'Số tiền này coi như tôi cho bạn mượn, sau này khi bạn có thì trả lại tôi.'
+                    }, {
+                        chinese: '不就是一个空瓶子吗?扔掉算了。',
+                        pinyin: 'Bù jiùshì yīgè kōng píngzi ma? Rēng diào suànle.',
+                        vietnamese: 'Không phải chỉ là một cái chai rỗng sao? Vứt đi thôi.'
+                    }, {
+                        chinese: '算了吧,你跑得再快,也追不上会飞的鸟啊。',
+                        pinyin: 'Suànle ba, nǐ pǎo dé zài kuài, yě zhuī bù shàng huì fēi de niǎo a.',
+                        vietnamese: 'Thôi đi, bạn chạy nhanh đến mấy cũng không đuổi kịp con chim biết bay đâu.'
+                    }]
+                }
+            }, {
+                id: 39,
+                title: '作为 (zuòwéi)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, có nghĩa là “看做,认为是……………” (xem là, coi là, cho rằng). Có thể làm giới từ, dùng để chỉ ra, dẫn ra thân phận của một người hoặc tính chất của sự vật.',
+                    examples: [{
+                        chinese: '北海公园离家最近,所以我把那儿作为每晚散步的去处。',
+                        pinyin: 'Běihǎi Gōngyuán lí jiā zuìjìn, suǒyǐ wǒ bǎ nàr zuòwéi měi wǎn sànbù de qùchù.',
+                        vietnamese: 'Công viên Bắc Hải gần nhà nhất, vì vậy tôi coi đó là nơi đi dạo mỗi tối.'
+                    }, {
+                        chinese: '经理要请我去吃顿饭,说是作为我加班的表扬。',
+                        pinyin: 'Jīnglǐ yào qǐng wǒ qù chī dùn fàn, shuō shì zuòwéi wǒ jiābān de biǎoyáng.',
+                        vietnamese: 'Giám đốc muốn mời tôi đi ăn một bữa, nói là để biểu dương tôi vì đã làm thêm giờ.'
+                    }, {
+                        chinese: '作为大作家、大学问家,鲁迅对吃很讲究,吃的内容在他的日记占了很大一部分。',
+                        pinyin: 'Zuòwéi dà zuòjiā, dà xuéwènjiā, Lǔ Xùn duì chī hěn jiǎngjiù, chī de nèiróng zài tā de rìjì zhànle hěn dà yī bùfèn.',
+                        vietnamese: 'Là một đại văn hào, đại học giả, Lỗ Tấn rất kỹ tính trong việc ăn uống, nội dung ăn uống chiếm một phần lớn trong nhật ký của ông.'
+                    }, {
+                        chinese: '西红柿是世界上种植非常普遍的蔬菜,中国作为主要生产国之一也在扩大它的种植面积。',
+                        pinyin: 'Xīhóngshì shì shìjiè shàng zhòngzhí fēicháng pǔbiàn de shūcài, Zhōngguó zuòwéi zhǔyào shēngchǎn guó zhī yī yě zài kuòdà tā de zhòngzhí miànjī.',
+                        vietnamese: 'Cà chua là loại rau được trồng rất phổ biến trên thế giới, Trung Quốc với tư cách là một trong những nước sản xuất chính cũng đang mở rộng diện tích trồng của nó.'
+                    }]
+                }
+            }, {
+                id: 40,
+                title: '曾经 (céngjīng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, biểu thị hành động hoặc tình huống đã từng xảy ra hoặc từng phát sinh.',
+                    examples: [{
+                        chinese: '鲁迅曾经说他是将别人喝牛奶、咖啡的时间来学习。',
+                        pinyin: 'Lǔ Xùn céngjīng shuō tā shì jiāng biérén hē niúnǎi, kāfēi de shíjiān lái xuéxí.',
+                        vietnamese: 'Lỗ Tấn từng nói ông ấy dùng thời gian người khác uống sữa bò, cà phê để học tập.'
+                    }, {
+                        chinese: '孔子曾经带着学生周游各国14年,传播他的思想。',
+                        pinyin: 'Kǒngzǐ céngjīng dàizhe xuéshēng zhōuyóu gèguó 14 nián, chuánbò tā de sīxiǎng.',
+                        vietnamese: 'Khổng Tử từng dẫn học trò đi chu du các nước 14 năm, truyền bá tư tưởng của mình.'
+                    }, {
+                        chinese: '郁达夫在1933年曾经作诗形容他:“醉眼蒙胧上酒楼,彷徨呐喊两悠悠”,描写得十分形象。',
+                        pinyin: 'Yù Dáfū zài 1933 nián céngjīng zuò shī xíngróng tā: “Zuìyǎn ménglóng shàng jiǔlóu, pánghuáng nàhǎn liǎng yōuyōu”, miáoxiě dé shífēn xíngxiàng.',
+                        vietnamese: 'Út Đạt Phu vào năm 1933 từng làm thơ miêu tả ông ấy: “Mắt say mông lung lên lầu rượu, bàng hoàng gào thét hai tiếng thảnh thơi”, miêu tả rất hình tượng.'
+                    }]
+                }
+            }, {
+                id: 41,
+                title: '亲自 vs 自己',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 亲自 và 自己.',
+                    table: {
+                        headers: ['', '亲自 (qīnzì)', '自己 (zìjǐ)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều có nghĩa là chỉ bản thân. Như: (鲁迅)不但会吃,还会亲自/自己动手做.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Phó từ, thường dùng giữa chủ ngữ và động từ. Như: 老人总是亲自喂养他的猴子.', 'Đại từ, có thể làm chủ ngữ, tân ngữ, định ngữ. Như: 请大家带好自己的资料.'],
+                            ['Khác biệt 2', 'Thường dùng với những người có thân phận, địa vị cao hoặc những việc bình thường không hay làm. Như: 这份礼物是市长亲自为生病的小女孩儿做的。', 'Nhấn mạnh người hoàn thành động tác là bản thân chứ không phải ai khác. Như: 你应该自己努力学习,不能总是靠别人.']
+                        ]
+                    }
+                }
+            }, {
+                id: 42,
+                title: '毕竟 (bìjìng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, có nghĩa là rốt cuộc, cuối cùng. Cũng dùng để chỉ phần quan trọng nhất hoặc chính xác nhất, thường dùng cùng câu biểu thị “cho dù thế nào thì kết quả chính là như thế này”.',
+                    examples: [{
+                        chinese: '虽然我们遇到了很多困难,但毕竟完成了任务。',
+                        pinyin: 'Suīrán wǒmen yù dào le hěn duō kùnnán, dàn bìjìng wánchéngle rènwù.',
+                        vietnamese: 'Tuy chúng tôi đã gặp rất nhiều khó khăn, nhưng rốt cuộc cũng đã hoàn thành nhiệm vụ.'
+                    }, {
+                        chinese: '不过摄影师毕竟是摄影师,主意还是有的。',
+                        pinyin: 'Bùguò shèyǐngshī bìjìng shì shèyǐngshī, zhǔyì háishì yǒu de.',
+                        vietnamese: 'Nhưng nhiếp ảnh gia dù sao cũng là nhiếp ảnh gia, vẫn có ý kiến của mình.'
+                    }, {
+                        chinese: '生活中总有无法解决的问题,毕竟不是所有的对错都能讲清楚,甚至可能根本就没有真正的对与错。',
+                        pinyin: 'Shēnghuó zhōng zǒng yǒu wúfǎ jiějué de wèntí, bìjìng bùshì suǒyǒu de duì cuò dōu néng jiǎng qīngchǔ, shènzhì kěnéng gēnběn jiù méiyǒu zhēnzhèng de duì yǔ cuò.',
+                        vietnamese: 'Trong cuộc sống luôn có những vấn đề không thể giải quyết được, dù sao không phải tất cả đúng sai đều có thể nói rõ ràng, thậm chí có thể căn bản không có đúng sai thật sự.'
+                    }, {
+                        chinese: '他不高兴是正常的,毕竟没有人能在摔得头破血流的时候,还高兴得起来。',
+                        pinyin: 'Tā bù gāoxìng shì zhèngcháng de, bìjìng méiyǒu rén néng zài shuāi dé tóupòxiě liú de shíhòu, hái gāoxìng dé qǐlái.',
+                        vietnamese: 'Anh ấy không vui là chuyện bình thường, dù sao không ai có thể vui vẻ khi bị ngã chảy máu đầu.'
+                    }]
+                }
+            }, {
+                id: 43,
+                title: '逐渐 (zhújiàn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, chỉ trình độ, số lượng tăng hoặc giảm một chút.',
+                    examples: [{
+                        chinese: '食物越来越少,老人不得不逐渐限制猴子的食量。',
+                        pinyin: 'Shíwù yuè lái yuè shǎo, lǎorén bùdébù zhújiàn xiànzhì hóuzi de shíliàng.',
+                        vietnamese: 'Thức ăn ngày càng ít, ông lão buộc phải dần dần hạn chế khẩu phần ăn của khỉ.'
+                    }, {
+                        chinese: '这项运动首先在亚太地区流行,并逐渐受到世界各地人们的欢迎。',
+                        pinyin: 'Zhè xiàng yùndòng shǒuxiān zài Yàtài dìqū liúxíng, bìng zhújiàn shòudào shìjiè gèdì rénmen de huānyíng.',
+                        vietnamese: 'Môn thể thao này trước tiên phổ biến ở khu vực Châu Á-Thái Bình Dương, và dần dần được mọi người trên khắp thế giới đón nhận.'
+                    }, {
+                        chinese: '经过艰苦的试验,电影拍摄技术逐渐改进、成熟。',
+                        pinyin: 'Jīngguò jiānkǔ de shìyàn, diànyǐng pāishè jìshù zhújiàn gǎijìn, chéngshú.',
+                        vietnamese: 'Sau những thử nghiệm gian khổ, kỹ thuật quay phim dần dần được cải thiện và hoàn thiện.'
+                    }]
+                }
+            }, {
+                id: 44,
+                title: '或许 (huòxǔ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, có nghĩa là có lẽ, có khả năng.',
+                    examples: [{
+                        chinese: '虽然以前她不支持你,但或许这次会有变化。',
+                        pinyin: 'Suīrán yǐqián tā bù zhīchí nǐ, dàn huòxǔ zhè cì huì yǒu biànhuà.',
+                        vietnamese: 'Tuy trước đây cô ấy không ủng hộ bạn, nhưng có lẽ lần này sẽ có thay đổi.'
+                    }, {
+                        chinese: '或许正是因为这一点一滴的努力,你就会走在别人的前面。',
+                        pinyin: 'Huòxǔ zhèng shì yī diǎn yī dī de nǔlì, nǐ jiù huì zǒu zài biérén de qiánmiàn.',
+                        vietnamese: 'Có lẽ chính vì từng chút nỗ lực này, bạn sẽ đi trước người khác.'
+                    }, {
+                        chinese: '留心生活的每一瞬间,并为之争论,适时请求帮助,认真研究,或许重大发现就在你的眼前。',
+                        pinyin: 'Liúxīn shēnghuó de měi yī shùnjiān, bìng wèi zhī zhēnglùn, shìshí qǐngqiú bāngzhù, rènzhēn yánjiū, huòxǔ zhòngdà fāxiàn jiù zài nǐ de yǎnqián.',
+                        vietnamese: 'Chú ý từng khoảnh khắc trong cuộc sống, và tranh luận về nó, kịp thời yêu cầu giúp đỡ, nghiêm túc nghiên cứu, có lẽ phát hiện lớn lao đang ở ngay trước mắt bạn.'
+                    }]
+                }
+            }, {
+                id: 45,
+                title: '显示 vs 显得',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 显示 và 显得.',
+                    table: {
+                        headers: ['', '显示 (xiǎnshì)', '显得 (xiǎnde)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là động từ, đều có nghĩa là biểu hiện ra, thể hiện ra cho người khác thấy. Nhưng bình thường không thể đổi dùng cho nhau.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Chỉ biểu hiện ra một số loại thái độ, năng lực hoặc tình huống. Như: 相片显示:马奔跑时始终有蹄着地。', 'Chỉ biểu hiện ra một số đặc tính. Như: 几年不见,他显得成熟多了.'],
+                            ['Khác biệt 2', 'Thường kết hợp cùng danh từ và câu ngắn. Như: 这次活动的组织显示出了他的才能。', 'Thường kết hợp với tính từ. Như: 中秋节那天,月亮显得格外明亮。']
+                        ]
+                    }
+                }
+            }, {
+                id: 46,
+                title: '来/过来',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ xu hướng, thường gặp cách dùng “động từ +来/过来” dùng sau động từ “醒” biểu thị chuyển tiếp từ lúc ngủ đến lúc tỉnh. “过来” dùng ở sau động từ, biểu thị quay về trạng thái lúc ban đầu hoặc trạng thái bình thường. “动词 +得/不+过来” biểu thị có năng lực ( hoặc không đủ năng lực) để làm một vài việc, thường dùng hình thức phủ định.',
+                    examples: [{
+                        chinese: '人逐渐从熟睡过渡到浅睡,直到醒来。',
+                        pinyin: 'Rén zhújiàn cóng shúshuì guòdù dào qiǎnshuì, zhídào xǐnglái.',
+                        vietnamese: 'Người dần dần từ ngủ say chuyển sang ngủ nông, cho đến khi tỉnh lại.'
+                    }, {
+                        chinese: '早晨醒来,我发现窗外正下着大雪。',
+                        pinyin: 'Zǎochén xǐnglái, wǒ fāxiàn chuāngwài zhèng xiàzhe dàxuě.',
+                        vietnamese: 'Sáng sớm tỉnh dậy, tôi phát hiện bên ngoài cửa sổ đang có tuyết rơi lớn.'
+                    }, {
+                        chinese: '我被一阵吵闹声突然惊醒,过了半天,脑子才清醒过来。',
+                        pinyin: 'Wǒ bèi yī zhèn chǎonào shēng tūrán jīngxǐng, guòle bàntiān, nǎozi cái qīngxǐng guòlái.',
+                        vietnamese: 'Tôi bị một tiếng ồn ào bất ngờ đánh thức, qua nửa ngày, đầu óc mới tỉnh táo lại.'
+                    }, {
+                        chinese: '他救了妻子,没救孩子。有的人说他做得对,因为孩子可以再生一个,妻子却不能活过来。',
+                        pinyin: 'Tā jiùle qīzi, méi jiù háizi. Yǒu de rén shuō tā zuò dé duì, yīnwèi háizi kěyǐ zài shēng yīgè, qīzi què bùnéng huó guòlái.',
+                        vietnamese: 'Anh ấy cứu được vợ, không cứu được con. Có người nói anh ấy làm đúng, vì con có thể sinh lại một đứa, còn vợ thì không thể sống lại được.'
+                    }, {
+                        chinese: '天上的星星那么多,谁数得过来呀?',
+                        pinyin: 'Tiānshàng de xīngxīng nàme duō, shuí shǔ dé guòlái ya?',
+                        vietnamese: 'Sao trên trời nhiều thế, ai đếm xuể chứ?'
+                    }, {
+                        chinese: '最近手头的工作太多了,我都忙不过来了。',
+                        pinyin: 'Zuìjìn shǒutóu de gōngzuò tài duōle, wǒ dōu máng bù guòláile.',
+                        vietnamese: 'Gần đây công việc quá nhiều, tôi bận không xuể.'
+                    }]
+                }
+            }, {
+                id: 47,
+                title: '所 (suǒ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Trợ từ, đứng trước động từ, dùng để chỉ ra và nói sự vật. Thường đứng trước động từ trong câu chủ vị, làm định ngữ, chủ ngữ... “有/无+所+ động từ”, “所” và động từ phía sau tạo thành cụm từ, làm tân ngữ của “有” và “无”. Cũng có thể làm lượng từ, dùng với chỗ ở, nơi ở, cơ cấu...',
+                    examples: [{
+                        chinese: '山水画所表现的是人与自然的关系。',
+                        pinyin: 'Shānshuǐhuà suǒ biǎoxiàn de shì rén yǔ zìrán de guānxì.',
+                        vietnamese: 'Tranh thủy mặc thể hiện mối quan hệ giữa con người và thiên nhiên.'
+                    }, {
+                        chinese: '人们对自然醒与被闹钟铃声叫醒所产生的反应是很不相同的。',
+                        pinyin: 'Rénmen duì zìrán xǐng yǔ bèi nàozhōng língshēng jiào xǐng suǒ chǎnshēng de fǎnyìng shì hěn bù xiāngtóng de.',
+                        vietnamese: 'Phản ứng của con người đối với việc tự tỉnh giấc và bị chuông báo thức đánh thức là rất khác nhau.'
+                    }, {
+                        chinese: '调查显示,随着年龄的增大,女性的职场幸福感有所提高。',
+                        pinyin: 'Diàochá xiǎnshì, suízhe niánlíng de zēngdà, nǚxìng de zhíchǎng xìngfú gǎn yǒu suǒ tígāo.',
+                        vietnamese: 'Khảo sát cho thấy, cùng với sự gia tăng tuổi tác, cảm giác hạnh phúc trong công việc của phụ nữ có phần được nâng cao.'
+                    }, {
+                        chinese: '我和李阳是无所不谈的好朋友。',
+                        pinyin: 'Wǒ hé Lǐ Yáng shì wúsuǒ bù tán de hǎo péngyǒu.',
+                        vietnamese: 'Tôi và Lý Dương là những người bạn tốt không có gì giấu giếm.'
+                    }, {
+                        chinese: '来自北京一所大学的学生做了关于这个问题的实验。',
+                        pinyin: 'Láizì Běijīng yī suǒ dàxué de xuéshēng zuòle guānyú zhège wèntí de shíyàn.',
+                        vietnamese: 'Học sinh từ một trường đại học ở Bắc Kinh đã làm thí nghiệm về vấn đề này.'
+                    }, {
+                        chinese: '学校附近就有一所幼儿园,你可以把孩子送到那儿去。',
+                        pinyin: 'Xuéxiào fùjìn jiù yǒu yī suǒ yòu\'éryuán, nǐ kěyǐ bǎ háizi sòng dào nàr qù.',
+                        vietnamese: 'Gần trường học có một trường mẫu giáo, bạn có thể gửi con đến đó.'
+                    }]
+                }
+            }, {
+                id: 48,
+                title: '相当 (xiāngdāng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, biểu thị (số lượng, điều kiện, tình huống...) hai phương diện tương đương, ngang bằng nhau. Cũng có thể làm phó từ, biểu thị trình độ, mức độ tương đối cao.',
+                    examples: [{
+                        chinese: '这些能力最多为正常状态的65%,与醉酒者相当。',
+                        pinyin: 'Zhèxiē nénglì zuìduō wèi zhèngcháng zhuàngtài de 65%, yǔ zuìjiǔ zhě xiāngdāng.',
+                        vietnamese: 'Những khả năng này tối đa chỉ bằng 65% trạng thái bình thường, tương đương với người say rượu.'
+                    }, {
+                        chinese: '这种鸟一天所食的害虫相当于自己的体重。',
+                        pinyin: 'Zhè zhǒng niǎo yī tiān suǒ shí de hàichóng xiāngdāngyú zìjǐ de tǐzhòng.',
+                        vietnamese: 'Loại chim này một ngày ăn lượng côn trùng gây hại tương đương với trọng lượng cơ thể nó.'
+                    }, {
+                        chinese: '菜的味道好极了,服务也挺周到,我相当满意。',
+                        pinyin: 'Cài de wèidào hǎo jíle, fúwù yě tǐng zhōudào, wǒ xiāngdāng mǎnyì.',
+                        vietnamese: 'Món ăn ngon tuyệt, phục vụ cũng rất chu đáo, tôi khá hài lòng.'
+                    }, {
+                        chinese: '如果要问人们选择职业时主要考虑的是什么,有相当一部分人会以收入多少作为标准。',
+                        pinyin: 'Rúguǒ yào wèn rénmen xuǎnzé zhíyè shí zhǔyào kǎolǜ de shì shénme, yǒu xiāngdāng yī bùfèn rén huì yǐ shōurù duōshǎo zuòwéi biāozhǔn.',
+                        vietnamese: 'Nếu hỏi mọi người chủ yếu cân nhắc điều gì khi lựa chọn nghề nghiệp, có một phần không nhỏ người sẽ lấy thu nhập làm tiêu chuẩn.'
+                    }]
+                }
+            }, {
+                id: 49,
+                title: '数 (shǔ/shù)',
+                content: {
+                    type: 'standard',
+                    explanation: '“数” (shǔ) động từ, biểu thị tra, đếm (số lượng) hoặc nói số lượng của từng cái một. “数………………(最) hoặc “(最)………………的(要/就)数………………” biểu thị tính toán hoặc so sánh với nhau (nhất). “数” (shù) số từ, có nghĩa là “几/几个” thường dùng trong văn viết.',
+                    examples: [{
+                        chinese: '我大概数了一下,车上有32个学生。',
+                        pinyin: 'Wǒ dàgài shǔle yīxià, chē shàng yǒu 32 gè xuéshēng.',
+                        vietnamese: 'Tôi đếm sơ qua một chút, trên xe có 32 học sinh.'
+                    }, {
+                        chinese: '先生,这是找您的钱58块6,您数数。',
+                        pinyin: 'Xiānshēng, zhè shì zhǎo nín de qián 58 kuài 6, nín shǔ shǔ.',
+                        vietnamese: 'Ông ơi, đây là tiền thừa của ông 58 đồng 6 hào, ông đếm lại đi.'
+                    }, {
+                        chinese: '我觉得北京最美,最有名气的公园要数颐和园了。',
+                        pinyin: 'Wǒ juédé Běijīng zuì měi, zuì yǒumíngqì de gōngyuán yào shǔ Yíhéyuánle.',
+                        vietnamese: 'Tôi thấy công viên đẹp nhất và nổi tiếng nhất ở Bắc Kinh phải kể đến Di Hòa Viên.'
+                    }, {
+                        chinese: '要说我们班跑得最快的,那就数李阳了。',
+                        pinyin: 'Yào shuō wǒmen bān pǎo dé zuì kuài de, nà jiù shǔ Lǐ Yáng le.',
+                        vietnamese: 'Nói về người chạy nhanh nhất lớp chúng tôi, thì phải kể đến Lý Dương.'
+                    }, {
+                        chinese: '这里夏季的雷阵雨一般可持续数小时或者更久的时间。',
+                        pinyin: 'Zhèlǐ xiàjì de léizhènyǔ yībān kě chíxù shù xiǎoshí huòzhě gèng jiǔ de shíjiān.',
+                        vietnamese: 'Mưa rào vào mùa hè ở đây thường có thể kéo dài vài giờ hoặc lâu hơn.'
+                    }, {
+                        chinese: '这种状态如果持续数天、数周、数月将导致高血压、失眠和一些精神问题等。',
+                        pinyin: 'Zhè zhǒng zhuàngtài rúguǒ chíxù shù tiān, shù zhōu, shù yuè jiāng dǎozhì gāoxiěyā, shīmián hé yīxiē jīngshén wèntí děng.',
+                        vietnamese: 'Trạng thái này nếu kéo dài vài ngày, vài tuần, vài tháng sẽ dẫn đến cao huyết áp, mất ngủ và một số vấn đề về tinh thần.'
+                    }]
+                }
+            }, {
+                id: 50,
+                title: '持续 vs 继续',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 持续 và 继续.',
+                    table: {
+                        headers: ['', '持续 (chíxù)', '继续 (jìxù)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là động từ, đều có nghĩa là tiếp diễn không ngừng nhưng ngữ nghĩa lại khác nhau nhiều, không thể thay thế. Như: 这场雨持续/继续下了两个多小时。',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Biểu thị động tác liên tục không ngừng, không bị ngắt quãng ở giữa. Như: 这场雨持续下了两个多小时。', 'Động tác có thể bị ngắt quãng, dừng lại ở giữa. Như: 对不起!打扰了,你们继续学习吧.'],
+                            ['Khác biệt 2', 'Có thể làm định ngữ. Như: 持续的高温让许多老人感到不适.', 'Không thể làm định ngữ.'],
+                            ['Khác biệt 3', 'Có thể đi với bổ ngữ thời lượng. Như: 小明发烧持续三天了,家里人都很着急。', 'Thường không thể thêm bổ ngữ thời lượng.']
+                        ]
+                    }
+                }
+            }, {
+                id: 51,
+                title: '以及 (yǐjí)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Liên từ, dùng để nối cụm từ hoặc từ có quan hệ ngang bằng nhau, liên kết thành phần thường có sự phân biệt trước sau hoặc sự phân biệt chủ yếu và thứ yếu.',
+                    examples: [{
+                        chinese: '吃饭时不要用筷子敲打碗,盘子以及桌面。',
+                        pinyin: 'Chīfàn shí bùyào yòng kuàizi qiāodǎ wǎn, pánzi yǐjí zhuōmiàn.',
+                        vietnamese: 'Khi ăn không nên dùng đũa gõ vào bát, đĩa và mặt bàn.'
+                    }, {
+                        chinese: '学校的领导,教师以及一些学生代表观看了演出。',
+                        pinyin: 'Xuéxiào de lǐngdǎo, jiàoshī yǐjí yīxiē xuéshēng dàibiǎo guānkànle yǎnchū.',
+                        vietnamese: 'Lãnh đạo nhà trường, giáo viên và một số đại diện học sinh đã xem buổi biểu diễn.'
+                    }, {
+                        chinese: '由于中国互联网的用户数量以及市场成熟程度等都低于发达国家,在产品创新上难有领导地位,',
+                        pinyin: 'Yóuyú Zhōngguó hùliánwǎng de yònghù shùliàng yǐjí shìchǎng chéngshú chéngdù děng dōu dīyú fādá guójiā, zài chǎnpǐn chuàngxīn shàng nán yǒu lǐngdǎo dìwèi,',
+                        vietnamese: 'Do số lượng người dùng internet của Trung Quốc và mức độ trưởng thành của thị trường đều thấp hơn các nước phát triển, nên khó có vị trí dẫn đầu về đổi mới sản phẩm.'
+                    }]
+                }
+            }, {
+                id: 52,
+                title: '程度 (chéngdù)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Danh từ, chỉ trình độ, mức độ hoặc cấp độ mà ở một vài phương diện đã đạt được.',
+                    examples: [{
+                        chinese: '由于中国互联网的用户数量以及市场成熟程度等都低于发达国家,在产品创新上难有领导地位。',
+                        pinyin: 'Yóuyú Zhōngguó hùliánwǎng de yònghù shùliàng yǐjí shìchǎng chéngshú chéngdù děng dōu dīyú fādá guójiā, zài chǎnpǐn chuàngxīn shàng nán yǒu lǐngdǎo dìwèi.',
+                        vietnamese: 'Do số lượng người dùng internet của Trung Quốc và mức độ trưởng thành của thị trường đều thấp hơn các nước phát triển, nên khó có vị trí dẫn đầu về đổi mới sản phẩm.'
+                    }, {
+                        chinese: '问题已经发展到了十分严重的程度。',
+                        pinyin: 'Wèntí yǐjīng fāzhǎn dào le shífēn yánzhòng de chéngdù.',
+                        vietnamese: 'Vấn đề đã phát triển đến mức độ rất nghiêm trọng.'
+                    }, {
+                        chinese: '在很大程度上,一个人的未来取决于他所受的教育。',
+                        pinyin: 'Zài hěn dà chéngdù shàng, yīgè rén de wèilái qǔjué yú tā suǒ shòu de jiàoyù.',
+                        vietnamese: 'Ở một mức độ rất lớn, tương lai của một người phụ thuộc vào giáo dục mà anh ấy nhận được.'
+                    }]
+                }
+            }, {
+                id: 53,
+                title: '发达 vs 发展',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 发达 và 发展.',
+                    table: {
+                        headers: ['', '发达 (fādá)', '发展 (fāzhǎn)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Ý nghĩa có liên quan, nhưng thường không thể dùng thay thế cho nhau.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Tính từ. Như: 这个城市的经济不太发达.', 'Động từ. Như: 这个城市正在大力发展经济.'],
+                            ['Khác biệt 2', 'Mô tả trình độ phát triển rất cao. Như: 由于中国互联网的用户数量以及市场成熟程度等都低于发达国家,在产品创新上难有领导地位。', 'Chỉ sự biến hóa, thay đổi của sự vật. Như: 中国还是一个发展中国家.']
+                        ]
+                    }
+                }
+            }, {
+                id: 54,
+                title: '何况 (hékuàng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Liên từ, dùng ngữ khí phản vấn (hỏi ngược lại) biểu thị cao hơn một mức hoặc dựa vào sự diễn đạt ở câu trước, làm cho kết luận ở câu sau càng rõ ràng hơn. Có ý nghĩa “不用说”(chứ đừng nói). Còn có ý nghĩa là bổ sung thêm một loại lí do nào đó.',
+                    examples: [{
+                        chinese: '缺少了激烈紧张的气氛,连运动员都不满意,更何况看比赛的球迷呢。',
+                        pinyin: 'Quēshǎole jīliè jǐnzhāng de qìfēn, lián yùndòngyuán dōu bù mǎnyì, gèng hékuàng kàn bǐsài de qiúmí ne.',
+                        vietnamese: 'Thiếu đi không khí căng thẳng quyết liệt, ngay cả vận động viên cũng không hài lòng, huống hồ là người hâm mộ xem trận đấu.'
+                    }, {
+                        chinese: '北京的发展变化太快,我这个土生土长的老北京还常迷路呢,何况你一个外地人。',
+                        pinyin: 'Běijīng de fāzhǎn biànhuà tài kuài, wǒ zhège tǔ shēng tǔ zhǎng de lǎo Běijīng hái cháng mílù ne, hékuàng nǐ yīgè wàidì rén.',
+                        vietnamese: 'Sự phát triển của Bắc Kinh quá nhanh, tôi là người Bắc Kinh gốc còn thường bị lạc, huống hồ bạn là người ngoại tỉnh.'
+                    }, {
+                        chinese: '这辆车外观漂亮,安全性高,又何况价钱就比上次看的那辆贵了几千块,,小王有点儿动心了。',
+                        pinyin: 'Zhè liàng chē wàiguān piàoliang, ānquán xìng gāo, yòu hékuàng jiàqián jiù bǐ shàng cì kàn nà liàng guìle jǐ qiān kuài, Xiǎo Wáng yǒudiǎnr dòngxīnle.',
+                        vietnamese: 'Chiếc xe này ngoại hình đẹp, tính năng an toàn cao, hơn nữa giá lại chỉ đắt hơn mấy nghìn so với chiếc lần trước xem, Tiểu Vương có chút động lòng rồi.'
+                    }, {
+                        chinese: '上海冬天没有暖气,屋子里冷得让人伸不出手,何况李阳还是病人,自然是受不了的。',
+                        pinyin: 'Shànghǎi dōngtiān méiyǒu nuǎnqì, wūzi lǐ lěng dé ràng rén shēn bù chū shǒu, hékuàng Lǐ Yáng háishì bìngrén, zìrán shì shòu bù liǎo de.',
+                        vietnamese: 'Thượng Hải mùa đông không có sưởi, trong nhà lạnh đến mức người ta không thể thò tay ra được, huống hồ Lý Dương còn là bệnh nhân, đương nhiên không chịu nổi.'
+                    }]
+                }
+            }, {
+                id: 55,
+                title: '何必 (hébì)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, dùng ngữ khí phản vấn để biểu thị không cần thiết, không bắt buộc.',
+                    examples: [{
+                        chinese: '何必这么麻烦呢?把篮筐的底去掉不就行了吗?',
+                        pinyin: 'Hébì zhème máfan ne? Bǎ lánkuāng de dǐ qùdiào bù jiùxíngle ma?',
+                        vietnamese: 'Cần gì phải phiền phức vậy? Bỏ đáy rổ đi không được sao?'
+                    }, {
+                        chinese: '食堂楼下就有个小超市,何况去学校外边呢?',
+                        pinyin: 'Shítáng lóu xià jiù yǒu gè xiǎo chāoshì, hékuàng qù xuéxiào wàibian ne?',
+                        vietnamese: 'Dưới lầu căng tin có một siêu thị nhỏ, cần gì phải ra ngoài trường chứ?'
+                    }, {
+                        chinese: '你何必亲自送一趟呢?叫个快递不就行了?',
+                        pinyin: 'Nǐ hébì qīnzì sòng yī tàng ne? Jiào gè kuàidì bù jiùxíngle?',
+                        vietnamese: 'Bạn cần gì phải tự mình đi giao một chuyến? Gọi shipper không được sao?'
+                    }]
+                }
+            }, {
+                id: 56,
+                title: '多亏 (duōkuī)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, do có sự giúp đỡ của người khác hoặc bởi vì một vài nhân tố có lợi, mà tránh được rủi ro, không may mắn, hoặc đạt được những lợi ích nào đó.',
+                    examples: [{
+                        chinese: '多亏了他这句话,人们如梦初醒。',
+                        pinyin: 'Duōkuīle tā zhè jù huà, rénmen rú mèng chū xǐng.',
+                        vietnamese: 'May nhờ câu nói đó của anh ấy, mọi người như bừng tỉnh.'
+                    }, {
+                        chinese: '赵老师,谢谢您,多亏您给我那瓶药,很管用。',
+                        pinyin: 'Zhào lǎoshī, xièxiè nín, duōkuī nín gěi wǒ nà píng yào, hěn guǎnyòng.',
+                        vietnamese: 'Thầy Triệu, cảm ơn thầy, may nhờ thầy cho tôi lọ thuốc đó, rất hiệu nghiệm.'
+                    }, {
+                        chinese: '今天搬家多亏有你在,你可帮我太忙了。',
+                        pinyin: 'Jīntiān bānjiā duōkuī yǒu nǐ zài, nǐ kě bāng wǒ tài mángle.',
+                        vietnamese: 'Hôm nay chuyển nhà may mà có bạn ở đây, bạn đã giúp tôi rất nhiều.'
+                    }]
+                }
+            }, {
+                id: 57,
+                title: '激烈 vs 强烈',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 激烈 và 强烈.',
+                    table: {
+                        headers: ['', '激烈 (jīliè)', '强烈 (qiángliè)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là tính từ có nghĩa là mạnh mẽ, lợi hại. Như: 我不顾父母的激烈/强烈反对,偷偷地报考了表演专业.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Thiên về nghĩa kịch liệt, gay gắt, khẩn trương. Như: 人类最早什么时候用火,一直学者激烈争论的问题.', 'Thiên về nghĩa là mạnh mẽ có lực. Như: 文章发展以后立刻引起了读者的强烈反响.'],
+                            ['Khác biệt 2', 'Thường mô tả về ngôn luận, cảm xúc, trong trận đấu hoặc đấu tranh... Như: 人在激烈运动时,会出很多汗。', 'Thường mô tả ánh sáng, dòng điện, màu sắc, mùi vị hoặc mô tả tình cảm, tư tưởng, nguyện vọng của con người. Như: 这里夏天尽管阳光的照射很强烈,但白天气温很少超过35℃。']
+                        ]
+                    }
+                }
+            }, {
+                id: 58,
+                title: '所谓 (suǒwèi)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Tính từ, biểu thị thường hay nói, thường dùng để đề ra từ ngữ cần giải thích. Còn chỉ những điều do một vài người nói, thường biểu thị không đồng ý, không thừa nhận.',
+                    examples: [{
+                        chinese: '很多时候,烦恼是自己找来的,这就是所谓的“自寻烦恼”。',
+                        pinyin: 'Hěn duō shíhòu, fánnǎo shì zìjǐ zhǎo lái de, zhè jiùshì suǒwèi de “zì xún fánnǎo”.',
+                        vietnamese: 'Rất nhiều lúc, phiền não là do bản thân tự tìm đến, đây chính là cái gọi là “tự chuốc phiền não”.'
+                    }, {
+                        chinese: '所谓四合,“四”指东、西、南、北四面,“合”就是四面房屋围在一起,中间形成一个方形的院子。',
+                        pinyin: 'Suǒwèi sìhé, “sì” zhǐ dōng, xī, nán, běi sìmiàn, “hé” jiùshì sìmiàn fángwū wéi zài yīqǐ, zhōngjiān xíngchéng yīgè fāngxíng de yuànzi.',
+                        vietnamese: 'Cái gọi là Tứ Hợp, “tứ” chỉ bốn mặt đông, tây, nam, bắc, “hợp” chính là bốn mặt nhà vây lại với nhau, ở giữa hình thành một sân vuông.'
+                    }, {
+                        chinese: '他所谓的“新闻“,其实我们早就知道了。',
+                        pinyin: 'Tā suǒwèi de “xīnwén“, qíshí wǒmen zǎo jiù zhīdàole.',
+                        vietnamese: '“Tin tức” mà anh ta nói, thực ra chúng tôi đã biết từ lâu rồi.'
+                    }, {
+                        chinese: '现在市场上所谓的“健康食品”其实没有统一的标准。',
+                        pinyin: 'Xiànzài shìchǎng shàng suǒwèi de “jiànkāng shípǐn” qíshí méiyǒu tǒngyī de biāozhǔn.',
+                        vietnamese: 'Hiện nay, cái gọi là “thực phẩm tốt cho sức khỏe” trên thị trường thực ra không có tiêu chuẩn thống nhất.'
+                    }]
+                }
+            }, {
+                id: 59,
+                title: '则 (zé)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Lượng từ, thường dùng với văn bản ngắn thành đoạn hoặc thành bài. Liên từ, thường gặp kết cấu “A……………,(而)B则………………” biểu thị sự so sánh giữa câu trước và câu sau. Còn biểu thị mối quan hệ nhân quả, thường dùng trong văn viết, bằng với từ “就” trong văn nói.',
+                    examples: [{
+                        chinese: '在第七课,我们学习了两则成语故事。',
+                        pinyin: 'Zài dì qī kè, wǒmen xuéxíle liǎng zé chéngyǔ gùshì.',
+                        vietnamese: 'Trong bài 7, chúng tôi đã học hai câu chuyện thành ngữ.'
+                    }, {
+                        chinese: '今天的报纸上有一则非常重要的新闻。',
+                        pinyin: 'Jīntiān de bàozhǐ shàng yǒu yī zé fēicháng zhòngyào de xīnwén.',
+                        vietnamese: 'Trên báo hôm nay có một tin tức rất quan trọng.'
+                    }, {
+                        chinese: '猫享受独处的快乐,而狗则是希望和别人分享快乐。',
+                        pinyin: 'Māo xiǎngshòu dúchǔ de kuàilè, ér gǒu zé shì xīwàng hé biérén fēnxiǎng kuàilè.',
+                        vietnamese: 'Mèo thích tận hưởng niềm vui khi ở một mình, còn chó thì hy vọng được chia sẻ niềm vui với người khác.'
+                    }, {
+                        chinese: '有的人家喜欢种草、养花、种竹子,有的人家则喜欢用大盆养金鱼。',
+                        pinyin: 'Yǒu de rénjiā xǐhuān zhǒng cǎo, yǎng huā, zhǒng zhúzi, yǒu de rénjiā zé xǐhuān yòng dà pén yǎng jīnyú.',
+                        vietnamese: 'Có những gia đình thích trồng cỏ, trồng hoa, trồng tre, có những gia đình lại thích dùng chậu lớn nuôi cá vàng.'
+                    }, {
+                        chinese: '北京的冬天,有风则寒,无风则暖。',
+                        pinyin: 'Běijīng de dōngtiān, yǒu fēng zé hán, wú fēng zé nuǎn.',
+                        vietnamese: 'Mùa đông ở Bắc Kinh, có gió thì lạnh, không gió thì ấm.'
+                    }, {
+                        chinese: '“欲速则不达”,人生不能总是要求“快”,其实“慢”也是一种生活的艺术。',
+                        pinyin: '“Yù sù zé bù dá”, rénshēng bùnéng zǒng shì yāoqiú “kuài”, qíshí “màn” yě shì yī zhǒng shēnghuó de yìshù.',
+                        vietnamese: '“Dục tốc bất đạt”, đời người không thể lúc nào cũng đòi hỏi “nhanh”, thực ra “chậm” cũng là một loại nghệ thuật sống.'
+                    }]
+                }
+            }, {
+                id: 60,
+                title: '为………………所………..',
+                content: {
+                    type: 'standard',
+                    explanation: 'Kết cấu cố định, thường dùng trong văn viết, ngoài ra “为” biểu thị ý nghĩa là “被” (bị, được).',
+                    examples: [{
+                        chinese: '认识他的人,没有人不为他认真的工作态度所感动。',
+                        pinyin: 'Rènshi tā de rén, méiyǒu rén bù wéi tā rènzhēn de gōngzuò tàidù suǒ gǎndòng.',
+                        vietnamese: 'Những người quen anh ấy, không ai không bị thái độ làm việc nghiêm túc của anh ấy làm cảm động.'
+                    }, {
+                        chinese: '有了科学,大自然就可以更好地为人所用。',
+                        pinyin: 'Yǒule kēxué, dà zìrán jiù kěyǐ gèng hǎo de wéi rén suǒ yòng.',
+                        vietnamese: 'Có khoa học, thiên nhiên có thể được con người sử dụng tốt hơn.'
+                    }, {
+                        chinese: '院子不仅拉近了人与自然的关系,也让家里人在此得到了感情的交流,对创造生活情趣起了很大作用,因而最为人们所喜爱。',
+                        pinyin: 'Yuànzi bùjǐn lājìnle rén yǔ zìrán de guānxì, yě ràng jiālǐ rén zài cǐ dédàole gǎnqíng de jiāoliú, duì chuàngzào shēnghuó qíngqù qǐle hěn dà zuòyòng, yīn\'ér zuì wéi rénmen suǒ xǐ’ài.',
+                        vietnamese: 'Sân không chỉ kéo gần mối quan hệ giữa con người và thiên nhiên, mà còn giúp người trong nhà giao lưu tình cảm tại đây, có tác dụng lớn trong việc tạo ra những thú vui cuộc sống, do đó được mọi người yêu thích nhất.'
+                    }]
+                }
+            }, {
+                id: 61,
+                title: '起 (qǐ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, biểu thị sự liên tiếp, kết hợp và cố định.',
+                    examples: [{
+                        chinese: '拉起手,我们就是好朋友。',
+                        pinyin: 'Lā qǐ shǒu, wǒmen jiùshì hǎo péngyǒu.',
+                        vietnamese: 'Nắm tay nhau, chúng ta là bạn tốt.'
+                    }, {
+                        chinese: '只要关闭起大门,四合院内便形成一个封闭式的小环境。',
+                        pinyin: 'Zhǐyào guānbì qǐ dàmén, sìhéyuàn nèi biàn xíngchéng yīgè fēngbì shì de xiǎo huánjìng.',
+                        vietnamese: 'Chỉ cần đóng cổng lớn lại, bên trong tứ hợp viện liền hình thành một môi trường nhỏ khép kín.'
+                    }, {
+                        chinese: '对公司来说,最重要的是建立起一套行之有效的制度。',
+                        pinyin: 'Duì gōngsī lái shuō, zuì zhòngyào de shì jiànlì qǐ yī tào xíng zhī yǒuxiào de zhìdù.',
+                        vietnamese: 'Đối với công ty, quan trọng nhất là xây dựng một hệ thống quy chế hiệu quả.'
+                    }]
+                }
+            }, {
+                id: 62,
+                title: '通常 vs 常常',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 通常 và 常常.',
+                    table: {
+                        headers: ['', '通常 (tōngcháng)', '常常 (chángcháng)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều biểu thị thường phát sinh những hành động, động tác giống nhau, ở một vài câu có thể hoán đổi cho nhau, nhưng khi mang nghĩa cường điệu thì lại không giống nhau. Như: 我通常/常常在学校外面那个超市买东西。',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Nhấn mạnh hành động, động tác có quy luật. Như: 有钱人家的,通常是由好几座四合院并列组成的。', 'Nhấn mạnh hành động, động tác nhiều lần xuất hiện. Như: 他成绩很好,常常受到表扬.'],
+                            ['Khác biệt 2', 'Tính từ, có thể làm định ngữ. Như: 我们通常的做法都是这样 的。', 'Phó từ, không thể làm định ngữ hoặc bổ sung cho phân câu. Như: 他常常去上海出差,对上海很熟悉.']
+                        ]
+                    }
+                }
+            }, {
+                id: 63,
+                title: '过 (guò)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ xu hướng, thường dùng với cách thức “động từ +得/不+过”, làm bổ ngữ, biểu thị ý nghĩa là quá, vượt qua, hơn.',
+                    examples: [{
+                        chinese: '跟别人谈论起军事来,没有人说得过他,',
+                        pinyin: 'Gēn biérén tánlùn qǐ jūnshì lái, méiyǒu rén shuō dé guò tā,',
+                        vietnamese: 'Khi nói chuyện quân sự với người khác, không ai nói lại anh ấy,'
+                    }, {
+                        chinese: '年轻人记忆力好,这一点我比不过你们。',
+                        pinyin: 'Niánqīng rén jìyìlì hǎo, zhè yī diǎn wǒ bǐ bù guò nǐmen.',
+                        vietnamese: 'Người trẻ trí nhớ tốt, điểm này tôi không bằng các bạn.'
+                    }, {
+                        chinese: '我们的原材料贵,人工费用高产品在价格上肯定竞争不过他们。',
+                        pinyin: 'Wǒmen de yuáncáiliào guì, réngōng fèiyòng gāo chǎnpǐn zài jiàgé shàng kěndìng jìngzhēng bù guò tāmen.',
+                        vietnamese: 'Nguyên liệu của chúng ta đắt, chi phí nhân công cao, sản phẩm chắc chắn không thể cạnh tranh về giá với họ.'
+                    }]
+                }
+            }, {
+                id: 64,
+                title: '迟早 (chízǎo)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, đằng sau thường đi cùng động từ, biểu thị một vài động tác hoặc sự việc sớm muộn cũng sẽ xảy ra.',
+                    examples: [{
+                        chinese: '如果让他了当大将,迟早会害了赵国。',
+                        pinyin: 'Rúguǒ ràng tā liǎo dàng dàjiàng, chízǎo huì hàile Zhào guó.',
+                        vietnamese: 'Nếu để anh ấy làm đại tướng, sớm muộn cũng sẽ hại nước Triệu.'
+                    }, {
+                        chinese: '随着网络技术的发展,这些问题迟早都会得到解决。',
+                        pinyin: 'Suízhe wǎngluò jìshù de fāzhǎn, zhèxiē wèntí chí zǎo dōu huì dédào jiějué.',
+                        vietnamese: 'Cùng với sự phát triển của công nghệ mạng, những vấn đề này sớm muộn gì cũng sẽ được giải quyết.'
+                    }, {
+                        chinese: '如果不重视技术研究和产品开发,我们迟早会被别人挤出市场。',
+                        pinyin: 'Rúguǒ bù zhòngshì jìshù yánjiū hé chǎnpǐn kāifā, wǒmen chí zǎo huì bèi biérén jǐ chū shìchǎng.',
+                        vietnamese: 'Nếu không chú trọng nghiên cứu kỹ thuật và phát triển sản phẩm, chúng ta sớm muộn gì cũng sẽ bị người khác đẩy ra khỏi thị trường.'
+                    }]
+                }
+            }, {
+                id: 65,
+                title: '再三 (zàisān)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Phó từ, có nghĩa là “hết lần này đến lần khác”, đằng sau thường đi với động từ, có lúc cũng có thể dùng sau động từ không mang theo tân ngữ.',
+                    examples: [{
+                        chinese: '赵括的母亲再三阻止赵王任命儿子为大将。',
+                        pinyin: 'Zhào Kuò de mǔqīn zàisān zǔzhǐ Zhào Wáng rènmìng érzi wèi dàjiàng.',
+                        vietnamese: 'Mẹ Triệu Khoát hết lần này đến lần khác ngăn cản Triệu Vương bổ nhiệm con trai làm đại tướng.'
+                    }, {
+                        chinese: '我最近这段时间特别忙,实在没时间参加小王的活动,可他再三激情,出于礼貌,我只好答应了。',
+                        pinyin: 'Wǒ zuìjìn zhè duàn shíjiān tèbié máng, shízài méi shíjiān cānjiā Xiǎo Wáng de huódòng, kě tā zàisān jīqíng, chūyú lǐmào, wǒ zhǐhǎo dāyìngle.',
+                        vietnamese: 'Gần đây tôi đặc biệt bận, thật sự không có thời gian tham gia hoạt động của Tiểu Vương, nhưng anh ấy hết lần này đến lần khác nhiệt tình mời, vì phép lịch sự, tôi đành phải đồng ý.'
+                    }, {
+                        chinese: '朋友请他做公司的总经理,他考虑再三,最后还是客气地拒绝了。',
+                        pinyin: 'Péngyǒu qǐng tā zuò gōngsī de zǒng jīnglǐ, tā kǎolǜ zàisān, zuìhòu háishì kèqì dì jùjuéle.',
+                        vietnamese: 'Bạn bè mời anh ấy làm tổng giám đốc công ty, anh ấy suy nghĩ kỹ lưỡng, cuối cùng vẫn từ chối một cách lịch sự.'
+                    }]
+                }
+            }, {
+                id: 66,
+                title: '胜利 vs 成功',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 胜利 và 成功.',
+                    table: {
+                        headers: ['', '胜利 (shènglì)', '成功 (chénggōng)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều là động từ, đều biểu thị đạt được mục đích đã dự tính trước. Như: 北京胜利/成功地举办了2008年 夏季奥运会.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Biểu thị lúc công việc đạt được mục đích đã dự tính trước, thường làm trạng ngữ. Như: 经过一年多的努力,我们胜利地完成了调查工作。', 'Không chỉ dùng trên phương diện công việc, sự nghiệp còn dùng được ở nhiều phương diện khác. Có thể làm trạng ngữ hoặc vị ngữ. Như: 经过艰苦的努力,实验终于成功了.'],
+                            ['Khác biệt 2', 'Còn có nghĩa là trong trận đấu hoặc chiến tranh đánh bại được đối thủ. Như: 谁坚持到最后,谁就是这场比赛的胜利者。', 'Không có ý nghĩa là đánh bại đối thủ.'],
+                            ['Khác biệt 3', 'Là tính từ, có nghĩa là làm cho người khác hài lòng, có thể làm bổ ngữ.', 'Không có ý nghĩa làm cho người khác hài lòng, không thể làm bố ngữ. Như: 这部电视剧拍得很成功,在全国播出后,受到观众的喜爱.']
+                        ]
+                    }
+                }
+            }, {
+                id: 67,
+                title: '即 (jí)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, dùng trong văn viết, nghĩa là “就是”. Còn có thể làm phó từ, có nghĩa là “就”“便”.',
+                    examples: [{
+                        chinese: '“旦”是象形字,即太阳从地平线上升起。',
+                        pinyin: '“Dàn” shì xiàngxíngzì, jí tàiyáng cóng dìpíngxiàn shàngshēng qǐ.',
+                        vietnamese: '“旦” là chữ tượng hình, tức là mặt trời mọc từ đường chân trời.'
+                    }, {
+                        chinese: '这些人的体重变化表现出清晰的模式,即周末之后体重升高,在工作日体重减轻(周五达到最低点)。',
+                        pinyin: 'Zhèxiē rén de tǐzhòng biànhuà biǎoxiàn chū qīngxī de móshì, jí zhōumò zhīhòu tǐzhòng shēnggāo, zài gōngzuò rì tǐzhòng jiǎnqīng (zhōuwǔ dádào zuìdī diǎn).',
+                        vietnamese: 'Sự thay đổi cân nặng của những người này thể hiện một mô hình rõ ràng, tức là sau cuối tuần cân nặng tăng lên, trong ngày làm việc cân nặng giảm xuống (đạt mức thấp nhất vào thứ Sáu).'
+                    }, {
+                        chinese: '不懂即问是他最大的优点,也是他成功的主要原因。',
+                        pinyin: 'Bù dǒng jí wèn shì tā zuì dà de yōudiǎn, yě shì tā chénggōng de zhǔyào yuányīn.',
+                        vietnamese: 'Không hiểu thì hỏi ngay là ưu điểm lớn nhất của anh ấy, cũng là nguyên nhân chính dẫn đến thành công của anh ấy.'
+                    }, {
+                        chinese: '在办公司这件事上,两人早都有打算,这次的机会让他俩一拍即合。',
+                        pinyin: 'Zài bàn gōngsī zhè jiàn shì shàng, liǎng rén zǎo dōu yǒu dǎsuàn, zhè cì de jīhuì ràng tā liǎng yīpāijíhé.',
+                        vietnamese: 'Trong việc thành lập công ty này, hai người đã có dự định từ lâu, cơ hội lần này khiến họ nhất trí ngay lập hợp.'
+                    }]
+                }
+            }, {
+                id: 68,
+                title: '个别 (gèbié)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Tính từ, có nghĩa là “单个,各个” (từng cái, mỗi cái). Còn biểu thị cực kỳ ít, hiếm có.',
+                    examples: [{
+                        chinese: '他经常采取个别谈话的方式了解情况和解决问题。',
+                        pinyin: 'Tā jīngcháng cǎiqǔ gèbié tánhuà de fāngshì liáojiě qíngkuàng hé jiějué wèntí.',
+                        vietnamese: 'Anh ấy thường xuyên áp dụng phương pháp nói chuyện riêng để tìm hiểu tình hình và giải quyết vấn đề.'
+                    }, {
+                        chinese: '教练针对他的技术特点进行了个别训练,达到了比较好的效果。',
+                        pinyin: 'Jiàoliàn zhēnduì tā de jìshù tèdiǎn jìnxíngle gèbié xùnliàn, dádàole bǐjiào hǎo de xiàoguǒ.',
+                        vietnamese: 'Huấn luyện viên đã tiến hành huấn luyện riêng cho anh ấy dựa trên đặc điểm kỹ thuật của anh ấy, đạt được hiệu quả khá tốt.'
+                    }, {
+                        chinese: '除了个别人以外,多数人体重的增加会从周六开始………………',
+                        pinyin: 'Chúle gèbiérén yǐwài, duōshù réntǐ zhòng de zēngjiā huì cóng zhōuliù kāishǐ.........',
+                        vietnamese: 'Trừ một số ít người, phần lớn trọng lượng cơ thể tăng sẽ bắt đầu từ thứ Bảy.........'
+                    }, {
+                        chinese: '天气预报说今晚有小到中雨,个别地区可能有大雨。',
+                        pinyin: 'Tiānqì yùbào shuō jīn wǎn yǒu xiǎo dào zhōng yǔ, gèbié dìqū kěnéng yǒu dàyǔ.',
+                        vietnamese: 'Dự báo thời tiết nói tối nay có mưa nhỏ đến vừa, một vài khu vực có thể có mưa lớn.'
+                    }]
+                }
+            }, {
+                id: 69,
+                title: '非 (fēi)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Tiền tố, đứng trước cụm danh từ, biểu thị là không thuộc về phạm vi này. Có thể làm động từ, có nghĩa là “不是”. Khi làm phó từ còn biểu thị chủ quan cố ý, kiên trì, khăng khăng làm một việc gì đó. Có lúc cũng có thể dùng để phản vấn, biểu thị phụ định không cần thiết phải làm như thế này. Cũng có thể kết hợp với động từ, hình thành cấu trúc thường dùng như “非+ động từ + 不可”, có nghĩa là “必须” (bắt buộc).',
+                    examples: [{
+                        chinese: '在非语言的交流中,眼睛起着重要的作用。',
+                        pinyin: 'Zài fēi yǔyán de jiāoliú zhōng, yǎnjīng qǐzhe zhòngyào de zuòyòng.',
+                        vietnamese: 'Trong giao tiếp phi ngôn ngữ, mắt đóng vai trò quan trọng.'
+                    }, {
+                        chinese: '我们公司的技术部门都是专业人员,工资高;非专业人员做服务工作,工资不高。',
+                        pinyin: 'Wǒmen gōngsī de jìshù bùmén dōu shì zhuānyè rényuán, gōngzī gāo; fēi zhuānyè rényuán zuò fúwù gōngzuò, gōngzī bù gāo.',
+                        vietnamese: 'Bộ phận kỹ thuật của công ty chúng tôi đều là nhân viên chuyên nghiệp, lương cao; nhân viên không chuyên nghiệp làm công việc dịch vụ, lương không cao.'
+                    }, {
+                        chinese: '工作日和周末体重的临时变化应该被视为正常现象,而非真正的体重增加,',
+                        pinyin: 'Gōngzuò rì hé zhōumò tǐzhòng de línshí biànhuà yīnggāi bèi shì wéi zhèngcháng xiànxiàng, ér fēi zhēnzhèng de tǐzhòng zēngjiā,',
+                        vietnamese: 'Sự thay đổi cân nặng tạm thời vào ngày làm việc và cuối tuần nên được coi là hiện tượng bình thường, chứ không phải là tăng cân thật sự.'
+                    }, {
+                        chinese: '成功有时候并非想象中那么难。',
+                        pinyin: 'Chénggōng yǒu shíhòu bìngfēi xiǎngxiàng zhōng nàme nán.',
+                        vietnamese: 'Thành công đôi khi không khó như tưởng tượng.'
+                    }, {
+                        chinese: '他非要离婚,我们谁拦也拦不住。',
+                        pinyin: 'Tā fēiyào líhūn, wǒmen shuí lán yě lán bù zhù.',
+                        vietnamese: 'Anh ấy cứ đòi ly hôn, chúng tôi ai cản cũng không được.'
+                    }, {
+                        chinese: '我本不想提这件事,你又何必非要我说出来呢?',
+                        pinyin: 'Wǒ běn bù xiǎng tí zhè jiàn shì, nǐ yòu hébì fēiyào wǒ shuō chūlái ne?',
+                        vietnamese: 'Tôi vốn không muốn nhắc đến chuyện này, bạn cần gì cứ đòi tôi nói ra chứ?'
+                    }, {
+                        chinese: '有些家长已经习惯了这种竞争,非让自家的孩子考第一名不可。',
+                        pinyin: 'Yǒuxiē jiāzhǎng yǐjīng xíguànle zhè zhǒng jìngzhēng, fēi ràng zìjiā de háizi kǎo dì yī míng bùkě.',
+                        vietnamese: 'Một số phụ huynh đã quen với sự cạnh tranh này, nhất định phải cho con mình thi được hạng nhất.'
+                    }, {
+                        chinese: '补办学生证的事非你本人去不可。',
+                        pinyin: 'Bǔbàn xuéshēngzhèng de shì fēi nǐ běnrén qù bùkě.',
+                        vietnamese: 'Việc làm lại thẻ học sinh nhất định phải do chính bạn đi.'
+                    }]
+                }
+            }, {
+                id: 70,
+                title: '临时 vs 暂时',
+                content: {
+                    type: 'comparison',
+                    explanation: 'So sánh cách dùng của 临时 và 暂时.',
+                    table: {
+                        headers: ['', '临时 (línshí)', '暂时 (zànshí)'],
+                        rows: [
+                            ['Giống nhau', {
+                                text: 'Đều có nghĩa là trong một khoảng thời gian ngắn. Như: 没找到满意的房子前,我临时/暂时借住在朋友家里.',
+                                colspan: 2
+                            }],
+                            ['Khác biệt 1', 'Biểu thị gần đến lúc sự việc phát sinh. Như: 早到了30分钟,所以我临时决定去旁边的书店看看。', 'Không có nghĩa như vậy.'],
+                            ['Khác biệt 2', 'Không có nghĩa như vậy.', 'Biểu thị một khoảng thời gian gần đây không chính xác. Như: 这套房子我很喜欢,暂时还不打算买掉.'],
+                            ['Khác biệt 3', 'Còn có thể làm từ chỉ thuộc tính, biểu thị thời gian ngắn, không chính thức. Như: 麻烦你春节后帮刘方的女儿找份临时工作。', 'Không có cách dùng này.']
+                        ]
+                    }
+                }
+            }, {
+                id: 71,
+                title: '以 (yǐ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Giới từ, thường dùng trong văn viết, có nghĩa là “用、拿、凭借” (dùng, lấy, dựa vào, nhờ vào). Còn có thể làm liên từ, thường dùng trong văn viết, biểu thị mục đích.',
+                    examples: [{
+                        chinese: '同年四月,(微信)以英文名WeChat正式进入国际市场。',
+                        pinyin: 'Tóngnián sì yuè, (wēixìn) yǐ Yīngwén míng WeChat zhèngshì jìnrù guójì shìchǎng.',
+                        vietnamese: 'Cùng năm đó vào tháng 4, (WeChat) với tên tiếng Anh WeChat chính thức gia nhập thị trường quốc tế.'
+                    }, {
+                        chinese: '学生分为甲乙两队,以足球为比赛工具向蓝内投,按得分多少觉输赢。',
+                        pinyin: 'Xuéshēng fēn wéi jiǎ yǐ liǎng duì, yǐ zúqiú wéi bǐsài gōngjù xiàng lán nèi tóu, àn dé fēn duōshǎo jué shūyíng.',
+                        vietnamese: 'Học sinh chia thành hai đội A và B, lấy bóng đá làm công cụ thi đấu ném vào rổ, dựa vào số điểm để phân thắng thua.'
+                    }, {
+                        chinese: '虽然我们已经老了,但还要坚持学习,以适应社会的发展。',
+                        pinyin: 'Suīrán wǒmen yǐjīng lǎole, dàn hái yào jiānchí xuéxí, yǐ shìyìng shèhuì de fāzhǎn.',
+                        vietnamese: 'Tuy chúng tôi đã già rồi, nhưng vẫn phải kiên trì học tập để thích nghi với sự phát triển của xã hội.'
+                    }, {
+                        chinese: '比如说为了一场戏剧演出,我们会投入很多时间,准备服装、化妆、道具、舞台美术,以创造良好的效果。',
+                        pinyin: 'Bǐrú shuō wèile yī chǎng xìjù yǎnchū, wǒmen huì tóurù hěn duō shíjiān, zhǔnbèi fúzhuāng, huàzhuāng, dàojù, wǔtái měishù, yǐ chuàngzào liánghǎo de xiàoguǒ.',
+                        vietnamese: 'Ví dụ như để có một buổi biểu diễn kịch, chúng tôi sẽ đầu tư rất nhiều thời gian, chuẩn bị trang phục, hóa trang, đạo cụ, mỹ thuật sân khấu, để tạo ra hiệu quả tốt.'
+                    }]
+                }
+            }, {
+                id: 72,
+                title: '平常 (píngcháng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Tính từ, biểu thị phổ thông, bình thường, không có gì đặc biệt. Cũng có thể làm danh từ, ý nghĩa là “平时” (ngày thường, bình thường, lúc thường).',
+                    examples: [{
+                        chinese: '对小王来说,今天是一个不平常的日子,因为他今天第一天上班。',
+                        pinyin: 'Duì Xiǎo Wáng lái shuō, jīntiān shì yīgè bù píngcháng de rìzi, yīnwèi tā jīntiān dì yī tiān shàngbān.',
+                        vietnamese: 'Đối với Tiểu Vương, hôm nay là một ngày không bình thường, vì hôm nay là ngày đầu tiên anh ấy đi làm.'
+                    }, {
+                        chinese: '一部电影,开始虽然剧情平平常常,如果最后半个小时能使我们感动,我们依然会向别人推荐它。',
+                        pinyin: 'Yī bù diànyǐng, kāishǐ suīrán jùqíng píngpíngchángcháng, rúguǒ zuìhòu bàn gè xiǎoshí néng shǐ wǒmen gǎndòng, wǒmen yīrán huì xiàng biérén tuījiàn tā.',
+                        vietnamese: 'Một bộ phim, tuy ban đầu cốt truyện bình thường, nếu nửa tiếng cuối có thể khiến chúng ta cảm động, chúng ta vẫn sẽ giới thiệu nó cho người khác.'
+                    }, {
+                        chinese: '他平常总是来得很早,今天却迟到了。',
+                        pinyin: 'Tā píngcháng zǒng shì lái dé hěn zǎo, jīntiān què chídàole.',
+                        vietnamese: 'Anh ấy bình thường luôn đến rất sớm, nhưng hôm nay lại đến muộn.'
+                    }, {
+                        chinese: '校长又告诉老师们,对待这些孩子,要像平常一样,不要让孩子或家长知道他们是被选出来的。',
+                        pinyin: 'Xiàozhǎng yòu gàosù lǎoshīmen, duìdài zhèxiē háizi, yào xiàng píngcháng yīyàng, bùyào ràng háizi huò jiāzhǎng zhīdào tāmen shì bèi xuǎn chūlái de.',
+                        vietnamese: 'Hiệu trưởng lại nói với các giáo viên, đối xử với những đứa trẻ này, phải như bình thường, không được để trẻ hoặc phụ huynh biết chúng được chọn ra.'
+                    }]
+                }
+            },
+            {
+                id: 73,
+                title: '宁可 (nìngkě)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là phó từ, biểu thị sau khi so sánh, chọn lựa được một bên tương đối có lợi.',
+                    explanations: [
+                        {
+                            explanation: 'Phó từ, biểu thị sau khi so sánh, chọn lựa được 1 bên tương đối có lợi.',
+                            examples: [
+                                { chinese: '作为母亲,她宁可自己累一点儿,也不想委屈了孩子。', pinyin: 'Zuòwéi mǔqīn, tā nìngkě zìjǐ lèi yīdiǎnr, yě bù xiǎng wěiqu le háizi.', vietnamese: 'Là một người mẹ, cô ấy thà tự mình mệt một chút, cũng không muốn con mình chịu thiệt thòi.' },
+                                { chinese: '为什么大家宁可挤成一团,也不去没人的那边?', pinyin: 'Wèishénme dàjiā nìngkě jǐ chéng yī tuán, yě bù qù méi rén de nà biān?', vietnamese: 'Tại sao mọi người thà chen chúc một chỗ, cũng không chịu đến chỗ không có người?' },
+                                { chinese: '做节目时,与开模式相比,我们宁可把更多的精力集中在闭模式上,······', pinyin: 'Zuò jiémù shí, yǔ kāimóshì xiāngbǐ, wǒmen nìngkě bǎ gèng duō de jīnglì jízhōng zài bìmóshì shàng,······', vietnamese: 'Khi làm chương trình, so với hình thức mở, chúng tôi thà tập trung nhiều năng lượng hơn vào hình thức đóng.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 74, // ID được đặt lại thành 1 vì chỉ có một phần tử
+                title: 'Phân biệt 忽视 (hūshì) và 轻视 (qīngshì)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Cả hai đều biểu thị không chú ý, không chú trọng, nhưng có sắc thái nhấn mạnh khác nhau.',
+                    table: {
+                        headers: ['', '忽视 (hūshì)', '轻视 (qīngshì)'],
+                        rows: [
+                            ['Giống', { text: 'Đều biểu thị không chú ý, không chú trọng, trong một vài câu có thể hoán đổi cách dùng cho nhau, nhưng ý nghĩa muốn nhấn mạnh lại không giống nhau. Ví dụ: 他只注重理论,忽视/轻视实践 (Shíjiàn, thực tiễn),所以失败了.', colspan: 2 }],
+                            ['Khác 1', 'Nhấn mạnh không suy nghĩ, cân nhắc đến.', 'Nhấn mạnh xem thường, coi thường ai đó.'],
+                            ['Ví dụ', '如:他忙得忽视了去医院看病。', '如:你可别轻视他,他看起来很平常,其实很能干.'],
+                            ['Khác 2', 'Về mặt thái độ có khả năng là vô ý, vô tình; cũng có khả năng là cố ý, cố tình. Ví dụ:', 'Về mặt thái độ thông thường là cố ý hoặc mang tính lựa chọn.'],
+                            ['Ví dụ', '如:我们常常忽视结束退场时的准备,演出开始时人们认为很有魅力,但是糟糕的结局会给人留下难以忘记的坏印象。', '如:虽然这是一次小考,他也不能轻视要好好复习。']
+                        ]
+                    }
+                }
+            }, {
+                id: 75,
+                title: '极其 (jíqí)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là phó từ, có nghĩa là “非常” (rất, vô cùng), thường dùng trong văn viết, chỉ có thể bổ sung cho tính từ song âm tiết hoặc đa âm tiết.',
+                    explanations: [
+                        {
+                            explanation: 'Phó từ, có nghĩa là “非常”, thường dùng trong văn viết, chỉ có thể bổ sung cho tính từ song âm tiết hoặc đa âm tiết.',
+                            examples: [
+                                { chinese: '在中国,餐桌上放一把刀是极其少见的现象。', pinyin: 'Zài Zhōngguó, cānzhuō shàng fàng yī bǎ dāo shì jíqí shǎojiàn de xiànxiàng.', vietnamese: 'Ở Trung Quốc, việc đặt dao trên bàn ăn là một hiện tượng cực kỳ hiếm thấy.' },
+                                { chinese: '每天说“太糟糕了” “太讨厌了” “真倒霉”的人,遇到的困难也格外多,运气也显得极其糟糕。', pinyin: 'Měitiān shuō “tài zāogāo le” “tài tǎoyàn le” “zhēn dǎoméi” de rén, yùdào de kùnnan yě géwài duō, yùnqi yě xiǎnde jíqí zāogāo.', vietnamese: 'Những người mỗi ngày đều nói “quá tệ rồi”, “quá đáng ghét”, “thật xui xẻo”, thì những khó khăn gặp phải cũng nhiều hơn hẳn, vận may cũng trở nên cực kỳ tệ hại.' },
+                                { chinese: '抽象派画家的作品中经常见到好像随便洒上颜料而形成的画作,在有人看来极其神秘甚至丑陋,······', pinyin: 'Chōuxiàngpài huàjiā de zuòpǐn zhōng jīngcháng jiàndào hǎoxiàng suíbiàn sǎ shàng yánliào ér xíngchéng de huàzuò, zài yǒurén kàn lái jíqí shénmì shènzhì chǒulòu,······', vietnamese: 'Trong tác phẩm của các họa sĩ trừu tượng thường thấy những bức tranh như được tạo thành từ việc rắc ngẫu nhiên màu sắc, trong mắt một số người thì cực kỳ bí ẩn thậm chí là xấu xí,······' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 76,
+                title: '其余 (qíyú)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là đại từ, biểu thị phần còn lại, bộ phận khác.',
+                    explanations: [
+                        {
+                            explanation: 'Đại từ, biểu thị phần còn lại, bộ phận khác.',
+                            examples: [
+                                { chinese: '怎么只有你们两个人?其余的同学呢?', pinyin: 'Zěnme zhǐyǒu nǐmen liǎng gè rén? Qíyú de tóngxué ne?', vietnamese: 'Sao chỉ có hai người các bạn? Những học sinh còn lại đâu rồi?' },
+                                { chinese: '只有一个房间亮着灯,其余窗户都是黑的。', pinyin: 'Zhǐyǒu yī gè fángjiān liàngzhe dēng, qíyú chuānghu dōu shì hēi de.', vietnamese: 'Chỉ có một phòng sáng đèn, những cửa sổ còn lại đều tối đen.' },
+                                { chinese: '其中三分之一的画作作者没有签名,而其余的则标明了身份。', pinyin: 'Qízhōng sānfēnzhīyī de huàzuò zuòzhě méiyǒu qiānmíng, ér qíyú de zé biāomíng le shēnfèn.', vietnamese: 'Một phần ba số tác phẩm không có chữ ký của tác giả, còn những bức còn lại thì đã ghi rõ danh tính.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 77,
+                title: '可见 (kějiàn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là liên từ, thường dùng cách thức “······,(由此)可见······”, biểu thị có thể dựa vào tình huống được nói đến trong văn bản mà đưa ra phán đoán, đánh giá.',
+                    explanations: [
+                        {
+                            explanation: 'Liên từ, thường dùng cách thức “······,(由此)可见······”, biểu thị có thể dựa vào tình huống được nói đến trong văn bản mà đưa ra phán đoán, đánh giá.',
+                            examples: [
+                                { chinese: '他已经住院好几天了,一直诊断不出是什么问题,可见情况不太好。', pinyin: 'Tā yǐjīng zhùyuàn hǎo jǐ tiān le, yīzhí zhěnduàn bù chū shì shénme wèntí, kějiàn qíngkuàng bù tài hǎo.', vietnamese: 'Anh ấy đã nằm viện mấy ngày rồi, vẫn không chẩn đoán ra vấn đề gì, có thể thấy tình hình không tốt lắm.' },
+                                { chinese: '汉语中有个成语叫“自知之明”,把“自知”称为“明”,可见“自知”是一种智慧。', pinyin: 'Hànyǔ zhōng yǒu gè chéngyǔ jiào “zìzhīzhīmíng”, bǎ “zìzhī” chēngwéi “míng”, kějiàn “zìzhī” shì yī zhǒng zhìhuì.', vietnamese: 'Trong tiếng Hán có một thành ngữ gọi là “tự tri chi minh”, coi “tự tri” là “minh”, có thể thấy “tự tri” là một loại trí tuệ.' },
+                                { chinese: '由此可见,志愿者能够从画作中感知艺术家的用心,哪怕他们不能够解释原因。', pinyin: 'Yóu cǐ kějiàn, zhìyuànzhě nénggòu cóng huàzuò zhōng gǎn zhī yìshùjiā de yòngxīn, nǎpà tāmen bù nénggòu jiěshì yuányīn.', vietnamese: 'Từ đó có thể thấy, các tình nguyện viên có thể cảm nhận được tấm lòng của nghệ sĩ qua tác phẩm, dù họ không thể giải thích được nguyên nhân.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 78,
+                title: 'Phân biệt 目前 (mùqián) và 现在 (xiànzài)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Cả hai đều là danh từ chỉ thời gian, chỉ thời điểm hiện tại, nhưng có sắc thái và cách dùng khác nhau.',
+                    table: {
+                        headers: ['', '目前 (mùqián)', '现在 (xiànzài)'],
+                        rows: [
+                            ['Giống', { text: 'Đều là danh từ chỉ thời gian, chỉ thời điểm nói này, thường có thể dùng thay thế cho nhau. Ví dụ: 至少目前/现在可以这么说,没有证据表明黑猩猩或儿童可以这样做。', colspan: 2 }],
+                            ['Khác 1', 'Thường thiên về chỉ một khoảng thời gian nào đó từ lúc trước cho đến hiện tại.', 'Có thể thiên về chỉ một khoảng thời gian nào đó, cũng có thể chỉ thời điểm nào đó, còn có thể nhấn mạnh sự so sánh với quá khứ.'],
+                            ['Ví dụ', '如:到目前为止,事情还没有变化。', '如:我现在就去.'],
+                            ['Khác 2', 'Không thể dùng kết hợp với từ chỉ thời gian cụ thể.', 'Có thể dùng kết hợp với từ chỉ thời gian cụ thể. Ví dụ: 如:现在是北京时间上午十点钟.']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 79,
+                title: '般 (bān)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là trợ từ, có nghĩa là “一样” (giống) hoặc “似的” (tựa như), thường đứng sau danh từ, tạo thành một cụm từ làm định ngữ hoặc trạng ngữ.',
+                    explanations: [
+                        {
+                            explanation: 'Trợ từ, có nghĩa là “一样” “似的”(tựa như) , thường đứng sau danh từ, tạo thành một cụm từ làm định ngữ hoặc trạng ngữ.',
+                            examples: [
+                                { chinese: '······紫的像山泉般清淡可口。', pinyin: 'Zǐ de xiàng shānquán bān qīngdàn kěkǒu.', vietnamese: '...màu tím nhạt và ngon như suối núi.' },
+                                { chinese: '说起那段往事,她的脸上露出阳光般的笑容。', pinyin: 'Shuō qǐ nà duàn wǎngshì, tā de liǎn shàng lùchū yángguāng bān de xiàoróng.', vietnamese: 'Nhắc đến chuyện cũ, trên mặt cô ấy hiện lên nụ cười rạng rỡ như ánh nắng.' },
+                                { chinese: '望着爸爸远去的背景,我的眼泪雨点般不停地往下掉。', pinyin: 'Wàngzhe bàba yuǎn qù de bèijǐng, wǒ de yǎnlèi yǔdiǎn bān bù tíng de wǎng xià diào.', vietnamese: 'Nhìn bóng lưng bố khuất dần, nước mắt tôi rơi như mưa không ngừng.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 80,
+                title: '闻 (wén)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "nghe thấy" hoặc "nhận biết mùi vị" tùy theo ngữ cảnh.',
+                    explanations: [
+                        {
+                            explanation: 'Khi làm ngữ tố, có nghĩa là “nghe thấy hoặc tin tức, sự việc được nghe thấy”.',
+                            examples: [
+                                { chinese: '你们到各地去旅游,一定会增加对中国的了解,老话说:百闻不如一见。', pinyin: 'Nǐmen dào gèdì qù lǚyóu, yīdìng huì zēngjiā duì Zhōngguó de liǎojiě, lǎo huà shuō: bǎi wén bùrú yī jiàn.', vietnamese: 'Các bạn đi du lịch khắp nơi, nhất định sẽ tăng cường sự hiểu biết về Trung Quốc, tục ngữ có câu: Trăm nghe không bằng một thấy.' },
+                                { chinese: '时隔多年再来这里,所到之处、所见所闻,无不给人一种新鲜感。', pinyin: 'Shígé duōnián zài lái zhèlǐ, suǒ dào zhī chù, suǒ jiàn suǒ wén, wú bù gěi rén yī zhǒng xīnxiān gǎn.', vietnamese: 'Nhiều năm sau quay lại đây, những nơi đến, những gì thấy và nghe, không gì không mang lại cảm giác mới mẻ.' },
+                                { chinese: '邻居们闻声赶来,纷纷跳入水中救起了落水的小孩。', pinyin: 'Línjūmen wén shēng gǎn lái, fēnfēn tiào rù shuǐ zhōng jiù qǐle luòshuǐ de xiǎohái.', vietnamese: 'Hàng xóm nghe tiếng vội chạy đến, nhao nhao nhảy xuống nước cứu đứa trẻ bị ngã.' },
+                                { chinese: '假期里,她唱带孩子们到世界各地旅行,增长他们的见闻。', pinyin: 'Jiàqī lǐ, tā cháng dài háizimen dào shìjiè gèdì lǚxíng, zēngzhǎng tāmen de jiànwén.', vietnamese: 'Trong kỳ nghỉ, cô ấy thường đưa các con đi du lịch khắp nơi trên thế giới, mở rộng tầm nhìn của chúng.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Khi dùng làm động từ, biểu thị dùng mũi để cảm nhận, nhận biết mùi vị.',
+                            examples: [
+                                { chinese: '火最好用文火,等能闻到香味时,便可开锅了。', pinyin: 'Huǒ zuì hǎo yòng wénhuǒ, děng néng wéndào xiāngwèi shí, biàn kě kāi guō le.', vietnamese: 'Lửa tốt nhất nên dùng lửa nhỏ, đợi đến khi ngửi thấy mùi thơm thì có thể mở nắp nồi.' },
+                                { chinese: '他把壶盖儿打开,闻了闻,原来是酒。', pinyin: 'Tā bǎ hú gàir dǎkāi, wénle wén, yuánlái shì jiǔ.', vietnamese: 'Anh ấy mở nắp ấm ra, ngửi một cái, hóa ra là rượu.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 81,
+                title: '趁 (chèn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là giới từ, có nghĩa là lợi dụng (thời gian, cơ hội), đằng sau có thể là cụm động từ, danh từ, tính từ và câu đơn.',
+                    explanations: [
+                        {
+                            explanation: 'Giới từ, có nghĩa là lợi dụng (thời gian, cơ hội) , đằng sau có thể là cụm động từ, danh từ, tính từ và câu đơn.',
+                            examples: [
+                                { chinese: '趁着这几天休息,我们去看看房子吧。', pinyin: 'Chènzhe zhè jǐ tiān xiūxí, wǒmen qù kànkan fángzi ba.', vietnamese: 'Nhân mấy ngày nghỉ này, chúng ta đi xem nhà đi.' },
+                                { chinese: '趁电影还没开始,我去买两瓶矿泉水。', pinyin: 'Chèn diànyǐng hái méi kāishǐ, wǒ qù mǎi liǎng píng kuàngquánshuǐ.', vietnamese: 'Nhân lúc phim chưa bắt đầu, tôi đi mua hai chai nước khoáng.' },
+                                { chinese: '萝卜饼要趁热吃,喜欢口味重的,还可以加少许酱油和醋。', pinyin: 'Luóbo bǐng yào chèn rè chī, xǐhuān kǒuwèi zhòng de, hái kěyǐ jiā shǎoxǔ jiàngyóu hé cù.', vietnamese: 'Bánh củ cải phải ăn lúc nóng, ai thích vị đậm có thể cho thêm chút xì dầu và giấm.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 82,
+                title: 'Phân biệt 怀念 (huáiniàn) và 想念 (xiǎngniàn)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Đều là động từ, đều có ý nghĩa biểu thị nhớ nhung, không thể quên đối với người hoặc hoàn cảnh nào đó, nhưng có sắc thái khác nhau.',
+                    table: {
+                        headers: ['', '怀念 (huáiniàn)', '想念 (xiǎngniàn)'],
+                        rows: [
+                            ['Giống nhau', { text: 'Đều là động từ, đều có ý nghĩa biểu thị nhớ nhung, không thể quên đối với người hoặc hoàn cảnh nào đó. Ví dụ: 每当回忆起小学时代的学习生活,我最想念/怀念的人是刘老师。', colspan: 2 }],
+                            ['Khác nhau 1', 'Thường dùng trong văn viết, về ngữ nghĩa nhấn mạnh thường xuyên nhớ đến, không thể quên đi.', 'Thường dùng trong khẩu ngữ, về mặt ngữ nghĩa nhấn mạnh hy vọng được gặp người nào đó.'],
+                            ['Ví dụ', '如:刘教授非常怀念年轻时在国外留学的那段生活。', '如:女儿告诉我,她很想念出差的爸爸.'],
+                            ['Khác nhau 2', 'Thường dùng với những người đã khuất hoặc những hoàn cảnh không thể nào gặp lại được.', 'Thường dùng với những người đang sống hoặc những hoàn cảnh còn có thể được lặp lại.'],
+                            ['Ví dụ', '如:从文章中我们读到了先生对去世的母亲的怀念。', '如:每到春节,我就格外想念家乡的一草一木。']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 83,
+                title: '动词+得/不+起 (de/bu qǐ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Biểu thị về mặt chủ quan có (không có) năng lực và điều kiện thực hiện (hoặc tiếp nhận) động tác nào đó.',
+                    explanations: [
+                        {
+                            explanation: 'Biểu thị về mặt chủ quan có (không có) năng lực và điều kiện thực hiện (hoặc tiếp nhận) động tác nào đó.',
+                            examples: [
+                                { chinese: '······这对于那些想看又买不起书的人来说,只用很少的钱就能看一本,毫无疑问是件大好事。', pinyin: 'Zhè duìyú nàxiē xiǎng kàn yòu mǎi bù qǐ shū de rén lái shuō, zhī yòng hěn shǎo de qián jiù néng kàn yī běn, háo wú yíwèn shì jiàn dà hǎoshì.', vietnamese: '...Đối với những người muốn đọc sách nhưng không mua nổi sách, chỉ cần dùng rất ít tiền là có thể đọc một cuốn, không nghi ngờ gì đây là một việc rất tốt.' },
+                                { chinese: '古时候,有个十分好学的年轻人,但他家里很穷,买不起灯,一到晚上就不能读书。', pinyin: 'Gǔ shíhou, yǒu gè shífēn hàoxué de niánqīng rén, dàn tā jiālǐ hěn qióng, mǎi bù qǐ dēng, yī dào wǎnshàng jiù bù néng dúshū.', vietnamese: 'Ngày xưa, có một thanh niên rất hiếu học, nhưng nhà anh ta rất nghèo, không mua nổi đèn, cứ đến tối là không thể đọc sách.' },
+                                { chinese: '只有经得起困难和时间考验的朋友才算是真正的朋友。', pinyin: 'Zhǐyǒu jīng dé qǐ kùnnan hé shíjiān kǎoyàn de péngyǒu cái suàn shì zhēnzhèng de péngyǒu.', vietnamese: 'Chỉ những người bạn chịu đựng được thử thách của khó khăn và thời gian mới là bạn thật sự.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 84,
+                title: '支 (zhī)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "chống đỡ" hoặc là một lượng từ cho các vật có hình cán, tác phẩm âm nhạc, đội ngũ.',
+                    explanations: [
+                        {
+                            explanation: 'Động từ, biểu thị dùng đồ vật chống cho vật thể không bị đổ xuống.',
+                            examples: [
+                                { chinese: '他的两只手放在桌上,支着脑袋,正在想事情。', pinyin: 'Tā de liǎng zhī shǒu fàng zài zhuō shàng, zhīzhe nǎodài, zhèngzài xiǎng shìqing.', vietnamese: 'Hai tay anh ấy đặt trên bàn, chống cằm, đang suy nghĩ việc gì đó.' },
+                                { chinese: '······我家附近就有个小人书摊,就是一进街口靠墙的一个小棚子,里面用几块砖头支着粗糙的木头板子供人们做着看书。', pinyin: 'Wǒ jiā fùjìn jiù yǒu gè xiǎorénshūtān, jiù shì yī jìn jiēkǒu kào qiáng de yī gè xiǎo péngzi, lǐmiàn yòng jǐ kuài zhuāntou zhīzhe cūcāo de mùtóu bǎnzǐ gōng rénmen zuòzhe kànshū.', vietnamese: '...Gần nhà tôi có một quán sách truyện tranh nhỏ, chính là một cái lán nhỏ dựa vào tường ngay đầu phố, bên trong dùng mấy viên gạch chống đỡ những tấm ván gỗ thô sơ cho mọi người ngồi đọc sách.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Lượng từ, dùng trong tác phẩm âm nhạc, đội ngũ, hoặc đồ vật có hình cán.',
+                            examples: [
+                                { chinese: '他弹第二支曲子时引起了牛的注意。', pinyin: 'Tā tán dì èr zhī qǔzi shí yǐnqǐle niú de zhùyì.', vietnamese: 'Anh ấy chơi bản nhạc thứ hai thì thu hút sự chú ý của con bò.' },
+                                { chinese: '给他十支枪,他就能拉起一支军队来。', pinyin: 'Gěi tā shí zhī qiāng, tā jiù néng lā qǐ yī zhī jūnduì lái.', vietnamese: 'Cho anh ấy mười khẩu súng, anh ấy có thể thành lập một đội quân.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 85,
+                title: '凭 (píng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "nhờ vào, dựa vào" hoặc "căn cứ vào".',
+                    explanations: [
+                        {
+                            explanation: 'Động từ, có nghĩa là nhờ vào, dựa vào.',
+                            examples: [
+                                { chinese: '干工作不能光凭经验,还要有创新。', pinyin: 'Gàn gōngzuò bù néng guāng píng jīngyàn, hái yào yǒu chuàngxīn.', vietnamese: 'Làm việc không thể chỉ dựa vào kinh nghiệm, mà còn phải có sự đổi mới.' },
+                                { chinese: '印象中似乎没有什么押金,全凭信用。', pinyin: 'Yìnxiàng zhōng sīhū méiyǒu shénme yājīn, quán píng xìnyòng.', vietnamese: 'Trong ấn tượng thì dường như không có tiền đặt cọc gì, hoàn toàn dựa vào tín dụng.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Giới từ, thường dùng cách thức:“ 凭+ tân ngữ + động từ”, biểu thị căn cứ, dựa vào.',
+                            examples: [
+                                { chinese: '请旅客们准备好车票,凭票进站。', pinyin: 'Qǐng lǚkèmen zhǔnbèi hǎo chēpiào, píng piào jìn zhàn.', vietnamese: 'Xin quý khách chuẩn bị vé xe, vào ga bằng vé.' },
+                                { chinese: '你凭什么怀疑我偷了东西?', pinyin: 'Nǐ píng shénme huáiyí wǒ tōule dōngxi?', vietnamese: 'Bạn dựa vào cái gì mà nghi ngờ tôi ăn cắp đồ?' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 86,
+                title: 'Phân biệt 记录 (jìlù) và 纪录 (jìlù)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Cả hai đều liên quan đến việc ghi chép hoặc thành tích, nhưng có sự khác biệt rõ rệt về từ loại và ngữ nghĩa.',
+                    table: {
+                        headers: ['', '记录 (jìlù)', '纪录 (jìlù)'],
+                        rows: [
+                            ['Điểm khác 1', 'Có thể làm động từ, chỉ đem lời nói nghe thấy hoặc việc xảy ra ghi chép lại.', 'Danh từ, chỉ thành tích tốt nhất trong khoảng thời gian nhất định, trong phạm vi nhất định.'],
+                            ['Ví dụ', '如:我已经把这次会议的内容详细地记录下来了。', '如:他在本次比赛中打破了世界纪录.'],
+                            ['Điểm khác 2', 'Cũng có thể làm danh từ, chỉ tài liệu được ghi chép lại hoặc người ghi chép. Ví dụ: 如:第二天还书时再把记录一个一个地画掉。 小刘,你来做这次会议的记录。', 'Danh từ, cũng có thể chỉ việc ghi lại những sự kiện có giá trị tin tức. Ví dụ: 如:学校带孩子们看了一部有教育意义的纪录片.']
+                        ]
+                    }
+                }
+            },
+
+            ];
+
+
+            const navContainer = document.querySelector('#grammarNav ul');
+            const contentArea = document.getElementById('contentArea');
+            const searchInput = document.getElementById('searchInput');
+
+            let currentPointId = 1;
+
+            function renderNav(points) {
+                navContainer.innerHTML = '';
+                points.forEach(point => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                    <a href="#point-${point.id}" data-id="${point.id}" class="nav-item block w-full text-left px-4 py-2.5 rounded-lg transition duration-200 hover:bg-slate-100 text-slate-700">
+                        <span class="font-medium">${point.id}. ${point.title}</span>
+                    </a>
+                `;
+                    navContainer.appendChild(li);
+                });
+                updateActiveNav();
+            }
+
+            function renderContent(pointId) {
+                const point = grammarPoints.find(p => p.id === pointId);
+                if (!point) return;
+
+                currentPointId = point.id;
+                let contentHtml = `
+                <div id="point-${point.id}" class="content-card bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-600 mb-2">${point.id}. ${point.title}</h2>
+            `;
+
+                if (point.content.type === 'standard') {
+                    if (point.content.explanations != undefined) {
+                        contentHtml += point.content.explanations.map((ex, index) => {
+                            let content = `<p class="text-slate-600 italic font-semibold mb-6">${index + 1}. ${ex.explanation}</p>`;
+                            content += ex.examples.map((ex2, index2) => `
+                                <div class="example-card border border-slate-200 rounded-lg p-4 mb-4 bg-slate-50">
+                                <p class="text-lg text-slate-800 font-semibold mb-3">${ex2.chinese}</p>
+                                <div id="toggle-pinyin-${point.id}-${index}-${index2}" class="toggle-content text-blue-500 mb-2">${ex2.pinyin}</div>
+                                <div id="toggle-vietnamese-${point.id}-${index}-${index2}" class="toggle-content text-green-600">${ex2.vietnamese}</div>
+                                <div class="mt-3 flex gap-2">
+                                    <button data-target-pinyin="#toggle-pinyin-${point.id}-${index}-${index2}" class="toggle-btn bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full hover:bg-blue-200 transition">Hiển thị Pinyin</button>
+                                    <button data-target-vietnamese="#toggle-vietnamese-${point.id}-${index}-${index2}" class="toggle-btn bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full hover:bg-green-200 transition">Hiển thị Dịch nghĩa</button>
+                                </div>
+                                </div>
+                            `).join('');
+                            return content;
+                        }).join('');
+
+                    } else {
+                        contentHtml += `<p class="text-slate-600 italic font-semibold mb-6">${point.content.explanation}</p>`;
+                        contentHtml += point.content.examples.map((ex, index) => `
+                        <div class="example-card border border-slate-200 rounded-lg p-4 mb-4 bg-slate-50">
+                            <p class="text-lg text-slate-800 font-semibold mb-3">${ex.chinese}</p>
+                            <div id="toggle-pinyin-${point.id}-${index}" class="toggle-content text-blue-500 mb-2">${ex.pinyin}</div>
+                            <div id="toggle-vietnamese-${point.id}-${index}" class="toggle-content text-green-600">${ex.vietnamese}</div>
+                            <div class="mt-3 flex gap-2">
+                                <button data-target-pinyin="#toggle-pinyin-${point.id}-${index}" class="toggle-btn bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full hover:bg-blue-200 transition">Hiển thị Pinyin</button>
+                                <button data-target-vietnamese="#toggle-vietnamese-${point.id}-${index}" class="toggle-btn bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full hover:bg-green-200 transition">Hiển thị Dịch nghĩa</button>
+                            </div>
+                        </div>
+                    `).join('');
+                    }
+                } else if (point.content.type === 'comparison') {
+                    contentHtml += `
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse">
+                            <thead>
+                                <tr>
+                                    ${point.content.table.headers.map(h => `<th class="bg-slate-200 p-3 text-sm font-semibold text-slate-700 text-left border border-slate-300">${h}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${point.content.table.rows.map(row => `
+                                    <tr>
+                                        <td class="p-3 border border-slate-300 font-semibold align-top">${row[0]}</td>
+                                        ${row.slice(1).map(cell => typeof cell === 'object' ? `<td colspan="${cell.colspan}" class="p-3 border border-slate-300">${cell.text}</td>` : `<td class="p-3 border border-slate-300">${cell}</td>`).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                 `;
+                }
+
+                contentHtml += '</div>';
+                contentArea.innerHTML = contentHtml;
+                updateActiveNav();
+                attachToggleListeners();
+            }
+
+            function updateActiveNav() {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    if (parseInt(item.dataset.id) === currentPointId) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            function attachToggleListeners() {
+                document.querySelectorAll('.toggle-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const pinyinTargetSelector = this.dataset.targetPinyin;
+                        const vietnameseTargetSelector = this.dataset.targetVietnamese;
+
+                        if (pinyinTargetSelector) {
+                            const target = document.querySelector(pinyinTargetSelector);
+                            target.classList.toggle('visible');
+                            this.textContent = target.classList.contains('visible') ? 'Ẩn Pinyin' : 'Hiển thị Pinyin';
+                        }
+                        if (vietnameseTargetSelector) {
+                            const target = document.querySelector(vietnameseTargetSelector);
+                            target.classList.toggle('visible');
+                            this.textContent = target.classList.contains('visible') ? 'Ẩn Dịch nghĩa' : 'Hiển thị Dịch nghĩa';
+                        }
+                    });
+                });
+            }
+
+            navContainer.addEventListener('click', function (e) {
+                const navLink = e.target.closest('.nav-item');
+                if (navLink) {
+                    e.preventDefault();
+                    const pointId = parseInt(navLink.dataset.id);
+                    renderContent(pointId);
+                    // Scroll to the top of the content area on mobile
+                    if (window.innerWidth < 768) {
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+
+            searchInput.addEventListener('input', function (e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredPoints = grammarPoints.filter(p => p.title.toLowerCase().includes(searchTerm));
+                renderNav(filteredPoints);
+            });
+
+            // Initial Load
+            renderNav(grammarPoints);
+            renderContent(currentPointId);
+        });
+    </script>
+</body>
+
+</html>

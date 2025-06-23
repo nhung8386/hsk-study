@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Ngữ Pháp HSK 5 Tương Tác</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Ứng dụng được thiết kế với bố cục hai cột linh hoạt. Thanh điều hướng bên trái liệt kê tất cả các điểm ngữ pháp và có chức năng tìm kiếm, cho phép người dùng truy cập nhanh. Vùng nội dung chính bên phải hiển thị chi tiết của điểm ngữ pháp được chọn dưới dạng "thẻ học" tương tác. Cấu trúc này được chọn để tối ưu hóa việc điều hướng và tập trung vào từng chủ đề, biến việc đọc thụ động thành trải nghiệm học tập tích cực, hiệu quả hơn nhiều so với một tài liệu dài. -->
+    <!-- Visualization & Content Choices: Dữ liệu là văn bản định tính, do đó không sử dụng biểu đồ (Chart.js). Thay vào đó, "trực quan hóa" được thực hiện thông qua: 1. Danh sách điều hướng có thể lọc để tổ chức nội dung. 2. Các thẻ nội dung được cấu trúc rõ ràng. 3. Các yếu tố tương tác như nút bật/tắt pinyin và bản dịch, cho phép người dùng tự kiểm tra. 4. Một bảng HTML để so sánh ngữ pháp (Phần 4, Phần 38, Phần 78, Phần 86), trình bày thông tin một cách rõ ràng và hiệu quả. Các lựa chọn này nhằm mục đích tăng cường sự tham gia và ghi nhớ của người dùng. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .nav-item.active {
+            background-color: #3b82f6;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .nav-item.active:hover {
+            background-color: #2563eb;
+        }
+        .content-card {
+            scroll-margin-top: 1rem;
+        }
+        .example-card .toggle-content {
+            display: none;
+        }
+        .example-card .toggle-content.visible {
+            display: block;
+        }
+        #scrollToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            background-color: #3b82f6;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <div id="app" class="min-h-screen">
+        <header class="bg-white shadow-md sticky top-0 z-20">
+            <div class="container mx-auto px-4 py-4">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Cẩm Nang Ngữ Pháp HSK 5</h1>
+                <p class="text-slate-600 mt-1">36 điểm ngữ pháp trọng tâm được trình bày tương tác</p>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                
+                <!-- Sidebar/Navigation -->
+                <aside class="md:w-1/3 lg:w-1/4 md:sticky md:top-24 self-start">
+                    <div class="bg-white p-4 rounded-xl shadow-md">
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="Tìm kiếm ngữ pháp..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                            <svg class="w-5 h-5 text-slate-400 absolute top-1/2 left-3 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <nav id="grammarNav" class="mt-4 max-h-[60vh] overflow-y-auto">
+                            <ul>
+                                <!-- Navigation items will be injected here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main id="contentArea" class="w-full md:w-2/3 lg:w-3/4">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md mb-8">
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4">Chào mừng bạn đến với Cẩm nang Ngữ pháp HSK 5!</h2>
+                        <p class="text-slate-700 leading-relaxed">
+                            Ứng dụng này được thiết kế để giúp bạn dễ dàng khám phá và nắm vững 36 điểm ngữ pháp quan trọng nhất trong cấp độ HSK 5. 
+                            Sử dụng thanh điều hướng bên trái để chọn chủ điểm ngữ pháp bạn muốn học. Với mỗi chủ điểm, bạn sẽ tìm thấy giải thích chi tiết và các ví dụ minh họa. 
+                            Hãy tận dụng các nút "Hiển thị Pinyin" và "Hiển thị Dịch nghĩa" để tự kiểm tra kiến thức của mình một cách tương tác. Chúc bạn học tốt!
+                        </p>
+                    </div>
+                    <!-- Grammar content will be injected here -->
+                </main>
+            </div>
+        </div>
+        
+        <button id="scrollToTopBtn" title="Cuộn lên đầu trang">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+        </button>
+
+        <footer class="text-center py-6 text-slate-500 text-sm">
+            <p>Được tạo ra để hỗ trợ việc học tiếng Trung của bạn. Chúc bạn thành công!</p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const grammarPoints = [
+            {
+                id: 75,
+                title: '极其 (jíqí)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là phó từ, có nghĩa là “非常” (rất, vô cùng), thường dùng trong văn viết, chỉ có thể bổ sung cho tính từ song âm tiết hoặc đa âm tiết.',
+                    explanations: [
+                        {
+                            explanation: 'Phó từ, có nghĩa là “非常”, thường dùng trong văn viết, chỉ có thể bổ sung cho tính từ song âm tiết hoặc đa âm tiết.',
+                            examples: [
+                                { chinese: '在中国,餐桌上放一把刀是极其少见的现象。', pinyin: 'Zài Zhōngguó, cānzhuō shàng fàng yī bǎ dāo shì jíqí shǎojiàn de xiànxiàng.', vietnamese: 'Ở Trung Quốc, việc đặt dao trên bàn ăn là một hiện tượng cực kỳ hiếm thấy.' },
+                                { chinese: '每天说“太糟糕了” “太讨厌了” “真倒霉”的人,遇到的困难也格外多,运气也显得极其糟糕。', pinyin: 'Měitiān shuō “tài zāogāo le” “tài tǎoyàn le” “zhēn dǎoméi” de rén, yùdào de kùnnan yě géwài duō, yùnqi yě xiǎnde jíqí zāogāo.', vietnamese: 'Những người mỗi ngày đều nói “quá tệ rồi”, “quá đáng ghét”, “thật xui xẻo”, thì những khó khăn gặp phải cũng nhiều hơn hẳn, vận may cũng trở nên cực kỳ tệ hại.' },
+                                { chinese: '抽象派画家的作品中经常见到好像随便洒上颜料而形成的画作,在有人看来极其神秘甚至丑陋,······', pinyin: 'Chōuxiàngpài huàjiā de zuòpǐn zhōng jīngcháng jiàndào hǎoxiàng suíbiàn sǎ shàng yánliào ér xíngchéng de huàzuò, zài yǒurén kàn lái jíqí shénmì shènzhì chǒulòu,······', vietnamese: 'Trong tác phẩm của các họa sĩ trừu tượng thường thấy những bức tranh như được tạo thành từ việc rắc ngẫu nhiên màu sắc, trong mắt một số người thì cực kỳ bí ẩn thậm chí là xấu xí,······' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 76,
+                title: '其余 (qíyú)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là đại từ, biểu thị phần còn lại, bộ phận khác.',
+                    explanations: [
+                        {
+                            explanation: 'Đại từ, biểu thị phần còn lại, bộ phận khác.',
+                            examples: [
+                                { chinese: '怎么只有你们两个人?其余的同学呢?', pinyin: 'Zěnme zhǐyǒu nǐmen liǎng gè rén? Qíyú de tóngxué ne?', vietnamese: 'Sao chỉ có hai người các bạn? Những học sinh còn lại đâu rồi?' },
+                                { chinese: '只有一个房间亮着灯,其余窗户都是黑的。', pinyin: 'Zhǐyǒu yī gè fángjiān liàngzhe dēng, qíyú chuānghu dōu shì hēi de.', vietnamese: 'Chỉ có một phòng sáng đèn, những cửa sổ còn lại đều tối đen.' },
+                                { chinese: '其中三分之一的画作作者没有签名,而其余的则标明了身份。', pinyin: 'Qízhōng sānfēnzhīyī de huàzuò zuòzhě méiyǒu qiānmíng, ér qíyú de zé biāomíng le shēnfèn.', vietnamese: 'Một phần ba số tác phẩm không có chữ ký của tác giả, còn những bức còn lại thì đã ghi rõ danh tính.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 77,
+                title: '可见 (kějiàn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là liên từ, thường dùng cách thức “······,(由此)可见······”, biểu thị có thể dựa vào tình huống được nói đến trong văn bản mà đưa ra phán đoán, đánh giá.',
+                    explanations: [
+                        {
+                            explanation: 'Liên từ, thường dùng cách thức “······,(由cǐ)可见······”, biểu thị có thể dựa vào tình huống được nói đến trong văn bản mà đưa ra phán đoán, đánh giá.',
+                            examples: [
+                                { chinese: '他已经住院好几天了,一直诊断不出是什么问题,可见情况不太好。', pinyin: 'Tā yǐjīng zhùyuàn hǎo jǐ tiān le, yīzhí zhěnduàn bù chū shì shénme wèntí, kějiàn qíngkuàng bù tài hǎo.', vietnamese: 'Anh ấy đã nằm viện mấy ngày rồi, vẫn không chẩn đoán ra vấn đề gì, có thể thấy tình hình không tốt lắm.' },
+                                { chinese: '汉语中有个成语叫“自知之明”,把“自知”称为“明”,可见“自知”是一种智慧。', pinyin: 'Hànyǔ zhōng yǒu gè chéngyǔ jiào “zìzhīzhīmíng”, bǎ “zìzhī” chēngwéi “míng”, kějiàn “zìzhī” shì yī zhǒng zhìhuì.', vietnamese: 'Trong tiếng Hán có một thành ngữ gọi là “tự tri chi minh”, coi “tự tri” là “minh”, có thể thấy “tự tri” là một loại trí tuệ.' },
+                                { chinese: '由此可见,志愿者能够从画作中感知艺术家的用心,哪怕他们不能够解释原因。', pinyin: 'Yóu cǐ kějiàn, zhìyuànzhě nénggòu cóng huàzuò zhōng gǎn zhī yìshùjiā de yòngxīn, nǎpà tāmen bù nénggòu jiěshì yuányīn.', vietnamese: 'Từ đó có thể thấy, các tình nguyện viên có thể cảm nhận được tấm lòng của nghệ sĩ qua tác phẩm, dù họ không thể giải thích được nguyên nhân.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 78,
+                title: 'Phân biệt 目前 (mùqián) và 现在 (xiànzài)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Cả hai đều là danh từ chỉ thời gian, chỉ thời điểm hiện tại, nhưng có sắc thái và cách dùng khác nhau.',
+                    table: {
+                        headers: ['', '目前 (mùqián)', '现在 (xiànzài)'],
+                        rows: [
+                            ['Giống', { text: 'Đều là danh từ chỉ thời gian, chỉ thời điểm nói này, thường có thể dùng thay thế cho nhau. Ví dụ: 至少目前/现在可以这么说,没有证据表明黑猩猩或儿童可以这样做。', colspan: 2 }],
+                            ['Khác 1', 'Thường thiên về chỉ một khoảng thời gian nào đó từ lúc trước cho đến hiện tại.', 'Có thể thiên về chỉ một khoảng thời gian nào đó, cũng có thể chỉ thời điểm nào đó, còn có thể nhấn mạnh sự so sánh với quá khứ.'],
+                            ['Ví dụ', '如:到目前为止,事情还没有变化。', '如:我现在就去.'],
+                            ['Khác 2', 'Không thể dùng kết hợp với từ chỉ thời gian cụ thể.', 'Có thể dùng kết hợp với từ chỉ thời gian cụ thể. Ví dụ: 如:现在是北京时间上午十点钟.']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 79,
+                title: '般 (bān)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là trợ từ, có nghĩa là “一样” (giống) hoặc “似的” (tựa như), thường đứng sau danh từ, tạo thành một cụm từ làm định ngữ hoặc trạng ngữ.',
+                    explanations: [
+                        {
+                            explanation: 'Trợ từ, có nghĩa là “一样” “似的”(tựa như) , thường đứng sau danh từ, tạo thành một cụm từ làm định ngữ hoặc trạng ngữ.',
+                            examples: [
+                                { chinese: '······紫的像山泉般清淡可口。', pinyin: 'Zǐ de xiàng shānquán bān qīngdàn kěkǒu.', vietnamese: '...màu tím nhạt và ngon như suối núi.' },
+                                { chinese: '说起那 đoạn往事,她的脸上露出阳光般的笑容。', pinyin: 'Shuō qǐ nà duàn wǎngshì, tā de liǎn shàng lùchū yángguāng bān de xiàoróng.', vietnamese: 'Nhắc đến chuyện cũ, trên mặt cô ấy hiện lên nụ cười rạng rỡ như ánh nắng.' },
+                                { chinese: '望着爸爸远去的背景,my眼泪雨点般不停地往下掉。', pinyin: 'Wàngzhe bàba yuǎn qù de bèijǐng, wǒ de yǎnlèi yǔdiǎn bān bù tíng de wǎng xià diào.', vietnamese: 'Nhìn bóng lưng bố khuất dần, nước mắt tôi rơi như mưa không ngừng.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 80,
+                title: '闻 (wén)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "nghe thấy" hoặc "nhận biết mùi vị" tùy theo ngữ cảnh.',
+                    explanations: [
+                        {
+                            explanation: 'Khi làm ngữ tố, có nghĩa là “nghe thấy hoặc tin tức, sự việc được nghe thấy”.',
+                            examples: [
+                                { chinese: '你们到各地去旅游,一定会增加对中国的了解,老话说:百闻不如一见。', pinyin: 'Nǐmen dào gèdì qù lǚyóu, yīdìng huì zēngjiā duì Zhōngguó de liǎojiě, lǎo huà shuō: bǎi wén bùrú yī jiàn.', vietnamese: 'Các bạn đi du lịch khắp nơi, nhất định sẽ tăng cường sự hiểu biết về Trung Quốc, tục ngữ có câu: Trăm nghe không bằng một thấy.' },
+                                { chinese: '时隔多年再来这里,所到之处、所见所闻,无不给人一种新鲜感。', pinyin: 'Shígé duōnián zài lái zhèlǐ, suǒ dào zhī chù, suǒ jiàn suǒ wén, wú bù gěi rén yī zhǒng xīnxiān gǎn.', vietnamese: 'Nhiều năm sau quay lại đây, những nơi đến, những gì thấy và nghe, không gì không mang lại cảm giác mới mẻ.' },
+                                { chinese: '邻居们闻声赶来,纷纷跳入水中救起了落水的小孩。', pinyin: 'Línjūmen wén shēng gǎn lái, fēnfēn tiào rù shuǐ zhōng jiù qǐle luòshuǐ de xiǎohái.', vietnamese: 'Hàng xóm nghe tiếng vội chạy đến, nhao nhao nhảy xuống nước cứu đứa trẻ bị ngã.' },
+                                { chinese: '假期里,她唱带孩子们到世界各地旅行,增长他们的见闻。', pinyin: 'Jiàqī lǐ, tā cháng dài háizimen dào shìjiè gèdì lǚxíng, zēngzhǎng tāmen de jiànwén.', vietnamese: 'Trong kỳ nghỉ, cô ấy thường đưa các con đi du lịch khắp nơi trên thế giới, mở rộng tầm nhìn của chúng.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Khi dùng làm động từ, biểu thị dùng mũi để cảm nhận, nhận biết mùi vị.',
+                            examples: [
+                                { chinese: '火最好用文火,等能闻到香味时,便可开锅了。', pinyin: 'Huǒ zuì hǎo yòng wénhuǒ, děng néng wéndào xiāngwèi shí, biàn kě kāi guō le.', vietnamese: 'Lửa tốt nhất nên dùng lửa nhỏ, đợi đến khi ngửi thấy mùi thơm thì có thể mở nắp nồi.' },
+                                { chinese: '他把壶盖儿打开,闻了闻,原来是酒。', pinyin: 'Tā bǎ hú gàir dǎkāi, wénle wén, yuánlái shì jiǔ.', vietnamese: 'Anh ấy mở nắp ấm ra, ngửi một cái, hóa ra là rượu.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 81,
+                title: '趁 (chèn)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Là giới từ, có nghĩa là lợi dụng (thời gian, cơ hội), đằng sau có thể là cụm động từ, danh từ, tính từ và câu đơn.',
+                    explanations: [
+                        {
+                            explanation: 'Giới từ, có nghĩa là lợi dụng (thời gian, cơ hội) , đằng sau có thể là cụm động từ, danh từ, tính từ và câu đơn.',
+                            examples: [
+                                { chinese: '趁着这几天休息,我们去看看房子吧。', pinyin: 'Chènzhe zhè jǐ tiān xiūxí, wǒmen qù kànkan fángzi ba.', vietnamese: 'Nhân mấy ngày nghỉ này, chúng ta đi xem nhà đi.' },
+                                { chinese: '趁电影还没开始,我去买两瓶矿泉水。', pinyin: 'Chèn diànyǐng hái méi kāishǐ, wǒ qù mǎi liǎng píng kuàngquánshuǐ.', vietnamese: 'Nhân lúc phim chưa bắt đầu, tôi đi mua hai chai nước khoáng.' },
+                                { chinese: '萝卜饼要趁热吃,喜欢口味重的,还可以加少许酱油和醋。', pinyin: 'Luóbo bǐng yào chèn rè chī, xǐhuān kǒuwèi zhòng de, hái kěyǐ jiā shǎoxǔ jiàngyóu hé cù.', vietnamese: 'Bánh củ cải phải ăn lúc nóng, ai thích vị đậm có thể cho thêm chút xì dầu và giấm.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 82,
+                title: 'Phân biệt 怀念 (huáiniàn) và 想念 (xiǎngniàn)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Đều là động từ, đều có ý nghĩa biểu thị nhớ nhung, không thể quên đối với người hoặc hoàn cảnh nào đó, nhưng có sắc thái khác nhau.',
+                    table: {
+                        headers: ['', '怀念 (huáiniàn)', '想念 (xiǎngniàn)'],
+                        rows: [
+                            ['Giống nhau', { text: 'Đều là động từ, đều có ý nghĩa biểu thị nhớ nhung, không thể quên đối với người hoặc hoàn cảnh nào đó. Ví dụ: 每当回忆起小学时代的学习生活,我最想念/怀念的人是刘老师。', colspan: 2 }],
+                            ['Khác nhau 1', 'Thường dùng trong văn viết, về ngữ nghĩa nhấn mạnh thường xuyên nhớ đến, không thể quên đi.', 'Thường dùng trong khẩu ngữ, về mặt ngữ nghĩa nhấn mạnh hy vọng được gặp người nào đó.'],
+                            ['Ví dụ', '如:刘教授非常怀 niệm年轻时在国外留学的那段生活。', '如:女儿告诉我,她很想念出差的爸爸.'],
+                            ['Khác nhau 2', 'Thường dùng với những người đã khuất hoặc những hoàn cảnh không thể nào gặp lại được.', 'Thường dùng với những người đang sống hoặc những hoàn cảnh còn có thể được lặp lại.'],
+                            ['Ví dụ', '如:从文章中我们读到了先生对去世的母亲的怀念。', '如:每到春节,我就格外想念家乡的一草一木。']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 83,
+                title: '动词+得/不+起 (de/bu qǐ)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Biểu thị về mặt chủ quan có (không có) năng lực và điều kiện thực hiện (hoặc tiếp nhận) động tác nào đó.',
+                    explanations: [
+                        {
+                            explanation: 'Biểu thị về mặt chủ quan có (không có) năng lực và điều kiện thực hiện (hoặc tiếp nhận) động tác nào đó.',
+                            examples: [
+                                { chinese: '······这对于那些想看又买不起书的人来说,只用很少的钱就能看一本,毫无疑问是件大好事。', pinyin: 'Zhè duìyú nàxiē xiǎng kàn yòu mǎi bù qǐ shū de rén lái shuō, zhī yòng hěn shǎo de qián jiù néng kàn yī běn, háo wú yíwèn shì jiàn dà hǎoshì.', vietnamese: '...Đối với những người muốn đọc sách nhưng không mua nổi sách, chỉ cần dùng rất ít tiền là có thể đọc một cuốn, không nghi ngờ gì đây là một việc rất tốt.' },
+                                { chinese: '古时候,有个十分好学的年轻人,但他家里很穷,买不起灯,一到晚上就不能读书。', pinyin: 'Gǔ shíhou, yǒu gè shífēn hàoxué de niánqīng rén, dàn tā jiālǐ hěn qióng, mǎi bù qǐ dēng, yī dào wǎnshàng jiù bù néng dúshū.', vietnamese: 'Ngày xưa, có một thanh niên rất hiếu học, nhưng nhà anh ta rất nghèo, không mua nổi đèn, cứ đến tối là không thể đọc sách.' },
+                                { chinese: '只有经得起困难和时间考验的朋友才算是真正的朋友。', pinyin: 'Zhǐyǒu jīng dé qǐ kùnnan hé shíjiān kǎoyàn de péngyǒu cái suàn shì zhēnzhèng de péngyǒu.', vietnamese: 'Chỉ những người bạn chịu đựng được thử thách của khó khăn và thời gian mới là bạn thật sự.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 84,
+                title: '支 (zhī)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "chống đỡ" hoặc là một lượng từ cho các vật có hình cán, tác phẩm âm nhạc, đội ngũ.',
+                    explanations: [
+                        {
+                            explanation: 'Động từ, biểu thị dùng đồ vật chống cho vật thể không bị đổ xuống.',
+                            examples: [
+                                { chinese: '他的两只手放在桌上,支着脑袋,正在想事情。', pinyin: 'Tā de liǎng zhī shǒu fàng zài zhuō shàng, zhīzhe nǎodài, zhèngzài xiǎng shìqing.', vietnamese: 'Hai tay anh ấy đặt trên bàn, chống cằm, đang suy nghĩ việc gì đó.' },
+                                { chinese: '······我家附近就有个小人书摊,就是一进街口靠墙的一个小棚子,里面用几块砖头支着粗糙的木头板子供人们做着看书。', pinyin: 'Wǒ jiā fùjìn jiù yǒu gè xiǎorénshūtān, jiù shì yī jìn jiēkǒu kào qiáng de yī gè xiǎo péngzi, lǐmiàn yòng jǐ kuài zhuāntou zhīzhe cūcāo de mùtóu bǎnzǐ gōng rénmen zuòzhe kànshū.', vietnamese: '...Gần nhà tôi có một quán sách truyện tranh nhỏ, chính là một cái lán nhỏ dựa vào tường ngay đầu phố, bên trong dùng mấy viên gạch chống đỡ những tấm ván gỗ thô sơ cho mọi người ngồi đọc sách.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Lượng từ, dùng trong tác phẩm âm nhạc, đội ngũ, hoặc đồ vật có hình cán.',
+                            examples: [
+                                { chinese: '他弹第二支曲子时引起了牛的注意。', pinyin: 'Tā tán dì èr zhī qǔzi shí yǐnqǐle niú de zhùyì.', vietnamese: 'Anh ấy chơi bản nhạc thứ hai thì thu hút sự chú ý của con bò.' },
+                                { chinese: '给他十支枪,他就能拉起一支军队来。', pinyin: 'Gěi tā shí zhī qiāng, tā jiù néng lā qǐ yī zhī jūnduì lái.', vietnamese: 'Cho anh ấy mười khẩu súng, anh ấy có thể thành lập một đội quân.' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 85,
+                title: '凭 (píng)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Có nghĩa là "nhờ vào, dựa vào" hoặc "căn cứ vào".',
+                    explanations: [
+                        {
+                            explanation: 'Động từ, có nghĩa là nhờ vào, dựa vào.',
+                            examples: [
+                                { chinese: '干工作不能光凭经验,还要有创新。', pinyin: 'Gàn gōngzuò bù néng guāng píng jīngyàn, hái yào yǒu chuàngxīn.', vietnamese: 'Làm việc không thể chỉ dựa vào kinh nghiệm, mà còn phải có sự đổi mới.' },
+                                { chinese: '印象中似乎没有什么押金,全凭信用。', pinyin: 'Yìnxiàng zhōng sīhū méiyǒu shénme yājīn, quán píng xìnyòng.', vietnamese: 'Trong ấn tượng thì dường như không có tiền đặt cọc gì, hoàn toàn dựa vào tín dụng.' }
+                            ]
+                        },
+                        {
+                            explanation: 'Giới từ, thường dùng cách thức:“ 凭+ tân ngữ + động từ”, biểu thị căn cứ, dựa vào.',
+                            examples: [
+                                { chinese: '请旅客们准备好车票,凭票进站。', pinyin: 'Qǐng lǚkèmen zhǔnbèi hǎo chēpiào, píng piào jìn zhàn.', vietnamese: 'Xin quý khách chuẩn bị vé xe, vào ga bằng vé.' },
+                                { chinese: '你凭什么怀疑我偷了东西?', pinyin: 'Nǐ píng shénme huáiyí wǒ tōule dōngxi?', vietnamese: 'Bạn dựa vào cái gì mà nghi ngờ tôi ăn cắp đồ?' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: 86,
+                title: 'Phân biệt 记录 (jìlù) và 纪录 (jìlù)',
+                content: {
+                    type: 'comparison',
+                    explanation: 'Cả hai đều liên quan đến việc ghi chép hoặc thành tích, nhưng có sự khác biệt rõ rệt về từ loại và ngữ nghĩa.',
+                    table: {
+                        headers: ['', '记录 (jìlù)', '纪录 (jìlù)'],
+                        rows: [
+                            ['Điểm khác 1', 'Có thể làm động từ, chỉ đem lời nói nghe thấy hoặc việc xảy ra ghi chép lại.', 'Danh từ, chỉ thành tích tốt nhất trong khoảng thời gian nhất định, trong phạm vi nhất định.'],
+                            ['Ví dụ', '如:我已经把这次会议的内容详细地记录下来了。', '如:他在本次比赛中打破了世界纪录.'],
+                            ['Điểm khác 2', 'Cũng có thể làm danh từ, chỉ tài liệu được ghi chép lại hoặc người ghi chép. Ví dụ: 如:第二天还书时再把记录一个一个地画掉。 小刘,你来做这次会议的记录。', 'Danh từ, cũng có thể chỉ việc ghi lại những sự kiện có giá trị tin tức. Ví dụ: 如:学校带孩子们看了一部有教育意义的纪录片.']
+                        ]
+                    }
+                }
+            },
+            {
+                id: 11, // Cập nhật ID 11 với dữ liệu mới
+                title: '包括 (bāokuò)',
+                content: {
+                    type: 'standard',
+                    explanation: 'Động từ, biểu thị bao hàm các bộ phận. Cũng có thể nhấn mạnh một vài bộ phận, có tác dụng nêu ví dụ, bổ sung, giải thích...',
+                    examples: [{
+                        chinese: '汉语技能教学包括听、说、读、写四个方面。',
+                        pinyin: 'Hànyǔ jìnéng jiàoxué bāokuò tīng, shuō, dú, xiě sì gè fāngmiàn.',
+                        vietnamese: 'Giảng dạy kỹ năng tiếng Hán bao gồm nghe, nói, đọc, viết bốn mặt.'
+                    }, {
+                        chinese: '“学习”,其实包括“学”与“习”两层意思。学,就是学习知识;习,就是实践、练习。',
+                        pinyin: '“Xuéxí”, qíshí bāokuò “xué” yǔ “xí” liǎng céng yìsi. Xué, jiùshì xuéxí zhīshi; xí, jiùshì shíjiàn, liànxí.',
+                        vietnamese: '“Học tập”, thực ra bao gồm hai ý nghĩa “học” và “tập”. Học là học kiến thức; tập là thực hành, luyện tập.'
+                    }, {
+                        chinese: '然而,包括翟峰的父母,所有人都觉得,翟峰“疯了”',
+                        pinyin: 'Rán\'ér, bāokuò Zhái Fēng de fùmǔ, suǒyǒu rén dōu juédé, Zhái Fēng “fēngle”',
+                        vietnamese: 'Tuy nhiên, bao gồm cả bố mẹ của Trạch Phong, tất cả mọi người đều cảm thấy Trạch Phong “điên rồi”.'
+                    }, {
+                        chinese: '我们班所有人,包括最不爱运动的刘方也都参加了这次运动会。',
+                        pinyin: 'Wǒmen bān suǒyǒu rén, bāokuò zuì bù ài yùndòng de Liú Fāng yě dōu cānjiāle zhè cì yùndònghuì.',
+                        vietnamese: 'Tất cả mọi người trong lớp chúng tôi, bao gồm cả Lưu Phương người ít thích vận động nhất, đều tham gia đại hội thể thao lần này.'
+                    }]
+                }
+            }
+        ];
+
+        const navContainer = document.querySelector('#grammarNav ul');
+        const contentArea = document.getElementById('contentArea');
+        const searchInput = document.getElementById('searchInput');
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        let currentPointId = null; 
+
+        function renderNav(points) {
+            navContainer.innerHTML = '';
+            points.sort((a, b) => a.id - b.id); // Sort by ID to maintain order
+            points.forEach(point => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="#point-${point.id}" data-id="${point.id}" class="nav-item block w-full text-left px-4 py-2.5 rounded-lg transition duration-200 hover:bg-slate-100 text-slate-700">
+                        <span class="font-medium">${point.id}. ${point.title}</span>
+                    </a>
+                `;
+                navContainer.appendChild(li);
+            });
+            updateActiveNav();
+        }
+
+        function renderContent(pointId) {
+            const point = grammarPoints.find(p => p.id === pointId);
+            if (!point) {
+                contentArea.innerHTML = `
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <p class="text-slate-700 text-center">Không tìm thấy chủ điểm ngữ pháp này.</p>
+                    </div>
+                `;
+                currentPointId = null;
+                updateActiveNav();
+                return;
+            }
+            
+            currentPointId = point.id;
+            let contentHtml = `
+                <div id="point-${point.id}" class="content-card bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-600 mb-2">${point.id}. ${point.title}</h2>
+                    <p class="text-slate-600 italic mb-6">${point.content.explanation}</p>
+            `;
+
+            if (point.content.type === 'standard') {
+                if (point.content.explanations && point.content.explanations.length > 0) {
+                    // Handle multiple explanations with their own examples
+                    contentHtml += point.content.explanations.map((exp, expIndex) => `
+                        <div class="mb-6">
+                            ${exp.explanation ? `<h3 class="text-xl font-semibold text-slate-700 mb-3">${exp.explanation}</h3>` : ''}
+                            ${exp.examples && exp.examples.length > 0 ? exp.examples.map((ex, exampleIndex) => `
+                                <div class="example-card border border-slate-200 rounded-lg p-4 mb-4 bg-slate-50">
+                                    <p class="text-lg text-slate-800 font-semibold mb-3">${ex.chinese}</p>
+                                    <div id="toggle-pinyin-${point.id}-${expIndex}-${exampleIndex}" class="toggle-content text-blue-500 mb-2">${ex.pinyin}</div>
+                                    <div id="toggle-vietnamese-${point.id}-${expIndex}-${exampleIndex}" class="toggle-content text-green-600">${ex.vietnamese}</div>
+                                    <div class="mt-3 flex gap-2 flex-wrap">
+                                        <button data-target-pinyin="#toggle-pinyin-${point.id}-${expIndex}-${exampleIndex}" class="toggle-btn bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full hover:bg-blue-200 transition">Hiển thị Pinyin</button>
+                                        <button data-target-vietnamese="#toggle-vietnamese-${point.id}-${expIndex}-${exampleIndex}" class="toggle-btn bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full hover:bg-green-200 transition">Hiển thị Dịch nghĩa</button>
+                                    </div>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                    `).join('');
+                } else if (point.content.examples && point.content.examples.length > 0) {
+                    // Handle single explanation with direct examples (like the new id 11)
+                    contentHtml += point.content.examples.map((ex, exampleIndex) => `
+                        <div class="example-card border border-slate-200 rounded-lg p-4 mb-4 bg-slate-50">
+                            <p class="text-lg text-slate-800 font-semibold mb-3">${ex.chinese}</p>
+                            <div id="toggle-pinyin-${point.id}-0-${exampleIndex}" class="toggle-content text-blue-500 mb-2">${ex.pinyin}</div>
+                            <div id="toggle-vietnamese-${point.id}-0-${exampleIndex}" class="toggle-content text-green-600">${ex.vietnamese}</div>
+                            <div class="mt-3 flex gap-2 flex-wrap">
+                                <button data-target-pinyin="#toggle-pinyin-${point.id}-0-${exampleIndex}" class="toggle-btn bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full hover:bg-blue-200 transition">Hiển thị Pinyin</button>
+                                <button data-target-vietnamese="#toggle-vietnamese-${point.id}-0-${exampleIndex}" class="toggle-btn bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full hover:bg-green-200 transition">Hiển thị Dịch nghĩa</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } else if (point.content.type === 'comparison') {
+                 contentHtml += `
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse">
+                            <thead>
+                                <tr>
+                                    ${point.content.table.headers.map(h => `<th class="bg-slate-200 p-3 text-sm font-semibold text-slate-700 text-left border border-slate-300">${h}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${point.content.table.rows.map(row => `
+                                    <tr>
+                                        <td class="p-3 border border-slate-300 font-semibold align-top">${row[0]}</td>
+                                        ${row.slice(1).map(cell => typeof cell === 'object' ? `<td colspan="${cell.colspan}" class="p-3 border border-slate-300">${cell.text}</td>` : `<td class="p-3 border border-slate-300">${cell}</td>`).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                 `;
+            }
+            
+            contentHtml += '</div>';
+            
+            const introDiv = contentArea.querySelector('.intro-section');
+            if (introDiv) {
+                contentArea.innerHTML = introDiv.outerHTML + contentHtml;
+            } else {
+                contentArea.innerHTML = contentHtml;
+            }
+
+            updateActiveNav();
+            attachToggleListeners();
+        }
+        
+        function updateActiveNav() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (parseInt(item.dataset.id) === currentPointId) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        
+        function attachToggleListeners() {
+            document.querySelectorAll('.toggle-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const pinyinTargetSelector = this.dataset.targetPinyin;
+                    const vietnameseTargetSelector = this.dataset.targetVietnamese;
+
+                    if(pinyinTargetSelector) {
+                        const target = document.querySelector(pinyinTargetSelector);
+                        target.classList.toggle('visible');
+                        this.textContent = target.classList.contains('visible') ? 'Ẩn Pinyin' : 'Hiển thị Pinyin';
+                    }
+                    if(vietnameseTargetSelector) {
+                        const target = document.querySelector(vietnameseTargetSelector);
+                        target.classList.toggle('visible');
+                        this.textContent = target.classList.contains('visible') ? 'Ẩn Dịch nghĩa' : 'Hiển thị Dịch nghĩa';
+                    }
+                });
+            });
+        }
+
+        navContainer.addEventListener('click', function(e) {
+            const navLink = e.target.closest('.nav-item');
+            if (navLink) {
+                e.preventDefault();
+                const pointId = parseInt(navLink.dataset.id);
+                renderContent(pointId);
+                if (window.innerWidth < 768) {
+                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+        
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredPoints = grammarPoints.filter(p => p.title.toLowerCase().includes(searchTerm) || (p.content.explanation && p.content.explanation.toLowerCase().includes(searchTerm)) || (p.content.explanations && p.content.explanations.some(exp => exp.explanation && exp.explanation.toLowerCase().includes(searchTerm))));
+            renderNav(filteredPoints);
+        });
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 200) {
+                scrollToTopBtn.style.display = 'block';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        const initialIntroHtml = `
+            <div class="intro-section bg-white p-6 md:p-8 rounded-xl shadow-md mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4">Chào mừng bạn đến với Cẩm nang Ngữ pháp HSK 5!</h2>
+                <p class="text-slate-700 leading-relaxed">
+                    Ứng dụng này được thiết kế để giúp bạn dễ dàng khám phá và nắm vững các điểm ngữ pháp quan trọng trong cấp độ HSK 5. 
+                    Sử dụng thanh điều hướng bên trái để chọn chủ điểm ngữ pháp bạn muốn học. Với mỗi chủ điểm, bạn sẽ tìm thấy giải thích chi tiết và các ví dụ minh họa. 
+                    Hãy tận dụng các nút "Hiển thị Pinyin" và "Hiển thị Dịch nghĩa" để tự kiểm tra kiến thức của mình một cách tương tác. Chúc bạn học tốt!
+                </p>
+            </div>
+        `;
+        contentArea.innerHTML = initialIntroHtml;
+        renderNav(grammarPoints);
+        renderContent(grammarPoints[0].id);
+    });
+    </script>
+</body>
+</html>

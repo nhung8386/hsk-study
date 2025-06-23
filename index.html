@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSK Chinese Learning Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #c41e3a;
+            --secondary-color: #ffd700;
+            --accent-color: #1a472a;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .chinese-char {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* HSK Level Grid */
+        .hsk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .hsk-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hsk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .hsk-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hsk-level {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .hsk-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .hsk-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .hsk-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-tag {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .enter-btn {
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .enter-btn:hover {
+            background: linear-gradient(135deg, #a01729, var(--primary-color));
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Content Pages Styles */
+        .content-page {
+            display: none;
+        }
+
+        .content-page.active {
+            display: block;
+        }
+
+        .level-header {
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .level-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .level-nav-btn {
+            background: var(--white);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .level-nav-btn:hover,
+        .level-nav-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .section-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .word-item {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .word-chinese {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-pinyin {
+            color: var(--primary-color);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .word-meaning {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-example {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 3px solid var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .hsk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                padding: 2rem 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-nav {
+                gap: 0.5rem;
+            }
+
+            .level-nav-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+        span.section-tag a {
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showHome()">
+                <span class="chinese-char">汉</span>
+                HSK Learning Hub
+            </a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#" onclick="showHome()">Home</a></li>
+                    <li><a href="#" onclick="showLevel('hsk1')">HSK 1</a></li>
+                    <li><a href="#" onclick="showLevel('hsk2')">HSK 2</a></li>
+                    <li><a href="#" onclick="showLevel('hsk3')">HSK 3</a></li>
+                    <li><a href="#" onclick="showLevel('hsk4')">HSK 4</a></li>
+                    <li><a href="#" onclick="showLevel('hsk5')">HSK 5</a></li>
+                    <li><a href="#" onclick="showLevel('hsk6')">HSK 6</a></li>
+                    <li><a href="#" onclick="showLevel('hsk7')">HSK 7-9</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <div id="homePage" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Master Chinese with HSK</h1>
+                <p class="page-subtitle">Your comprehensive resource for HSK preparation. From beginner to advanced,
+                    we've got everything you need to succeed in your Chinese language journey.</p>
+            </div>
+
+            <div class="hsk-grid">
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 1</div>
+                    <p class="hsk-description">Foundation level for absolute beginners. Learn basic greetings, numbers,
+                        and everyday expressions.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">150 Words</span>
+                        <span class="stat">Basic Grammar</span>
+                        <span class="stat">Beginner</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk1')">Enter HSK 1</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 2</div>
+                    <p class="hsk-description">Build upon HSK 1 with more complex sentences and practical daily
+                        conversations.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">300 Words</span>
+                        <span class="stat">Key Patterns</span>
+                        <span class="stat">Elementary</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk2')">Enter HSK 2</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 3</div>
+                    <p class="hsk-description">Intermediate level with expanded vocabulary for work, study, and travel
+                        situations.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">600 Words</span>
+                        <span class="stat">Complex Grammar</span>
+                        <span class="stat">Intermediate</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Chengyu</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk3')">Enter HSK 3</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 4</div>
+                    <p class="hsk-description">Upper-intermediate level for discussing abstract topics and expressing
+                        opinions clearly.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">1200 Words</span>
+                        <span class="stat">Advanced Patterns</span>
+                        <span class="stat">Upper-Int.</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Chengyu</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk4')">Enter HSK 4</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 5</div>
+                    <p class="hsk-description">Advanced level for reading newspapers, magazines, and understanding
+                        Chinese films.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">2500 Words</span>
+                        <span class="stat">Complex Structures</span>
+                        <span class="stat">Advanced</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">
+                            <a href="./hsk5/index.html">Grammar</a>
+                        </span>
+                        <span class="section-tag">Chengyu</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="./hsk5/index.html" class="enter-btn" onclick="showLevel('hsk5')">Enter HSK 5</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 6</div>
+                    <p class="hsk-description">Highest standard level for fluent comprehension and natural expression in
+                        Chinese.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">5000+ Words</span>
+                        <span class="stat">Native-like</span>
+                        <span class="stat">Proficient</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Chengyu</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk6')">Enter HSK 6</a>
+                </div>
+
+                <div class="hsk-card">
+                    <div class="hsk-level">HSK 7-9</div>
+                    <p class="hsk-description">New advanced levels for specialized academic and professional Chinese
+                        proficiency.</p>
+                    <div class="hsk-stats">
+                        <span class="stat">11000+ Words</span>
+                        <span class="stat">Professional</span>
+                        <span class="stat">Expert</span>
+                    </div>
+                    <div class="hsk-sections">
+                        <span class="section-tag">Vocabulary</span>
+                        <span class="section-tag">Grammar</span>
+                        <span class="section-tag">Chengyu</span>
+                        <span class="section-tag">Practice</span>
+                        <span class="section-tag">Downloads</span>
+                    </div>
+                    <a href="#" class="enter-btn" onclick="showLevel('hsk7')">Enter HSK 7-9</a>
+                </div>
+            </div>
+
+            <div class="features">
+                <h2>Why Choose Our Platform?</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon">📚</div>
+                        <h3>Comprehensive Content</h3>
+                        <p>Complete vocabulary lists, grammar explanations, and cultural insights for each HSK level.
+                        </p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Exam-Focused</h3>
+                        <p>Materials specifically designed to help you pass HSK exams with confidence.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobile-Friendly</h3>
+                        <p>Study anywhere, anytime with our responsive design that works on all devices.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🆓</div>
+                        <h3>Free Resources</h3>
+                        <p>Access to downloadable PDFs, audio files, and practice materials at no cost.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HSK Level Pages -->
+        <div id="hsk1Page" class="content-page">
+            <div class="level-header">
+                <h1>HSK 1 - Foundation Level</h1>
+                <p>Master the basics of Chinese with 150 essential words and fundamental grammar patterns</p>
+            </div>
+
+            <div class="level-nav">
+                <button class="level-nav-btn active" onclick="showSection('hsk1', 'vocabulary')">Vocabulary</button>
+                <button class="level-nav-btn" onclick="showSection('hsk1', 'grammar')">Grammar</button>
+                <button class="level-nav-btn" onclick="showSection('hsk1', 'practice')">Practice</button>
+                <button class="level-nav-btn" onclick="showSection('hsk1', 'downloads')">Downloads</button>
+            </div>
+
+            <div id="hsk1-vocabulary" class="section-content active">
+                <h2>HSK 1 Vocabulary (150 Words)</h2>
+                <div class="word-item">
+                    <div class="word-chinese">你好</div>
+                    <div class="word-pinyin">nǐ hǎo</div>
+                    <div class="word-meaning">hello; hi</div>
+                    <div class="word-example">
+                        <strong>Example:</strong> 你好，我是王老师。(Nǐ hǎo, wǒ shì Wáng lǎoshī.) - Hello, I am Teacher Wang.
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">谢谢</div>
+                    <div class="word-pinyin">xiè xie</div>
+                    <div class="word-meaning">thank you</div>
+                    <div class="word-example">
+                        <strong>Example:</strong> 谢谢你的帮助。(Xiè xie nǐ de bāngzhù.) - Thank you for your help.
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">我</div>
+                    <div class="word-pinyin">wǒ</div>
+                    <div class="word-meaning">I; me</div>
+                    <div class="word-example">
+                        <strong>Example:</strong> 我是学生。(Wǒ shì xuéshēng.) - I am a student.
+                    </div>
+                </div>
+
+                <p><em>Add more vocabulary items here. Each word should include Chinese characters, pinyin, English
+                        meaning, and example sentences.</em></p>
+            </div>
+
+            <div id="hsk1-grammar" class="section-content">
+                <h2>HSK 1 Grammar Points</h2>
+                <div class="word-item">
+                    <div class="word-chinese">Subject + 是 + Object</div>
+                    <div class="word-pinyin">Basic "to be" sentence structure</div>
+                    <div class="word-meaning">Used to state what someone or something is</div>
+                    <div class="word-example">
+                        <strong>Examples:</strong><br>
+                        我是老师。(Wǒ shì lǎoshī.) - I am a teacher.<br>
+                        他是学生。(Tā shì xuéshēng.) - He is a student.
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">Subject + 有 + Object</div>
+                    <div class="word-pinyin">Possession with 有 (yǒu)</div>
+                    <div class="word-meaning">Used to express having or possessing something</div>
+                    <div class="word-example">
+                        <strong>Examples:</strong><br>
+                        我有一本书。(Wǒ yǒu yī běn shū.) - I have a book.<br>
+                        他有三个苹果。(Tā yǒu sān gè píngguǒ.) - He has three apples.
+                    </div>
+                </div>
+
+                <p><em>Add more grammar points with detailed explanations and multiple examples.</em></p>
+            </div>
+
+            <div id="hsk1-practice" class="section-content">
+                <h2>HSK 1 Practice Exercises</h2>
+                <div class="word-item">
+                    <div class="word-chinese">Translation Practice</div>
+                    <div class="word-meaning">Translate the following sentences:</div>
+                    <div class="word-example">
+                        1. I am a teacher. → ________________<br>
+                        2. Thank you very much. → ________________<br>
+                        3. How much is this? → ________________<br>
+                        <br>
+                        <strong>Answers:</strong><br>
+                        1. 我是老师。<br>
+                        2. 谢谢你。<br>
+                        3. 这个多少钱？
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">Fill in the Blanks</div>
+                    <div class="word-meaning">Complete the sentences with appropriate words:</div>
+                    <div class="word-example">
+                        1. 我____学生。(am)<br>
+                        2. ____好！(hello)<br>
+                        3. 这是____书。(my)<br>
+                    </div>
+                </div>
+
+                <p><em>Add more interactive exercises, quizzes, and practice materials.</em></p>
+            </div>
+
+            <div id="hsk1-downloads" class="section-content">
+                <h2>HSK 1 Download Resources</h2>
+                <div class="word-item">
+                    <div class="word-chinese">📄 Past Exam Papers</div>
+                    <div class="word-meaning">Official HSK 1 examination papers from previous years</div>
+                    <div class="word-example">
+                        • <a href="#">HSK 1 Sample Test 2024.pdf</a><br>
+                        • <a href="#">HSK 1 Practice Paper Set A.pdf</a><br>
+                        • <a href="#">HSK 1 Practice Paper Set B.pdf</a>
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">🎵 Audio Materials</div>
+                    <div class="word-meaning">Listening practice and pronunciation guides</div>
+                    <div class="word-example">
+                        • <a href="#">HSK 1 Vocabulary Audio.mp3</a><br>
+                        • <a href="#">HSK 1 Listening Practice.mp3</a><br>
+                        • <a href="#">Pronunciation Guide.mp3</a>
+                    </div>
+                </div>
+
+                <div class="word-item">
+                    <div class="word-chinese">📚 Study Materials</div>
+                    <div class="word-meaning">Comprehensive study guides and flashcards</div>
+                    <div class="word-example">
+                        • <a href="#">HSK 1 Complete Word List.pdf</a><br>
+                        • <a href="#">Grammar Summary Sheet.pdf</a><br>
+                        • <a href="#">Printable Flashcards.pdf</a>
+                    </div>
+                </div>
+
+                <p><em>Links should point to actual downloadable resources you'll upload later.</em></p>
+            </div>
+        </div>
+
+        <!-- Template for other HSK levels (HSK2-HSK7) -->
+        <div id="hsk2Page" class="content-page">
+            <div class="level-header">
+                <h1>HSK 2 - Elementary Level</h1>
+                <p>Expand your foundation with 300 words and more complex sentence structures</p>
+            </div>
+
+            <div class="level-nav">
+                <button class="level-nav-btn active" onclick="showSection('hsk2', 'vocabulary')">Vocabulary</button>
+                <button class="level-nav-btn" onclick="showSection('hsk2', 'grammar')">Grammar</button>
+                <button class="level-nav-btn" onclick="showSection('hsk2', 'practice')">Practice</button>
+                <button class="level-nav-btn" onclick="showSection('hsk2', 'downloads')">Downloads</button>
+            </div>
+
+            <div id="hsk2-vocabulary" class="section-content active">
+                <h2>HSK 2 Vocabulary (300 Words)</h2>
+                <p><em>Content to be added - follow the same format as HSK 1</em>
