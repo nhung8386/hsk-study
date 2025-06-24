@@ -1,10 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HSK Chinese Learning Hub</title>
+    <title>
+        Home Page
+    </title>
     <style>
         * {
             margin: 0;
@@ -13,7 +16,8 @@
         }
 
         :root {
-            --primary-color: #c41e3a;
+            /* --primary-color: #c41e3a; */
+            --primary-color: #2563eb;
             --secondary-color: #ffd700;
             --accent-color: #1a472a;
             --text-dark: #2c3e50;
@@ -33,7 +37,6 @@
 
         /* Header */
         header {
-            /* background: linear-gradient(135deg, var(--primary-color), #d63447); */
             background: #2563eb;
             color: var(--white);
             padding: 1rem 0;
@@ -74,9 +77,10 @@
             color: var(--white);
             font-size: 1.5rem;
             cursor: pointer;
+            margin-right: -100px;
         }
 
-        nav ul {
+        header nav ul {
             display: flex;
             list-style: none;
             gap: 2rem;
@@ -319,8 +323,7 @@
         }
 
         .level-header {
-            /* background: linear-gradient(135deg, var(--primary-color), #d63447); */
-            background: #2563eb;
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
             color: var(--white);
             padding: 2rem;
             border-radius: 15px;
@@ -410,7 +413,7 @@
                 display: block;
             }
 
-            nav ul {
+            header nav ul {
                 display: none;
                 position: absolute;
                 top: 100%;
@@ -422,7 +425,7 @@
                 box-shadow: var(--shadow);
             }
 
-            nav ul.show {
+            header nav ul.show {
                 display: flex;
             }
 
@@ -455,39 +458,72 @@
                 font-size: 0.9rem;
             }
         }
+
         span.section-tag a {
             color: white !important;
         }
     </style>
+
 </head>
 
 <body>
-    <header>
-        <div class="header-content">
-            <a href="#" class="logo" onclick="showHome()">
-                <span class="chinese-char">汉</span>
-                HSK Learning Hub
-            </a>
-            <button class="nav-toggle" onclick="toggleNav()">☰</button>
-            <nav>
-                <ul id="navMenu">
-                    <li><a href="#" onclick="showHome()">Home</a></li>
-                    <li><a href="#" onclick="showLevel('hsk1')">HSK 1</a></li>
-                    <li><a href="#" onclick="showLevel('hsk2')">HSK 2</a></li>
-                    <li><a href="#" onclick="showLevel('hsk3')">HSK 3</a></li>
-                    <li><a href="#" onclick="showLevel('hsk4')">HSK 4</a></li>
-                    <li><a href="#" onclick="showLevel('hsk5')">HSK 5</a></li>
-                    <li><a href="#" onclick="showLevel('hsk6')">HSK 6</a></li>
-                    <li><a href="#" onclick="showLevel('hsk7')">HSK 7-9</a></li>
-                    <li><a href="./chengyu/index.html" onclick="showLevel('Thành ngữ')">Thành ngữ</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    
+        <style>
+    /* Mặc định ẩn */
+    #navMenu {
+        display: none;
+        flex-direction: column;
+    }
 
-    <main>
-        <!-- Home Page -->
-        <div id="homePage" class="page">
+    /* Khi mở */
+    #navMenu.open {
+        display: flex;
+    }
+
+    /* Trên desktop: luôn hiện menu, ẩn nút toggle */
+    @media (min-width: 768px) {
+        #navMenu {
+            display: flex !important;
+            flex-direction: row;
+        }
+
+        .nav-toggle {
+            display: none;
+        }
+    }
+</style>
+<header>
+    <div class="header-content">
+        <a href="/hsk-study/dist/index.html" class="logo" onclick="showHome()">
+            <span class="chinese-char">汉</span>
+            HSK Study
+        </a>
+        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        <nav>
+            <ul id="navMenu">
+                <li><a href="/hsk-study/dist/index.html" onclick="showHome()">Home</a></li>
+                <li><a href="#" onclick="showLevel('hsk1')">HSK 1</a></li>
+                <li><a href="#" onclick="showLevel('hsk2')">HSK 2</a></li>
+                <li><a href="#" onclick="showLevel('hsk3')">HSK 3</a></li>
+                <li><a href="#" onclick="showLevel('hsk4')">HSK 4</a></li>
+                <li><a href="#" onclick="showLevel('hsk5')">HSK 5</a></li>
+                <li><a href="#" onclick="showLevel('hsk6')">HSK 6</a></li>
+                <li><a href="#" onclick="showLevel('hsk7')">HSK 7-9</a></li>
+                <li><a href="/hsk-study/dist/chengyu.html" onclick="showLevel('Thành ngữ')">Thành ngữ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<script>
+
+    function toggleNav() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('open');
+    }
+
+</script>
+            <main>
+                <div id="homePage" class="page">
             <div class="page-header">
                 <h1 class="page-title">Master Chinese with HSK</h1>
                 <p class="page-subtitle">Your comprehensive resource for HSK preparation. From beginner to advanced,
@@ -495,7 +531,7 @@
             </div>
 
             <div class="hsk-grid">
-                <div class="hsk-card">
+                <!-- <div class="hsk-card">
                     <div class="hsk-level">HSK 1</div>
                     <p class="hsk-description">Foundation level for absolute beginners. Learn basic greetings, numbers,
                         and everyday expressions.</p>
@@ -567,7 +603,7 @@
                         <span class="section-tag">Downloads</span>
                     </div>
                     <a href="#" class="enter-btn" onclick="showLevel('hsk4')">Enter HSK 4</a>
-                </div>
+                </div> -->
 
                 <div class="hsk-card">
                     <div class="hsk-level">HSK 5</div>
@@ -583,7 +619,7 @@
                             <a href="./hsk5/volcabulary1.html">Vocabulary</a>
                         </span>
                         <span class="section-tag">
-                            <a href="./hsk5/index.html">Grammar</a>
+                            <a href="./hsk5/grammar.html">Grammar</a>
                         </span>
                         <span class="section-tag">Chengyu</span>
                         <span class="section-tag">Practice</span>
@@ -592,7 +628,7 @@
                     <a href="./hsk5/index.html" class="enter-btn" onclick="showLevel('hsk5')">Enter HSK 5</a>
                 </div>
 
-                <div class="hsk-card">
+                <!-- <div class="hsk-card">
                     <div class="hsk-level">HSK 6</div>
                     <p class="hsk-description">Highest standard level for fluent comprehension and natural expression in
                         Chinese.</p>
@@ -628,191 +664,14 @@
                         <span class="section-tag">Downloads</span>
                     </div>
                     <a href="#" class="enter-btn" onclick="showLevel('hsk7')">Enter HSK 7-9</a>
-                </div>
+                </div> -->
             </div>
 
-            <div class="features">
-                <h2>Why Choose Our Platform?</h2>
-                <div class="features-grid">
-                    <div class="feature">
-                        <div class="feature-icon">📚</div>
-                        <h3>Comprehensive Content</h3>
-                        <p>Complete vocabulary lists, grammar explanations, and cultural insights for each HSK level.
-                        </p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">🎯</div>
-                        <h3>Exam-Focused</h3>
-                        <p>Materials specifically designed to help you pass HSK exams with confidence.</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">📱</div>
-                        <h3>Mobile-Friendly</h3>
-                        <p>Study anywhere, anytime with our responsive design that works on all devices.</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">🆓</div>
-                        <h3>Free Resources</h3>
-                        <p>Access to downloadable PDFs, audio files, and practice materials at no cost.</p>
-                    </div>
-                </div>
-            </div>
         </div>
+            </main>
+            <footer>
+  <p>Được tạo ra để hỗ trợ việc học tiếng Trung của bạn. Chúc bạn thành công!</p>
+</footer>
+</body>
 
-        <!-- HSK Level Pages -->
-        <div id="hsk1Page" class="content-page">
-            <div class="level-header">
-                <h1>HSK 1 - Foundation Level</h1>
-                <p>Master the basics of Chinese with 150 essential words and fundamental grammar patterns</p>
-            </div>
-
-            <div class="level-nav">
-                <button class="level-nav-btn active" onclick="showSection('hsk1', 'vocabulary')">Vocabulary</button>
-                <button class="level-nav-btn" onclick="showSection('hsk1', 'grammar')">Grammar</button>
-                <button class="level-nav-btn" onclick="showSection('hsk1', 'practice')">Practice</button>
-                <button class="level-nav-btn" onclick="showSection('hsk1', 'downloads')">Downloads</button>
-            </div>
-
-            <div id="hsk1-vocabulary" class="section-content active">
-                <h2>HSK 1 Vocabulary (150 Words)</h2>
-                <div class="word-item">
-                    <div class="word-chinese">你好</div>
-                    <div class="word-pinyin">nǐ hǎo</div>
-                    <div class="word-meaning">hello; hi</div>
-                    <div class="word-example">
-                        <strong>Example:</strong> 你好，我是王老师。(Nǐ hǎo, wǒ shì Wáng lǎoshī.) - Hello, I am Teacher Wang.
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">谢谢</div>
-                    <div class="word-pinyin">xiè xie</div>
-                    <div class="word-meaning">thank you</div>
-                    <div class="word-example">
-                        <strong>Example:</strong> 谢谢你的帮助。(Xiè xie nǐ de bāngzhù.) - Thank you for your help.
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">我</div>
-                    <div class="word-pinyin">wǒ</div>
-                    <div class="word-meaning">I; me</div>
-                    <div class="word-example">
-                        <strong>Example:</strong> 我是学生。(Wǒ shì xuéshēng.) - I am a student.
-                    </div>
-                </div>
-
-                <p><em>Add more vocabulary items here. Each word should include Chinese characters, pinyin, English
-                        meaning, and example sentences.</em></p>
-            </div>
-
-            <div id="hsk1-grammar" class="section-content">
-                <h2>HSK 1 Grammar Points</h2>
-                <div class="word-item">
-                    <div class="word-chinese">Subject + 是 + Object</div>
-                    <div class="word-pinyin">Basic "to be" sentence structure</div>
-                    <div class="word-meaning">Used to state what someone or something is</div>
-                    <div class="word-example">
-                        <strong>Examples:</strong><br>
-                        我是老师。(Wǒ shì lǎoshī.) - I am a teacher.<br>
-                        他是学生。(Tā shì xuéshēng.) - He is a student.
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">Subject + 有 + Object</div>
-                    <div class="word-pinyin">Possession with 有 (yǒu)</div>
-                    <div class="word-meaning">Used to express having or possessing something</div>
-                    <div class="word-example">
-                        <strong>Examples:</strong><br>
-                        我有一本书。(Wǒ yǒu yī běn shū.) - I have a book.<br>
-                        他有三个苹果。(Tā yǒu sān gè píngguǒ.) - He has three apples.
-                    </div>
-                </div>
-
-                <p><em>Add more grammar points with detailed explanations and multiple examples.</em></p>
-            </div>
-
-            <div id="hsk1-practice" class="section-content">
-                <h2>HSK 1 Practice Exercises</h2>
-                <div class="word-item">
-                    <div class="word-chinese">Translation Practice</div>
-                    <div class="word-meaning">Translate the following sentences:</div>
-                    <div class="word-example">
-                        1. I am a teacher. → ________________<br>
-                        2. Thank you very much. → ________________<br>
-                        3. How much is this? → ________________<br>
-                        <br>
-                        <strong>Answers:</strong><br>
-                        1. 我是老师。<br>
-                        2. 谢谢你。<br>
-                        3. 这个多少钱？
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">Fill in the Blanks</div>
-                    <div class="word-meaning">Complete the sentences with appropriate words:</div>
-                    <div class="word-example">
-                        1. 我____学生。(am)<br>
-                        2. ____好！(hello)<br>
-                        3. 这是____书。(my)<br>
-                    </div>
-                </div>
-
-                <p><em>Add more interactive exercises, quizzes, and practice materials.</em></p>
-            </div>
-
-            <div id="hsk1-downloads" class="section-content">
-                <h2>HSK 1 Download Resources</h2>
-                <div class="word-item">
-                    <div class="word-chinese">📄 Past Exam Papers</div>
-                    <div class="word-meaning">Official HSK 1 examination papers from previous years</div>
-                    <div class="word-example">
-                        • <a href="#">HSK 1 Sample Test 2024.pdf</a><br>
-                        • <a href="#">HSK 1 Practice Paper Set A.pdf</a><br>
-                        • <a href="#">HSK 1 Practice Paper Set B.pdf</a>
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">🎵 Audio Materials</div>
-                    <div class="word-meaning">Listening practice and pronunciation guides</div>
-                    <div class="word-example">
-                        • <a href="#">HSK 1 Vocabulary Audio.mp3</a><br>
-                        • <a href="#">HSK 1 Listening Practice.mp3</a><br>
-                        • <a href="#">Pronunciation Guide.mp3</a>
-                    </div>
-                </div>
-
-                <div class="word-item">
-                    <div class="word-chinese">📚 Study Materials</div>
-                    <div class="word-meaning">Comprehensive study guides and flashcards</div>
-                    <div class="word-example">
-                        • <a href="#">HSK 1 Complete Word List.pdf</a><br>
-                        • <a href="#">Grammar Summary Sheet.pdf</a><br>
-                        • <a href="#">Printable Flashcards.pdf</a>
-                    </div>
-                </div>
-
-                <p><em>Links should point to actual downloadable resources you'll upload later.</em></p>
-            </div>
-        </div>
-
-        <!-- Template for other HSK levels (HSK2-HSK7) -->
-        <div id="hsk2Page" class="content-page">
-            <div class="level-header">
-                <h1>HSK 2 - Elementary Level</h1>
-                <p>Expand your foundation with 300 words and more complex sentence structures</p>
-            </div>
-
-            <div class="level-nav">
-                <button class="level-nav-btn active" onclick="showSection('hsk2', 'vocabulary')">Vocabulary</button>
-                <button class="level-nav-btn" onclick="showSection('hsk2', 'grammar')">Grammar</button>
-                <button class="level-nav-btn" onclick="showSection('hsk2', 'practice')">Practice</button>
-                <button class="level-nav-btn" onclick="showSection('hsk2', 'downloads')">Downloads</button>
-            </div>
-
-            <div id="hsk2-vocabulary" class="section-content active">
-                <h2>HSK 2 Vocabulary (300 Words)</h2>
-                <p><em>Content to be added - follow the same format as HSK 1</em>
+</html>

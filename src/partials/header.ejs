@@ -1,0 +1,54 @@
+<style>
+    /* Mặc định ẩn */
+    #navMenu {
+        display: none;
+        flex-direction: column;
+    }
+
+    /* Khi mở */
+    #navMenu.open {
+        display: flex;
+    }
+
+    /* Trên desktop: luôn hiện menu, ẩn nút toggle */
+    @media (min-width: 768px) {
+        #navMenu {
+            display: flex !important;
+            flex-direction: row;
+        }
+
+        .nav-toggle {
+            display: none;
+        }
+    }
+</style>
+<header>
+    <div class="header-content">
+        <a href="<%= BASE_URL %>dist/index.html" class="logo" onclick="showHome()">
+            <span class="chinese-char">汉</span>
+            HSK Study
+        </a>
+        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        <nav>
+            <ul id="navMenu">
+                <li><a href="<%= BASE_URL %>dist/index.html" onclick="showHome()">Home</a></li>
+                <li><a href="#" onclick="showLevel('hsk1')">HSK 1</a></li>
+                <li><a href="#" onclick="showLevel('hsk2')">HSK 2</a></li>
+                <li><a href="#" onclick="showLevel('hsk3')">HSK 3</a></li>
+                <li><a href="#" onclick="showLevel('hsk4')">HSK 4</a></li>
+                <li><a href="#" onclick="showLevel('hsk5')">HSK 5</a></li>
+                <li><a href="#" onclick="showLevel('hsk6')">HSK 6</a></li>
+                <li><a href="#" onclick="showLevel('hsk7')">HSK 7-9</a></li>
+                <li><a href="<%= BASE_URL %>dist/chengyu.html" onclick="showLevel('Thành ngữ')">Thành ngữ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<script>
+
+    function toggleNav() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('open');
+    }
+
+</script>
