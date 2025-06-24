@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng Flashcard</title>
+    <!-- Chosen Palette: Warm Neutrals (Background: #f1f5f9, Card: #ffffff, Text: #1e293b, Buttons: #3b82f6) -->
+    <!-- Application Structure Plan: Ứng dụng được thiết kế tập trung vào một flashcard trung tâm để học từ vựng. Người dùng có thể lật thẻ để xem nghĩa, chuyển đổi giữa các thẻ bằng nút hoặc thao tác vuốt, và xáo trộn bộ thẻ. Cấu trúc này tối ưu hóa trải nghiệm học tập tập trung, tương tác cao, mô phỏng việc học với thẻ giấy truyền thống nhưng có thêm các tính năng động của web. -->
+    <!-- Visualization & Content Choices: Không sử dụng biểu đồ hay đồ thị. "Trực quan hóa" được thực hiện thông qua thiết kế flashcard rõ ràng, các nút điều hướng trực quan và thao tác vuốt thẻ. Nội dung là văn bản từ vựng (tiếng Trung, pinyin, tiếng Việt). Các lựa chọn này nhằm mục đích đơn giản hóa giao diện, giữ sự tập trung vào từ vựng và tăng cường tính tương tác. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .flashcard-container {
+            width: 100%;
+            max-width: 500px;
+            height: 300px; /* Fixed height for consistency */
+            perspective: 1000px; /* For 3D flip effect */
+            touch-action: pan-y; /* Allow vertical scroll, disable horizontal scroll initially */
+        }
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .flashcard-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background-color: #ffffff;
+            color: #1e293b;
+        }
+        .flashcard-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .flashcard-back .pinyin {
+            font-size: 1.2rem;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        .flashcard-back .vietnamese {
+            font-size: 1.5rem;
+            color: #16a34a;
+        }
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+        }
+        .nav-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div id="app" class="flex flex-col items-center justify-center w-full max-w-xl mx-auto py-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6 text-center">Flashcard Từ Vựng Tiếng Trung</h1>
+        <p class="text-slate-600 mb-8 text-center max-w-md">Lật thẻ để xem nghĩa, trượt hoặc nhấn nút để chuyển thẻ, và xáo trộn bộ thẻ để học hiệu quả hơn!</p>
+
+        <div class="flashcard-container mb-8">
+            <div id="flashcardInner" class="flashcard-inner cursor-pointer">
+                <div class="flashcard-face flashcard-front">
+                    <span id="cardFrontText">Chạm vào đây để bắt đầu!</span>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <span id="cardBackPinyin" class="pinyin"></span>
+                    <span id="cardBackVietnamese" class="vietnamese"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between w-full max-w-md mb-8 px-4">
+            <button id="prevBtn" class="nav-button bg-blue-500 text-white hover:bg-blue-600 flex items-center gap-2">
+                &#x2190; Trước
+            </button>
+            <span id="cardCounter" class="text-xl font-semibold text-slate-700">0 / 0</span>
+            <button id="nextBtn" class="nav-button bg-blue-500 text-white hover:bg-blue-600 flex items-center gap-2">
+                Sau &#x2192;
+            </button>
+        </div>
+
+        <button id="shuffleBtn" class="nav-button bg-green-500 text-white hover:bg-green-600 w-full max-w-xs">
+            Xáo Trộn Thẻ
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const vocabularyData = [
+                { chinese: '你好', pinyin: 'Nǐ hǎo', vietnamese: 'Xin chào' },
+                { chinese: '谢谢', pinyin: 'Xièxiè', vietnamese: 'Cảm ơn' },
+                { chinese: '再见', pinyin: 'Zàijiàn', vietnamese: 'Tạm biệt' },
+                { chinese: '爱', pinyin: 'Ài', vietnamese: 'Yêu' },
+                { chinese: '朋友', pinyin: 'Péngyǒu', vietnamese: 'Bạn bè' },
+                { chinese: '学习', pinyin: 'Xuéxí', vietnamese: 'Học tập' },
+                { chinese: '中国', pinyin: 'Zhōngguó', vietnamese: 'Trung Quốc' },
+                { chinese: '学生', pinyin: 'Xuésheng', vietnamese: 'Học sinh' },
+                { chinese: '老师', pinyin: 'Lǎoshī', vietnamese: 'Giáo viên' },
+                { chinese: '吃饭', pinyin: 'Chīfàn', vietnamese: 'Ăn cơm' }
+            ];
+
+            const flashcardInner = document.getElementById('flashcardInner');
+            const cardFrontText = document.getElementById('cardFrontText');
+            const cardBackPinyin = document.getElementById('cardBackPinyin');
+            const cardBackVietnamese = document.getElementById('cardBackVietnamese');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            const cardCounter = document.getElementById('cardCounter');
+
+            let currentCardIndex = 0;
+            let shuffledIndices = [];
+            let isFlipped = false;
+            let touchStartX = 0;
+
+            function initializeCards() {
+                shuffledIndices = Array.from({ length: vocabularyData.length }, (_, i) => i);
+                shuffleArray(shuffledIndices);
+                currentCardIndex = 0;
+                displayCurrentCard();
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function displayCurrentCard() {
+                if (vocabularyData.length === 0) {
+                    cardFrontText.textContent = 'Không có từ vựng.';
+                    cardBackPinyin.textContent = '';
+                    cardBackVietnamese.textContent = '';
+                    cardCounter.textContent = '0 / 0';
+                    flashcardInner.classList.remove('flipped');
+                    isFlipped = false;
+                    return;
+                }
+
+                const actualIndex = shuffledIndices[currentCardIndex];
+                const currentCard = vocabularyData[actualIndex];
+
+                cardFrontText.textContent = currentCard.chinese;
+                cardBackPinyin.textContent = currentCard.pinyin;
+                cardBackVietnamese.textContent = currentCard.vietnamese;
+                cardCounter.textContent = `${currentCardIndex + 1} / ${vocabularyData.length}`;
+                
+                flashcardInner.classList.remove('flipped');
+                isFlipped = false;
+            }
+
+            function flipCard() {
+                flashcardInner.classList.toggle('flipped');
+                isFlipped = !isFlipped;
+            }
+
+            function navigateCard(direction) {
+                if (vocabularyData.length === 0) return;
+
+                currentCardIndex = (currentCardIndex + direction + vocabularyData.length) % vocabularyData.length;
+                displayCurrentCard();
+            }
+
+            flashcardInner.addEventListener('click', flipCard);
+            prevBtn.addEventListener('click', () => navigateCard(-1));
+            nextBtn.addEventListener('click', () => navigateCard(1));
+            shuffleBtn.addEventListener('click', initializeCards);
+
+            // Swipe functionality
+            flashcardInner.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+
+            flashcardInner.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    const touchMoveX = e.touches[0].clientX;
+                    const diffX = touchMoveX - touchStartX;
+                    // Prevent vertical scrolling issues while swiping horizontally
+                    if (Math.abs(diffX) > 10) { // Only prevent default if it's clearly a horizontal swipe
+                        e.preventDefault(); 
+                    }
+                }
+            });
+
+            flashcardInner.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diffX = touchEndX - touchStartX;
+                const swipeThreshold = 50; // pixels
+
+                if (diffX > swipeThreshold) {
+                    // Swiped right
+                    navigateCard(-1);
+                } else if (diffX < -swipeThreshold) {
+                    // Swiped left
+                    navigateCard(1);
+                }
+            });
+
+            // Initial load
+            initializeCards();
+        });
+    </script>
+</body>
+</html>
