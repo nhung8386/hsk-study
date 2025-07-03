@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sổ tay Ngữ pháp N4 Tương tác</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutrals (Light Beige Background, Dark Gray Text, Muted Blue Accent) -->
+    <!-- Application Structure Plan: A single-page app with a persistent sidebar for category-based navigation and a main content area displaying grammar points as individual, filterable cards. A search bar provides instant filtering across all points. This structure was chosen over a linear document to allow for non-linear exploration, quick look-ups, and focused study by category, which is more effective for a large reference document like a grammar summary. -->
+    <!-- Visualization & Content Choices: Report Info: N4 Grammar Points. Goal: Inform, Organize, Compare. Viz/Presentation Method: Interactive cards using HTML/CSS (Tailwind) in a grid layout. Interaction: Sidebar category filtering and a real-time search bar update the displayed cards. Justification: This card-based, filterable system is superior to a static list for quick reference and focused study, allowing users to easily find and digest specific information without extensive scrolling. Library/Method: Vanilla JS for DOM manipulation and event handling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6;
+            color: #333;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .nav-link.active {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            font-weight: 600;
+        }
+        .grammar-card {
+            transition: all 0.3s ease;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+        .card-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .card-enter-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fdfaf6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="w-full md:w-64 bg-white/50 backdrop-blur-sm p-4 md:p-6 border-r border-gray-200/80 shrink-0 sticky top-0 md:h-screen overflow-y-auto">
+            <h1 class="text-2xl font-bold text-indigo-800 mb-6">Sổ tay Ngữ pháp N4</h1>
+            <div id="category-nav">
+                <p class="mb-4 text-sm text-gray-600">Ứng dụng này giúp bạn khám phá ngữ pháp N4 một cách tương tác. Chọn một danh mục bên dưới hoặc sử dụng thanh tìm kiếm để lọc và tìm hiểu các điểm ngữ pháp cụ thể.</p>
+                <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Danh mục</h2>
+                <ul id="category-list" class="space-y-1"></ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8 lg:p-10">
+            <div class="max-w-7xl mx-auto">
+                <!-- Search Bar -->
+                <div class="mb-8 sticky top-0 bg-[#fdfaf6]/80 backdrop-blur-sm py-4 z-10">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm ngữ pháp (vd: ～んです, Vたら, ...)" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition-all duration-300 shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grammar Cards Grid -->
+                <div id="grammar-grid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Grammar cards will be inserted here by JavaScript -->
+                </div>
+                 <div id="no-results" class="text-center py-16 hidden">
+                    <h3 class="text-xl font-semibold text-gray-700">Không tìm thấy kết quả</h3>
+                    <p class="text-gray-500 mt-2">Vui lòng thử một từ khóa tìm kiếm khác hoặc xóa bộ lọc.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const grammarData = [
+        {
+            id: 1,
+            title: "～んです",
+            category: "Nguyên nhân, Lý do",
+            meaning: "Diễn tả nguyên nhân, lý do hoặc bổ sung thêm thông tin.",
+            structure: "Vる/Vない/Vた/Vている + んです<br>Aい + んです<br>Aな + なんです<br>N + なんです",
+            examples: [
+                { jp: "どうしたんですか。", ro: "Doushitandesu ka.", vi: "Sao vậy?" },
+                { jp: "頭が痛いんです。", ro: "Atama ga itai n desu.", vi: "Tôi bị đau đầu." },
+                { jp: "日本語が話せるんですか。", ro: "Nihongo ga hanaseru n desu ka.", vi: "Bạn có thể nói tiếng Nhật à?" },
+                { jp: "はい、話せるんです。", ro: "Hai, hanaseru n desu.", vi: "Vâng, tôi có thể nói." }
+            ]
+        },
+        {
+            id: 2,
+            title: "～んですが、～",
+            category: "Nguyên nhân, Lý do",
+            meaning: "Dùng để nói về một sự việc, tình huống nào đó, sau đó nhờ vả, rủ rê, xin lời khuyên hoặc xin phép.",
+            structure: "Vる/Vない/Vた/Vている + んですが、～<br>Aい + んですが、～<br>Aな + なんですが、～<br>N + なんですが、～",
+            examples: [
+                { jp: "日本語を勉強したいんですが、どこかいい学校がありますか。", ro: "Nihongo wo benkyou shitai n desu ga, dokoka ii gakkou ga arimasu ka.", vi: "Tôi muốn học tiếng Nhật, có trường nào tốt không ạ?" },
+                { jp: "ちょっと教えていただきたいんですが。", ro: "Chotto oshiete itadakitai n desu ga.", vi: "Tôi muốn bạn chỉ cho tôi một chút." }
+            ]
+        },
+        {
+            id: 3,
+            title: "Động từ thể khả năng (可能形)",
+            category: "Khả năng",
+            meaning: "Diễn tả khả năng làm được một việc gì đó.",
+            structure: "Nhóm I (う → える): 書く → 書ける<br>Nhóm II (る → られる): 食べる → 食べられる<br>Nhóm III: する → できる, 来る → 来られる",
+            examples: [
+                { jp: "私は漢字が書けます。", ro: "Watashi wa kanji ga kakemasu.", vi: "Tôi có thể viết chữ Hán." },
+                { jp: "この料理は食べられますか。", ro: "Kono ryouri wa taberaremasu ka.", vi: "Món ăn này có ăn được không?" }
+            ]
+        },
+        {
+            id: 4,
+            title: "～まだ V khả năng ～ません",
+            category: "Khả năng",
+            meaning: "Diễn tả việc chưa thể làm được một hành động nào đó.",
+            structure: "まだ + V khả năng + ません",
+            examples: [
+                { jp: "まだ日本語が話せません。", ro: "Mada nihongo ga hanasemasen.", vi: "Tôi vẫn chưa thể nói được tiếng Nhật." },
+                { jp: "この本はまだ読めません。", ro: "Kono hon wa mada yomemasen.", vi: "Cuốn sách này tôi vẫn chưa thể đọc được." }
+            ]
+        },
+        {
+            id: 5,
+            title: "～しか ～ません",
+            category: "Khả năng",
+            meaning: "Chỉ, duy nhất (đi kèm với thể phủ định).",
+            structure: "N + しか + Vません",
+            examples: [
+                { jp: "私は日本語しか話せません。", ro: "Watashi wa nihongo shika hanasemasen.", vi: "Tôi chỉ có thể nói tiếng Nhật." },
+                { jp: "この店にはビールしかありません。", ro: "Kono mise ni wa biiru shika arimasen.", vi: "Quán này chỉ có bia." }
+            ]
+        },
+         {
+            id: 6,
+            title: "N1は～が、N2は～",
+            category: "Khả năng",
+            meaning: "So sánh hai đối tượng, đưa ra hai thông tin đối lập.",
+            structure: "N1 は ～ が、N2 は ～",
+            examples: [
+                { jp: "田中さんは日本語が上手ですが、英語は下手です。", ro: "Tanaka-san wa nihongo ga jouzu desu ga, eigo wa heta desu.", vi: "Anh Tanaka giỏi tiếng Nhật nhưng dở tiếng Anh." },
+                { jp: "日本は物価が高いですが、ベトナムは安いです。", ro: "Nihon wa bukka ga takai desu ga, Betonamu wa yasui desu.", vi: "Nhật Bản vật giá đắt đỏ nhưng Việt Nam thì rẻ." }
+            ]
+        },
+        {
+            id: 7,
+            title: "N1 に N2 ができます",
+            category: "Khả năng",
+            meaning: "N2 được hoàn thành/hoàn thiện ở N1 (thường dùng cho những thứ mới được xây dựng).",
+            structure: "N1 に N2 ができます",
+            examples: [
+                { jp: "駅前に新しいデパートができました。", ro: "Ekimae ni atarashii depaato ga dekimashita.", vi: "Trước nhà ga đã xây xong một cửa hàng bách hóa mới." },
+            ]
+        },
+        {
+            id: 8,
+            title: "V1(bỏ ます) + ながら、V2",
+            category: "Hành động",
+            meaning: "Vừa làm V1 vừa làm V2 (V2 là hành động chính).",
+            structure: "V1(bỏ ます) + ながら、V2",
+            examples: [
+                { jp: "音楽を聞きながら、勉強します。", ro: "Ongaku wo kikinagara, benkyou shimasu.", vi: "Tôi vừa nghe nhạc vừa học." },
+                { jp: "ご飯を食べながら、テレビを見ます。", ro: "Gohan wo tabenagara, terebi wo mimasu.", vi: "Tôi vừa ăn cơm vừa xem TV." }
+            ]
+        },
+        {
+            id: 9,
+            title: "V ています",
+            category: "Hành động",
+            meaning: "Diễn tả trạng thái (kết quả của hành động đã xảy ra và vẫn đang tiếp diễn).",
+            structure: "V ています",
+            examples: [
+                { jp: "結婚しています。", ro: "Kekkon shiteimasu.", vi: "Đã kết hôn." },
+                { jp: "この椅子は壊れています。", ro: "Kono isu wa kowareteimasu.", vi: "Cái ghế này bị hỏng." }
+            ]
+        },
+        {
+            id: 10,
+            title: "Vたことがあります",
+            category: "Kinh nghiệm, Thói quen",
+            meaning: "Đã từng làm gì đó (kinh nghiệm trong quá khứ).",
+            structure: "Vたことがあります",
+            examples: [
+                { jp: "日本へ行ったことがあります。", ro: "Nihon e itta koto ga arimasu.", vi: "Tôi đã từng đi Nhật." },
+                { jp: "寿司を食べたことがありますか。", ro: "Sushi wo tabeta koto ga arimasu ka.", vi: "Bạn đã từng ăn Sushi chưa?" }
+            ]
+        },
+        {
+            id: 11,
+            title: "Vる/Vない ようにします",
+            category: "Kinh nghiệm, Thói quen",
+            meaning: "Cố gắng, nỗ lực làm/không làm một việc gì đó (tạo thói quen).",
+            structure: "Vる/Vない ようにします",
+            examples: [
+                { jp: "毎日、日本語を勉強するようにしています。", ro: "Mainichi, nihongo wo benkyou suru you ni shiteimasu.", vi: "Tôi cố gắng học tiếng Nhật mỗi ngày." }
+            ]
+        },
+        {
+            id: 12,
+            title: "Vる/N のために",
+            category: "Mục đích",
+            meaning: "Vì mục đích gì đó.",
+            structure: "Vる + のために<br>N + のために",
+            examples: [
+                { jp: "日本語を勉強するために、日本へ行きます。", ro: "Nihongo wo benkyou suru tame ni, Nihon e ikimasu.", vi: "Tôi đi Nhật để học tiếng Nhật." },
+                { jp: "家族のために、一生懸命働きます。", ro: "Kazoku no tame ni, isshoukenmei hatarakimasu.", vi: "Tôi làm việc chăm chỉ vì gia đình." }
+            ]
+        },
+        {
+            id: 13,
+            title: "Vる/Vない ように",
+            category: "Mục đích",
+            meaning: "Để (đạt được mục đích, thường là những việc ngoài ý muốn của người nói).",
+            structure: "Vる/Vない ように",
+            examples: [
+                { jp: "早く日本語が話せるように、毎日練習しています。", ro: "Hayaku nihongo ga hanaseru you ni, mainichi renshuu shiteimasu.", vi: "Để có thể nói tiếng Nhật nhanh, tôi luyện tập mỗi ngày." }
+            ]
+        },
+        {
+            id: 14,
+            title: "Vます(bỏ ます)/N に",
+            category: "Mục đích",
+            meaning: "Dùng để diễn tả mục đích của hành động di chuyển.",
+            structure: "Vます(bỏ ます) / N + に + 行きます/来ます/帰ります",
+            examples: [
+                { jp: "買い物に行きます。", ro: "Kaimono ni ikimasu.", vi: "Tôi đi mua sắm." },
+                { jp: "映画を見に行きます。", ro: "Eiga wo mi ni ikimasu.", vi: "Tôi đi xem phim." }
+            ]
+        },
+        {
+            id: 15,
+            title: "Vてもいいです",
+            category: "Cho phép, Cấm đoán",
+            meaning: "Được phép làm gì đó.",
+            structure: "Vて + もいいです",
+            examples: [
+                { jp: "ここで写真を撮ってもいいです。", ro: "Koko de shashin wo totte mo ii desu.", vi: "Bạn có thể chụp ảnh ở đây." }
+            ]
+        },
+        {
+            id: 16,
+            title: "Vてはいけません",
+            category: "Cho phép, Cấm đoán",
+            meaning: "Không được phép làm gì đó.",
+            structure: "Vて + はいけません",
+            examples: [
+                { jp: "ここでタバコを吸ってはいけません。", ro: "Koko de tabako wo sutte wa ikemasen.", vi: "Không được hút thuốc ở đây." }
+            ]
+        },
+        {
+            id: 17,
+            title: "Vなければなりません",
+            category: "Bắt buộc",
+            meaning: "Phải làm gì đó (bắt buộc).",
+            structure: "Vない(bỏ い) + なければなりません",
+            examples: [
+                { jp: "毎日、日本語を勉強しなければなりません。", ro: "Mainichi, nihongo wo benkyou shinakereba narimasen.", vi: "Mỗi ngày, tôi phải học tiếng Nhật." }
+            ]
+        },
+        {
+            id: 18,
+            title: "Vなくてもいいです",
+            category: "Bắt buộc",
+            meaning: "Không cần làm gì đó.",
+            structure: "Vない(bỏ い) + なくてもいいです",
+            examples: [
+                { jp: "明日、学校へ行かなくてもいいです。", ro: "Ashita, gakkou e ikanakute mo ii desu.", vi: "Ngày mai không cần đi học cũng được." }
+            ]
+        },
+        {
+            id: 19,
+            title: "Vようと思います",
+            category: "Ý chí, Dự định",
+            meaning: "Định làm gì đó (ý chí của người nói).",
+            structure: "V ý chí + と思います",
+            examples: [
+                { jp: "来年、日本へ行こうと思います。", ro: "Rainen, Nihon e ikou to omoimasu.", vi: "Năm sau tôi định đi Nhật." }
+            ]
+        },
+        {
+            id: 20,
+            title: "Vる/Vない つもりです",
+            category: "Ý chí, Dự định",
+            meaning: "Dự định làm gì đó/không làm gì đó (ý định đã được quyết định rõ ràng).",
+            structure: "Vる/Vない + つもりです",
+            examples: [
+                { jp: "来週、旅行に行くつもりです。", ro: "Raishuu, ryokou ni iku tsumori desu.", vi: "Tuần tới tôi dự định đi du lịch." }
+            ]
+        },
+        {
+            id: 21,
+            title: "Vてあげます / くれます / もらいます",
+            category: "Cho, Nhận",
+            meaning: "Diễn tả hành động cho và nhận. あげます: cho đi, くれます: ai đó cho mình, もらいます: nhận từ ai đó.",
+            structure: "Vて + あげます/くれます/もらいます",
+            examples: [
+                { jp: "私は友達にプレゼントをあげました。", ro: "Watashi wa tomodachi ni purezento o agemashita.", vi: "Tôi đã tặng quà cho bạn." },
+                { jp: "友達が私にプレゼントをくれました。", ro: "Tomodachi ga watashi ni purezento o kuremashita.", vi: "Bạn đã tặng quà cho tôi." },
+                { jp: "私は友達にプレゼントをもらいました。", ro: "Watashi wa tomodachi ni purezento o moraimashita.", vi: "Tôi đã nhận được quà từ bạn." }
+            ]
+        },
+        {
+            id: 22,
+            title: "Động từ thể bị động (受身形)",
+            category: "Bị động",
+            meaning: "Bị/được làm gì đó.",
+            structure: "Nhóm I (う → あれる): 書く → 書かれる<br>Nhóm II (る → られる): 食べる → 食べられる<br>Nhóm III: する → される, 来る → 来られる",
+            examples: [
+                { jp: "私は犬に噛まれました。", ro: "Watashi wa inu ni kamaremashita.", vi: "Tôi bị chó cắn." },
+                { jp: "この本は多くの人に読まれています。", ro: "Kono hon wa ooku no hito ni yomareteimasu.", vi: "Cuốn sách này được nhiều người đọc." }
+            ]
+        },
+        {
+            id: 23,
+            title: "Động từ thể sai khiến (使役形)",
+            category: "Sai khiến",
+            meaning: "Cho phép/bắt buộc ai đó làm gì.",
+            structure: "Nhóm I (う → あせる): 書く → 書かせる<br>Nhóm II (る → させる): 食べる → 食べさせる<br>Nhóm III: する → させる, 来る → 来させる",
+            examples: [
+                { jp: "先生は学生に本を読ませました。", ro: "Sensei wa gakusei ni hon o yomasemashita.", vi: "Thầy giáo đã cho học sinh đọc sách." },
+                { jp: "母は私に部屋を掃除させました。", ro: "Haha wa watashi ni heya o souji sasemashita.", vi: "Mẹ đã bắt tôi dọn phòng." }
+            ]
+        },
+         {
+            id: 24,
+            title: "Vたら",
+            category: "Giả định",
+            meaning: "Nếu/Khi (giả định có điều kiện).",
+            structure: "Vた + ら",
+            examples: [
+                { jp: "雨が降ったら、家にいます。", ro: "Ame ga futtara, ie ni imasu.", vi: "Nếu trời mưa thì tôi sẽ ở nhà." },
+                { jp: "日本へ行ったら、寿司を食べたいです。", ro: "Nihon e ittara, sushi wo tabetai desu.", vi: "Nếu đi Nhật thì tôi muốn ăn sushi." }
+            ]
+        },
+        {
+            id: 25,
+            title: "Vても",
+            category: "Giả định",
+            meaning: "Dù/Ngay cả khi (diễn tả sự nhượng bộ).",
+            structure: "Vて + も",
+            examples: [
+                { jp: "雨が降っても、出かけます。", ro: "Ame ga futte mo, dekakemasu.", vi: "Dù trời mưa tôi vẫn ra ngoài." },
+                { jp: "この本は難しくても、読みたいです。", ro: "Kono hon wa muzukashikute mo, yomitai desu.", vi: "Cuốn sách này dù khó tôi vẫn muốn đọc." }
+            ]
+        },
+        {
+            id: 26,
+            title: "Vば",
+            category: "Giả định",
+            meaning: "Nếu (điều kiện).",
+            structure: "V-eba (Nhóm 1), V-reba (Nhóm 2)",
+            examples: [
+                { jp: "お金があれば、旅行に行きたいです。", ro: "Okane ga areba, ryokou ni ikitai desu.", vi: "Nếu có tiền, tôi muốn đi du lịch." },
+            ]
+        },
+        {
+            id: 27,
+            title: "Nなら",
+            category: "Giả định",
+            meaning: "Nếu là N thì... (đưa ra lời khuyên hoặc ý kiến).",
+            structure: "N + なら",
+            examples: [
+                { jp: "日本へ行くなら、京都へ行ったほうがいいですよ。", ro: "Nihon e iku nara, Kyouto e itta hou ga ii desu yo.", vi: "Nếu bạn đi Nhật thì nên đi Kyoto đấy." },
+            ]
+        },
+        {
+            id: 28,
+            title: "Tôn kính ngữ: お～になります",
+            category: "Tôn kính ngữ",
+            meaning: "Diễn tả hành động của người trên một cách kính trọng. Dùng cho động từ nhóm I và II.",
+            structure: "お + Vます (bỏ ます) + になります",
+            examples: [
+                { jp: "社長はもうお帰りになりました。", ro: "Shachou wa mou okaeri ni narimasita.", vi: "Giám đốc đã về rồi." },
+                { jp: "先生は新聞をお読みになります。", ro: "Sensei wa shinbun wo oyomi ni narimasu.", vi: "Thầy giáo đọc báo." }
+            ]
+        },
+        {
+            id: 29,
+            title: "Tôn kính ngữ: ご～になります",
+            category: "Tôn kính ngữ",
+            meaning: "Diễn tả hành động của người trên một cách kính trọng. Dùng cho động từ nhóm III (dạng Hán tự).",
+            structure: "ご + Vます (bỏ ます) + になります",
+            examples: [
+                { jp: "部長はご出発になりました。", ro: "Buchou wa go-shuppatsu ni narimasita.", vi: "Trưởng phòng đã xuất phát rồi." },
+                { jp: "お客様はご来店になりました。", ro: "Okyakusama wa go-raijou ni narimasita.", vi: "Khách hàng đã đến cửa hàng." }
+            ]
+        },
+        {
+            id: 30,
+            title: "Tôn kính ngữ: Thể bị động",
+            category: "Tôn kính ngữ",
+            meaning: "Diễn tả hành động của người trên một cách kính trọng bằng cách sử dụng thể bị động của động từ.",
+            structure: "V（ら）れます",
+            examples: [
+                { jp: "先生は明日来られます。", ro: "Sensei wa ashita koraremasu.", vi: "Thầy giáo sẽ đến vào ngày mai." },
+                { jp: "社長はこの資料を読まれます。", ro: "Shachou wa kono shiryō wo yomaremasu.", vi: "Giám đốc sẽ đọc tài liệu này." }
+            ]
+        },
+        {
+            id: 31,
+            title: "Tôn kính ngữ: Động từ đặc biệt",
+            category: "Tôn kính ngữ",
+            meaning: "Các động từ có dạng tôn kính ngữ đặc biệt.",
+            structure: "する → なさる<br>行く・来る・いる → いらっしゃる<br>食べる・飲む → 召し上がる<br>言う → おっしゃる<br>見る → ご覧になる<br>知っている → ご存じです",
+            examples: [
+                { jp: "先生はテニスをなさいます。", ro: "Sensei wa tenisu wo nasaimasu.", vi: "Thầy giáo chơi tennis." },
+                { jp: "お客様はもういらっしゃいました。", ro: "Okyakusama wa mou irasshaimashita.", vi: "Khách hàng đã đến rồi." },
+                { jp: "社長は何を召し上がりますか。", ro: "Shachou wa nani wo meshiagarimasu ka.", vi: "Giám đốc sẽ dùng gì ạ?" },
+                { jp: "先生がおっしゃった通りです。", ro: "Sensei ga osshatta toori desu.", vi: "Đúng như thầy giáo đã nói." },
+                { jp: "先生はテレビをご覧になりますか。", ro: "Sensei wa terebi wo goran ni narimasu ka.", vi: "Thầy giáo có xem TV không?" },
+                { jp: "部長はこの件をご存じです。", ro: "Buchou wa kono ken wo gozonji desu.", vi: "Trưởng phòng biết về việc này." }
+            ]
+        },
+        {
+            id: 32,
+            title: "Tôn kính ngữ: Tiền tố お/ご (Danh từ)",
+            category: "Tôn kính ngữ",
+            meaning: "Thêm tiền tố お hoặc ご vào danh từ để thể hiện sự tôn kính đối với người hoặc vật liên quan đến người đó.",
+            structure: "お + Danh từ (thuần Nhật)<br>ご + Danh từ (Hán tự)",
+            examples: [
+                { jp: "お客様のお名前は何ですか。", ro: "Okyakusama no onamae wa nan desu ka.", vi: "Tên của quý khách là gì ạ?" },
+                { jp: "先生のご家族はどちらにいらっしゃいますか。", ro: "Sensei no gokazoku wa dochira ni irasshaimasu ka.", vi: "Gia đình của thầy giáo ở đâu ạ?" }
+            ]
+        },
+        {
+            id: 33,
+            title: "Tôn kính ngữ: Tiền tố お/ご (Tính từ)",
+            category: "Tôn kính ngữ",
+            meaning: "Thêm tiền tố お hoặc ご vào tính từ để thể hiện sự tôn kính đối với trạng thái của người trên.",
+            structure: "お + Tính từ -i (bỏ い) + です / な<br>ご + Tính từ -na + です",
+            examples: [
+                { jp: "社長は毎日お忙しいです。", ro: "Shachou wa mainichi o-isogashii desu.", vi: "Giám đốc bận rộn mỗi ngày." },
+                { jp: "お客様はご親切な方ですね。", ro: "Okyakusama wa go-shinsetsu na kata desu ne.", vi: "Quý khách là người rất tốt bụng nhỉ." }
+            ]
+        },
+        {
+            id: 34,
+            title: "Khiêm nhường ngữ: おVします",
+            category: "Khiêm nhường ngữ",
+            meaning: "Diễn tả sự nhún nhường, hạ mình của người nói khi nói về hành động của bản thân hoặc người trong nhóm mình.",
+            structure: "お + Vます (bỏ ます) + します",
+            examples: [
+                { jp: "私が荷物をお持ちしましょうか。", ro: "Watashi ga nimotsu wo omochi shimashou ka.", vi: "Tôi mang hành lý giúp anh/chị nhé?" },
+                { jp: "後で、改めてご連絡いたします。", ro: "Ato de, aratamete go-renraku itashimasu.", vi: "Sau đó, tôi sẽ liên lạc lại." }
+            ]
+        },
+        {
+            id: 35,
+            title: "Khiêm nhường ngữ: ごNします",
+            category: "Khiêm nhường ngữ",
+            meaning: "Diễn tả sự nhún nhường, hạ mình của người nói khi nói về hành động của bản thân hoặc người trong nhóm mình, thường dùng với danh động từ (động từ nhóm III dạng Nします).",
+            structure: "ご + N + します",
+            examples: [
+                { jp: "私がご案内します。", ro: "Watashi ga go-annai shimasu.", vi: "Tôi sẽ hướng dẫn/dẫn đường." },
+                { jp: "ご説明いたします。", ro: "Go-setsumei itashimasu.", vi: "Tôi xin phép giải thích." }
+            ]
+        },
+        {
+            id: 36,
+            title: "Khiêm nhường ngữ: Động từ đặc biệt",
+            category: "Khiêm nhường ngữ",
+            meaning: "Các động từ có dạng khiêm nhường ngữ đặc biệt.",
+            structure: "する → いたします<br>行く・来る → 参ります<br>いる → おります<br>食べる・飲む → いただきます<br>言う → 申します<br>見る → 拝見します<br>知っている → 存じます<br>会う → お目にかかります",
+            examples: [
+                { jp: "私が担当いたします。", ro: "Watashi ga tantou itashimasu.", vi: "Tôi sẽ phụ trách." },
+                { jp: "明日、会社へ参ります。", ro: "Ashita, kaisha e mairimasu.", vi: "Ngày mai tôi sẽ đến công ty." },
+                { jp: "私は東京におります。", ro: "Watashi wa Toukyou ni orimasu.", vi: "Tôi đang ở Tokyo." },
+                { jp: "このコーヒーをいただきます。", ro: "Kono koohii wo itadakimasu.", vi: "Tôi xin phép dùng cà phê này." },
+                { jp: "田中と申します。", ro: "Tanaka to moushimasu.", vi: "Tôi tên là Tanaka." },
+                { jp: "資料を拝見しました。", ro: "Shiryō wo haiken shimashita.", vi: "Tôi đã xem tài liệu." },
+                { jp: "その件は存じません。", ro: "Sono ken wa zonjimasen.", vi: "Tôi không biết về việc đó." },
+                { jp: "後ほど、社長にお目にかかります。", ro: "Nochi hodo, shachou ni ome ni kakarimasu.", vi: "Lát nữa tôi sẽ gặp giám đốc." }
+            ]
+        },
+        {
+            id: 37,
+            title: "Khiêm nhường ngữ: Thể lịch sự",
+            category: "Khiêm nhường ngữ",
+            meaning: "Thể lịch sự trong khiêm nhường ngữ được sử dụng khi người nói muốn bày tỏ sự kính trọng với người nghe, bằng cách sử dụng các cách diễn đạt nhún nhường của bản thân hoặc nhóm mình. Đây là cách nói trang trọng, thường dùng trong các tình huống công việc hoặc với người có địa vị cao hơn.",
+            structure: "Các thể lịch sự hay dùng bao gồm: <br>・**ございます** (dạng lịch sự của あります/です)<br>・**～で ございます** (dạng lịch sự của ～です)<br>・**よろしいでしょうか** (dạng lịch sự của いいですか)",
+            examples: [
+                { jp: "電話は階段の横にございます。", ro: "Denwa wa kaidan no yoko ni gozaimasu.", vi: "Điện thoại có ở bên cạnh cầu thang ạ." },
+                { jp: "はい、IMC でございます。", ro: "Hai, IMC de gozaimasu.", vi: "Vâng, IMC xin nghe." },
+                { jp: "お飲み物は何がよろしいでしょうか。", ro: "O-nomimono wa nani ga yoroshii deshou ka.", vi: "Ngài sẽ dùng đồ uống gì ạ?" }
+            ]
+        }
+    ];
+
+    const categoryList = document.getElementById('category-list');
+    const grammarGrid = document.getElementById('grammar-grid');
+    const searchInput = document.getElementById('search-input');
+    const noResultsDiv = document.getElementById('no-results');
+
+    let categories = ['Tất cả', ...new Set(grammarData.map(item => item.category))];
+    let activeCategory = 'Tất cả';
+
+    function renderCategories() {
+        categoryList.innerHTML = '';
+        categories.forEach(category => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" class="nav-link block px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-200/60 transition-colors duration-200 ${category === activeCategory ? 'active' : ''}" data-category="${category}">${category}</a>`;
+            categoryList.appendChild(li);
+        });
+    }
+    
+    function renderGrammarPoints(points) {
+        grammarGrid.innerHTML = '';
+        if (points.length === 0) {
+            noResultsDiv.classList.remove('hidden');
+        } else {
+            noResultsDiv.classList.add('hidden');
+        }
+        
+        points.forEach(point => {
+            const card = document.createElement('div');
+            card.className = 'grammar-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200/80 card-enter';
+            
+            const examplesHtml = point.examples.map(ex => `
+                <li class="mt-2">
+                    <p class="text-indigo-800 font-semibold">${ex.jp}</p>
+                    <p class="text-sm text-gray-500 italic">${ex.ro}</p>
+                    <p class="text-sm text-gray-600">${ex.vi}</p>
+                </li>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h3 class="text-xl font-bold text-gray-800">${point.title}</h3>
+                    <span class="text-xs font-semibold text-indigo-600 bg-indigo-100 px-2.5 py-1 rounded-full">${point.category}</span>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Ý nghĩa:</p>
+                    <p class="text-gray-700">${point.meaning}</p>
+                </div>
+                <div class="mt-4">
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Cấu trúc:</p>
+                    <p class="text-gray-700 bg-gray-50 p-3 rounded-lg text-sm font-mono">${point.structure}</p>
+                </div>
+                <div class="mt-4">
+                    <p class="text-sm font-semibold text-gray-500 mb-2">Ví dụ:</p>
+                    <ul class="space-y-3">${examplesHtml}</ul>
+                </div>
+            `;
+            grammarGrid.appendChild(card);
+        });
+        
+        // Trigger enter animation
+        requestAnimationFrame(() => {
+            const cards = grammarGrid.querySelectorAll('.card-enter');
+            cards.forEach(card => {
+                card.classList.add('card-enter-active');
+            });
+        });
+    }
+
+    function filterAndRender() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        let filteredPoints = grammarData;
+
+        if (activeCategory !== 'Tất cả') {
+            filteredPoints = filteredPoints.filter(point => point.category === activeCategory);
+        }
+
+        if (searchTerm) {
+            filteredPoints = filteredPoints.filter(point => 
+                point.title.toLowerCase().includes(searchTerm) ||
+                point.meaning.toLowerCase().includes(searchTerm) ||
+                point.structure.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        renderGrammarPoints(filteredPoints);
+    }
+    
+    categoryList.addEventListener('click', (e) => {
+        e.preventDefault();
+        const link = e.target.closest('.nav-link');
+        if (link) {
+            activeCategory = link.dataset.category;
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            filterAndRender();
+        }
+    });
+
+    searchInput.addEventListener('input', filterAndRender);
+    
+    renderCategories();
+    filterAndRender();
+});
+</script>
+
+</body>
+</html>
