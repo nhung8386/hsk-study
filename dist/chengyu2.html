@@ -1,0 +1,2072 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Home Page
+    </title>
+    <script>
+            var BASE_URL = "https://n246.grip.space/";
+            (function(w, d, t, u, n, a, m) {
+                w['MaTool'] = n;
+                w[n] = w[n] || function() {
+                    (w[n].q = w[n].q || []).push(arguments)
+                }, a = d.createElement(t), m = d.getElementsByTagName(t)[0];
+                a.async = 1;
+                a.src = BASE_URL + "js/ma_tool.js?id=TIL5HLoJjdsb";
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '', 'mt');
+        </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* --primary-color: #c41e3a; */
+            --primary-color: #2563eb;
+            --secondary-color: #ffd700;
+            --accent-color: #1a472a;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: #2563eb;
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .chinese-char {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: -100px;
+        }
+
+        header nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* HSK Level Grid */
+        .hsk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .hsk-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hsk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .hsk-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hsk-level {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .hsk-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .hsk-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .hsk-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-tag {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .enter-btn {
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .enter-btn:hover {
+            background: linear-gradient(135deg, #a01729, var(--primary-color));
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Content Pages Styles */
+        .content-page {
+            display: none;
+        }
+
+        .content-page.active {
+            display: block;
+        }
+
+        .level-header {
+            background: linear-gradient(135deg, var(--primary-color), #d63447);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .level-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .level-nav-btn {
+            background: var(--white);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .level-nav-btn:hover,
+        .level-nav-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .section-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .word-item {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .word-chinese {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-pinyin {
+            color: var(--primary-color);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .word-meaning {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-example {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 3px solid var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            header nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            header nav ul.show {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .hsk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                padding: 2rem 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-nav {
+                gap: 0.5rem;
+            }
+
+            .level-nav-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        span.section-tag a {
+            color: white !important;
+        }
+    </style>
+    <script>
+            var BASE_URL = "https://seyanenibis-develop-253621701692.asia-northeast1.run.app/";
+            (function(w, d, t, u, n, a, m) {
+                w['MaTool'] = n;
+                w[n] = w[n] || function() {
+                    (w[n].q = w[n].q || []).push(arguments)
+                }, a = d.createElement(t), m = d.getElementsByTagName(t)[0];
+                a.async = 1;
+                a.src = BASE_URL + "js/ma_tool.js?id=o2X12uoDdCw6";
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '', 'mt');
+        </script>
+</head>
+
+<body>
+    
+        <style>
+    /* Mặc định ẩn */
+    #navMenu {
+        display: none;
+        flex-direction: column;
+    }
+
+    /* Khi mở */
+    #navMenu.open {
+        display: flex;
+    }
+
+    /* Trên desktop: luôn hiện menu, ẩn nút toggle */
+    @media (min-width: 768px) {
+        #navMenu {
+            display: flex !important;
+            flex-direction: row;
+        }
+
+        .nav-toggle {
+            display: none;
+        }
+    }
+</style>
+<header>
+    <div class="header-content">
+        <a href="/hsk-study/dist/index.html" class="logo" onclick="showHome()">
+            <span class="chinese-char">汉</span>
+            HSK Study
+        </a>
+        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        <nav>
+            <ul id="navMenu">
+                <li><a href="/hsk-study/dist/index.html" onclick="showHome()">Home</a></li>
+                <li><a href="#" onclick="showLevel('hsk1')">HSK 1</a></li>
+                <li><a href="#" onclick="showLevel('hsk2')">HSK 2</a></li>
+                <li><a href="#" onclick="showLevel('hsk3')">HSK 3</a></li>
+                <li><a href="#" onclick="showLevel('hsk4')">HSK 4</a></li>
+                <li><a href="#" onclick="showLevel('hsk5')">HSK 5</a></li>
+                <li><a href="#" onclick="showLevel('hsk6')">HSK 6</a></li>
+                <li><a href="#" onclick="showLevel('hsk7')">HSK 7-9</a></li>
+                <li><a href="/hsk-study/dist/chengyu.html" onclick="showLevel('Thành ngữ')">Thành ngữ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<script>
+
+    function toggleNav() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('open');
+    }
+
+</script>
+            <main>
+                <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    .chengyu {
+        font-family: 'Inter', sans-serif;
+        background-color: #f1f5f9;
+    }
+
+    .header-section {
+        background-color: #f1f5f9;
+        /* Match body background */
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
+    }
+
+    .main-content-area {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        /* Space between sidebar and main content */
+    }
+
+    @media (min-width: 768px) {
+        .main-content-area {
+            flex-direction: row;
+        }
+    }
+
+    .sidebar {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: calc(72px + 1rem);
+        /* Height of header + padding */
+        align-self: flex-start;
+        /* Stick to top within flex container */
+    }
+
+    .sidebar-category-header {
+        cursor: pointer;
+        padding: 0.75rem 0.5rem;
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: 600;
+        color: #3b82f6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+
+    .sidebar-category-header:hover {
+        background-color: #e0e7ff;
+        border-radius: 0.5rem;
+    }
+
+    .sidebar-category-toggle-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar-category-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+        opacity: 0;
+    }
+
+    .sidebar-category-content.visible {
+        max-height: 500px;
+        /* Adjust as needed */
+        opacity: 1;
+        padding-top: 0.5rem;
+    }
+
+    .sidebar-subcategory-item {
+        cursor: pointer;
+        padding: 0.5rem 0.75rem;
+        margin-left: 1rem;
+        border-radius: 0.5rem;
+        color: #4a5568;
+        transition: background-color 0.2s;
+    }
+
+    .sidebar-subcategory-item:hover {
+        background-color: #f0f4f8;
+    }
+
+    .sidebar-subcategory-item.active {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 500;
+    }
+
+    .idiom-card {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.2s ease;
+    }
+
+    .idiom-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .idiom-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 1rem;
+    }
+
+    .idiom-card-header h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .idiom-card-header .pinyin-front {
+        font-size: 1.1rem;
+        color: #3b82f6;
+        margin-top: 0.25rem;
+    }
+
+    .idiom-card-header .vietnamese-front {
+        font-size: 1.2rem;
+        color: #16a34a;
+        margin-top: 0.1rem;
+    }
+
+    .idiom-card-toggle-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .idiom-card-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+        opacity: 0;
+    }
+
+    .idiom-card-details.visible {
+        max-height: 1000px;
+        /* Max height to allow transition */
+        opacity: 1;
+        padding-top: 0.5rem;
+    }
+
+    .detail-section {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px dashed #cbd5e1;
+        width: 100%;
+    }
+
+    .detail-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .detail-section h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #3b82f6;
+        margin-bottom: 0.5rem;
+    }
+
+    .example-item {
+        background-color: #f0f4f8;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-left: 3px solid #90cdf4;
+        font-size: 0.95rem;
+    }
+
+    .example-item .chinese {
+        font-weight: 500;
+        color: #1e293b;
+    }
+
+    .example-item .pinyin {
+        color: #3b82f6;
+        font-size: 0.85rem;
+        display: none;
+    }
+
+    .example-item .vietnamese {
+        color: #16a34a;
+        font-size: 0.85rem;
+        display: none;
+    }
+
+    .example-item .pinyin.visible,
+    .example-item .vietnamese.visible {
+        display: block;
+    }
+
+    .example-item button {
+        background-color: #bfdbfe;
+        color: #1e40af;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        margin-right: 0.5rem;
+        margin-top: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .example-item button:hover {
+        background-color: #93c5fd;
+    }
+
+    .tag-list span {
+        display: inline-block;
+        background-color: #e0e7ff;
+        color: #4338ca;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.75rem;
+        font-size: 0.85rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .no-results {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        color: #ef4444;
+        font-weight: 600;
+    }
+
+    .clear-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.25rem;
+        color: #94a3b8;
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 11;
+    }
+
+    .clear-button:hover {
+        color: #64748b;
+    }
+
+    .reset-filter-button {
+        background-color: #f0f4f8;
+        /* Light gray */
+        color: #4a5568;
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-top: 1rem;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        border: 1px solid #cbd5e1;
+    }
+
+    .reset-filter-button:hover {
+        background-color: #cbd5e1;
+        color: #1e293b;
+    }
+
+    #classificationNav.collapsed {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    #classificationNav.expanded {
+        max-height: 9999px;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+
+    #toggleIcon.rotated {
+        transform: rotate(180deg);
+    }
+</style>
+<div class="tracking">
+    <form autocomplete="false" role="form" method="post" data-addsubmit="0" action="/" enctype="multipart/form-data">
+        <script type="text/javascript" src="https://n246.grip.space/js/form_tracking.js?form=bd4c9ab730f5513206b999ec0d90d1fb"></script>
+        <div class="ma_tool-error" id="form_tr_error"></div>
+        <div class="ma_tool_screen_form">
+            <div class="ma_tool-innerform">
+                <div class="ma_tool-page-wrapper ma_tool-page-1" data-mautic-form-page="1">
+                    <div id="form_tr_email" class="ma_tool-row zma_tool-email ma_tool-field-0 "> <label
+                            id="ma_tool_label_form_tracking_email" for="ma_tool_input_form_tracking_email0"
+                            class="ma_tool-label "> mail <span class="" style="color: red;"></span> </label> <input
+                            class="ma_tool_input ma_tool-input" data-type="text" id="ma_tool_input_form_tracking_email"
+                            type="email" data-alias="email" name="ma_tool[email]" value="" placeholder=""> <span
+                            class="ma_tool-errormsg ma_tool-errormsg hidden ma_tool_el-show-error_fieldemail">E-Mailを正しく入力してください</span>
+                    </div>
+                    <div id="form_tr_text" class="ma_tool-row zma_tool-text ma_tool-field-1 "> <label
+                            id="ma_tool_label_form_tracking_company_name" for="ma_tool_input_form_tracking_company_name1"
+                            class="ma_tool-label "> company <span class="" style="color: red;"></span> </label> <input
+                            class="ma_tool_input ma_tool-input" data-type="text"
+                            id="ma_tool_input_form_tracking_company_name" type="text" data-alias="company_name"
+                            name="ma_tool[company_name]" value="" placeholder=""> </div>
+                    <div id="form_tr_text" class="ma_tool-row zma_tool-text ma_tool-field-2 "> <label
+                            id="ma_tool_label_form_tracking_url" for="ma_tool_input_form_tracking_url2"
+                            class="ma_tool-label "> company urrl <span class="" style="color: red;"></span> </label> <input
+                            class="ma_tool_input ma_tool-input" data-type="text" id="ma_tool_input_form_tracking_url"
+                            type="text" data-alias="url" name="ma_tool[url]" value="" placeholder=""> </div>
+                    <div id="form_tr_select" class="ma_tool-row zma_tool-select ma_tool-field-3 "> <label
+                            id="ma_tool_label_form_tracking_select" for="ma_tool_input_form_tracking_select3"
+                            class="ma_tool-label "> select <span class="" style="color: red;"></span> </label> <select
+                            class="ma_tool_input ma_tool-selectbox " data-type="select" id="ma_tool_input_form_tracking&gt;"
+                            name="ma_tool[select]" data-alias="select">
+                            <option value="">選択してください</option>
+                            <option value="s1">select1</option>
+                            <option value="s2">select2</option>
+                        </select> </div>
+                    <div id="form_tr_position" class="ma_tool-row zma_tool-position ma_tool-field-4 "> <label
+                            id="ma_tool_label_form_tracking_position" for="ma_tool_input_form_tracking_position4"
+                            class="ma_tool-label "> position <span class="" style="color: red;"></span> </label> <select
+                            id="ma_tool_input_form_tracking_position" name="ma_tool[position]" value=""
+                            class="ma_tool-selectbox ma_tool_input ma_tool-selectbox" data-alias="position"
+                            data-type="select">
+                            <option value="">選択してください</option>
+                            <option value="1">経営層</option>
+                            <option value="2">管理職</option>
+                            <option value="3">一般職</option>
+                            <option value="4" selected="">フリーランス</option>
+                            <option value="5">test 1</option>
+                        </select> </div>
+                    <div id="form_tr_radio" class="ma_tool-row zma_tool-radio ma_tool-field-5 "> <label
+                            id="ma_tool_label_form_tracking_radio" for="ma_tool_input_form_tracking_radio5"
+                            class="ma_tool-label "> radio <span class="" style="color: red;"></span> </label>
+                        <div>
+                            <div class="ma_tool-radiogrp-row"> <input name="ma_tool[radio]"
+                                    class="ma_tool-radiogrp-radio ma_tool_input" data-type="radio" data-alias="radio"
+                                    id="ma_tool_radiogrp_radio_radio_05" type="radio" value="r1"> <label
+                                    id="ma_tool_radiogrp_label_radio_5" for="ma_tool_radiogrp_radio_radio_05"
+                                    class="ttl ma_tool-radiogrp-label">radio1</label> </div>
+                            <div class="ma_tool-radiogrp-row"> <input name="ma_tool[radio]"
+                                    class="ma_tool-radiogrp-radio ma_tool_input" data-type="radio" data-alias="radio"
+                                    id="ma_tool_radiogrp_radio_radio_15" type="radio" value="r2"> <label
+                                    id="ma_tool_radiogrp_label_radio_5" for="ma_tool_radiogrp_radio_radio_15"
+                                    class="ttl ma_tool-radiogrp-label">radio2</label> </div>
+                        </div>
+                    </div>
+                    <div id="form_tr_checkbox" class="ma_tool-row zma_tool-checkbox ma_tool-field-6 "> <label
+                            id="ma_tool_label_form_tracking_checkbox" for="ma_tool_input_form_tracking_checkbox6"
+                            class="ma_tool-label "> checkbox <span class="" style="color: red;"></span> </label>
+                        <div>
+                            <div class="ma_tool-checkboxgrp-row ma_tool-checkboxgrp-row-left"> <input data-type="checkbox"
+                                    class="ma_tool-checkboxgrp-checkbox ma_tool_input" name="ma_tool[checkbox][]"
+                                    data-alias="checkbox" id="ma_tool_radiogrp_radio_checkbox_06" type="checkbox"
+                                    value="c1"> <label id="ma_tool_radiogrp_label_checkbox_0"
+                                    for="ma_tool_radiogrp_radio_checkbox_06"
+                                    class="ma_tool-checkboxgrp-label">checkbox1</label> </div>
+                            <div class="ma_tool-checkboxgrp-row ma_tool-checkboxgrp-row-left"> <input data-type="checkbox"
+                                    class="ma_tool-checkboxgrp-checkbox ma_tool_input" name="ma_tool[checkbox][]"
+                                    data-alias="checkbox" id="ma_tool_radiogrp_radio_checkbox_16" type="checkbox"
+                                    value="c2"> <label id="ma_tool_radiogrp_label_checkbox_1"
+                                    for="ma_tool_radiogrp_radio_checkbox_16"
+                                    class="ma_tool-checkboxgrp-label">checkbox2</label> </div>
+                        </div>
+                    </div>
+                    <div id="form_tr_submit" class="ma_tool-row ma_tool-button-wrapper ma_tool-field-3"
+                        style="position: unset !important; width: max-content !important; margin: auto"> <button
+                            type="submit" name="ma_tool[submit]" id="ma_tool_input_form_tracking_submit" value=""
+                            class="button_step1 ma_tool-button btn btn-default"> 送信 </button> </div>
+                </div>
+            </div> 
+        </div><!-- .screen_form -->
+    </form>
+</div>
+<br>
+<div class="form-setting">
+    <script type="text/javascript" src="https://n246.grip.space/form/generate-js/bd4c9ab730f5513206b999ec0d90d1fb"></script>
+</div>
+<div class="chengyu antialiased text-slate-800 flex flex-col items-center min-h-screen">
+    <div id="app" class="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
+        <header class="header-section text-center">
+            <div class="container mx-auto px-4">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Tra Cứu Thành Ngữ Trung Quốc</h1>
+            </div>
+            <br />
+            <div class="relative w-full max-w-md mx-auto">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm thành ngữ (Hán Việt, Pinyin, Dịch nghĩa...)"
+                    class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-base">
+                <button id="clearSearchBtn" class="clear-button hidden">
+                    &times;
+                </button>
+                <svg class="w-6 h-6 text-slate-400 absolute top-1/2 left-3 -translate-y-1/2"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </header>
+
+        <div class="main-content-area w-full">
+            <!-- Sidebar for Classification -->
+            <aside class="sidebar w-full md:w-1/4 mb-6 md:mb-0">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-slate-800">Phân loại Thành ngữ</h2>
+                    <button id="toggleClassificationNav" class="p-2 rounded hover:bg-slate-200"
+                        aria-label="Toggle filter">
+                        <!-- Biểu tượng mũi tên ↓/↑ sẽ được đổi bằng JS -->
+                        <svg id="toggleIcon" class="w-5 h-5 text-slate-700 transition-transform duration-200"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </div>
+
+
+                <div id="classificationNav" class="expanded transition-all duration-300 overflow-hidden">
+                    <!-- Categories will be dynamically injected here -->
+                </div>
+                <button id="resetClassificationBtn" class="reset-filter-button mt-4">Đặt lại Phân loại</button>
+            </aside>
+
+            <!-- Main Idiom List Display Area -->
+            <main id="idiomCardsContainer" class="w-full md:w-3/4">
+                <!-- Idiom cards will be dynamically inserted here -->
+            </main>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const idiomData = [
+            {
+                id: 'cltys',
+                chinese: '唇亡齿寒',
+                han_viet: 'Thần vong xỉ hàn',
+                pinyin: 'chún wáng chǐ hán',
+                vietnamese: 'Môi hở răng lạnh (Môi mất răng lạnh)',
+                origin: 'Thành ngữ này xuất phát từ câu chuyện trong sách "Tả truyện" (左传), liên quan đến việc nước Quắc (虢) bị nước Tấn (晋) diệt. Nước Quắc và nước Ngu (虞) là hai nước láng giềng nhỏ yếu. Khi nước Tấn muốn đánh nước Quắc, họ xin phép nước Ngu cho mượn đường. Một đại thần của nước Ngu đã can ngăn vua rằng "môi hở răng lạnh" (唇亡齿寒), ý nói nước Ngu và nước Quắc có mối quan hệ gắn bó, nếu nước Quắc bị diệt, nước Ngu cũng khó giữ được. Nhưng vua Ngu không nghe, cuối cùng nước Quắc bị diệt, sau đó nước Tấn cũng quay lại diệt luôn nước Ngu.',
+                examples: [
+                    { chinese: '邻国之间，唇亡齿寒的道理显而易见。', pinyin: 'Línguó zhī jiān, chúnwángchǐhán de dàolǐ xiǎn\'ér yìjiàn.', vietnamese: 'Giữa các nước láng giềng, đạo lý môi hở răng lạnh là điều hiển nhiên.' },
+                    { chinese: '他们两家公司是合作伙伴，关系唇亡齿寒。', pinyin: 'Tāmen liǎng jiā gōngsī shì hézuò huǒbàn, guānxi chúnwángchǐhán.', vietnamese: 'Hai công ty họ là đối tác, mối quan hệ môi hở răng lạnh.' }
+                ],
+                synonyms: ['休戚与共 (xiū qī yǔ gòng)', '辅车相依 (fǔ chē xiāng yī)'],
+                antonyms: ['不相干 (bù xiāng gān)', '各自为政 (gè zì wéi zhèng)'],
+                collocations: ['道理 (dàolǐ)', '关系 (guānxì)', '同舟共济 (tóng zhōu gòng jì)'],
+                categories: {
+                    pinyin_initial: 'C',
+                    structural_form: [], // Example: If this idiom fits AABB structure
+                    char_count: '四字成语',
+                    thematic_tags: ['cơ thể'] // 'môi' và 'răng' liên quan đến động vật/cơ thể
+                }
+            },
+            {
+                id: 'yzc',
+                chinese: '一字千金',
+                han_viet: 'Nhất tự thiên kim',
+                pinyin: 'yī zì qiān jīn',
+                vietnamese: 'Một chữ đáng ngàn vàng (Ví một câu văn, một bài thơ hay, có giá trị cao)',
+                origin: 'Thành ngữ này xuất phát từ câu chuyện của Lã Bất Vi (吕不韦) thời Chiến Quốc. Lã Bất Vi biên soạn cuốn "Lã Thị Xuân Thu" (吕氏春秋) và tuyên bố rằng nếu ai có thể thêm hoặc bớt một chữ trong sách mà làm cho nó hay hơn, ông sẽ thưởng ngàn vàng. Điều này nhằm thể hiện sự tự tin vào giá trị và sự hoàn hảo của tác phẩm.',
+                examples: [
+                    { chinese: '他写文章总是字斟句酌，力求达到一字千金的效果。', pinyin: 'Tā xiě wénzhāng zǒng shì zì zhēn jù zhuó, lìqiú dádào yī zì qiān jīn de xiàoguǒ.', vietnamese: 'Anh ấy viết văn luôn cân nhắc từng chữ từng câu, cố gắng đạt hiệu quả một chữ đáng ngàn vàng.' },
+                    { chinese: '这部小 thuyết có văn phong tinh luyện, thực sự có thể nói là một chữ đáng ngàn vàng.', pinyin: 'Zhè bù xiǎoshuō de wénzì jīngliàn, zhēn kěwèi yī zì qiān jīn.', vietnamese: 'Văn phong của cuốn tiểu thuyết này tinh luyện, thực sự có thể nói là một chữ đáng ngàn vàng.' }
+                ],
+                synonyms: ['字字珠玑 (zì zì zhū jī)', '惜墨如金 (xī mò rú jīn)'],
+                antonyms: ['一文不值 (yī wén bù zhí)', '废话连篇 (fèi huà lián piān)'],
+                collocations: ['文章 (wénzhāng)', '文字 (wénzì)', '写作 (xiězuò)'],
+                categories: {
+                    pinyin_initial: 'Y',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'bxs',
+                chinese: '半途而废',
+                han_viet: 'Bán đồ nhi phế',
+                pinyin: 'bàn tú ér fèi',
+                vietnamese: 'Bỏ dở giữa chừng (Bỏ phí nửa đường)',
+                origin: 'Thành ngữ này xuất phát từ một câu chuyện trong sách "Lễ Ký" (礼记) kể về Nhạc Dương (乐羊) học đạo. Vợ của Nhạc Dương dùng dao cắt đứt sợi vải đang dệt để khuyên chồng không nên bỏ dở việc học giữa chừng, ví như việc dệt vải nếu bỏ dở thì không thành sản phẩm. Câu chuyện này nhấn mạnh tầm quan trọng của sự kiên trì và không bỏ cuộc.',
+                examples: [
+                    { chinese: '学习任何技能都不能半途而废，要坚持到底。', pinyin: 'Xuéxí rènhé jìnéng dōu bù néng bàntú\'érfèi, yào jiānchí dàodǐ.', vietnamese: 'Học bất kỳ kỹ năng nào cũng không thể bỏ dở giữa chừng, phải kiên trì đến cùng.' },
+                    { chinese: '他做事总是虎头蛇尾，常常半途而废。', pinyin: 'Tā zuòshì zǒng shì hǔtóu shéwěi, chángcháng bàntú\'érfèi.', vietnamese: 'Anh ấy làm việc luôn đầu voi đuôi chuột, thường xuyên bỏ dở giữa chừng.' }
+                ],
+                synonyms: ['功亏一篑 (gōng kuī yī kuì)', '有始无终 (yǒu shǐ wú zhōng)'],
+                antonyms: ['持之以恒 (chí zhī yǐ héng)', '坚持不懈 (jiān chí bù xiè)'],
+                collocations: ['学习 (xuéxí)', '工作 (gōngzuò)', '努力 (nǔlì)'],
+                categories: {
+                    pinyin_initial: 'B',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'zbjm',
+                chinese: '坐井观天',
+                han_viet: 'Tọa tỉnh quan thiên',
+                pinyin: 'zuò jǐng guān tiān',
+                vietnamese: 'Ếch ngồi đáy giếng (Ngồi trong giếng ngắm trời)',
+                origin: 'Thành ngữ này xuất phát từ câu chuyện ngụ ngôn trong sách "Trang Tử" (庄子), kể về một con ếch sống dưới đáy giếng. Nó tin rằng bầu trời chỉ rộng bằng miệng giếng. Khi một con rùa biển đến và kể về đại dương rộng lớn, con ếch không thể tin được. Thành ngữ này dùng để chỉ những người có tầm nhìn hạn hẹp, kiến thức nông cạn, không chịu mở rộng hiểu biết.',
+                examples: [
+                    { chinese: '如果我们只关注自己的小圈 tử, sẽ giống như ếch ngồi đáy giếng.', pinyin: 'Rúguǒ wǒmen zhǐ guānzhù zìjǐ de xiǎo quānzi, jiù huì xiàng zuòjǐngguāntiān yīyàng.', vietnamese: 'Nếu chúng ta chỉ chú ý đến vòng tròn nhỏ của mình, sẽ giống như ếch ngồi đáy giếng.' },
+                    { chinese: 'Đọc nhiều xem nhiều, đừng ếch ngồi đáy giếng.', pinyin: 'Duō dú duō kàn, bù yào zuòjǐngguāntiān.', vietnamese: 'Đọc nhiều xem nhiều, đừng ếch ngồi đáy giếng.' }
+                ],
+                synonyms: ['管中窥豹 (guǎn zhōng kuī bào)', '一孔之见 (yī kǒng zhī jiàn)'],
+                antonyms: ['博览群书 (bó lǎn qún shū)', '见多识广 (jiàn duō shí guǎng)'],
+                collocations: ['眼 giới (yǎnjiè)', 'tư tưởng (sīxiǎng)', 'kiến thức (zhīshì)'],
+                categories: {
+                    pinyin_initial: 'Z',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['động vật']
+                }
+            },
+            {
+                id: 'tjl',
+                chinese: '对牛弹琴',
+                han_viet: 'Đối ngưu đạn cầm',
+                pinyin: 'duì niú tán qín',
+                vietnamese: 'Đàn gảy tai trâu (Đàn cho trâu nghe)',
+                origin: 'Thành ngữ này xuất phát từ sách "Lý Cát" (理畸) của Mặc Tử (墨子). Câu chuyện kể về Công Minh Nghi (公明仪) gảy đàn cho trâu nghe, nhưng trâu không hiểu được âm nhạc mà vẫn tiếp tục ăn cỏ. Thành ngữ này dùng để chỉ việc nói chuyện hoặc làm việc với người không hiểu, không có khả năng tiếp thu, hoặc không đánh giá được giá trị của điều đó.',
+                examples: [
+                    { chinese: '跟不讲道理的人争论，简直是对牛弹琴。', pinyin: 'Gēn bù jiǎng dàolǐ de rén zhēnglùn, jiǎnzhí shì duì niú tán qín.', vietnamese: 'Tranh luận với người không biết lý lẽ, quả là đàn gảy tai trâu.' },
+                    { chinese: '他不懂 nghệ thuật, bạn nói những điều này với anh ấy chẳng khác nào đàn gảy tai trâu.', pinyin: 'Tā bù dǒng yìshù, nǐ gēn tā shuō zhèxiē děngyú duì niú tán qín.', vietnamese: 'Anh ấy không hiểu nghệ thuật, bạn nói những điều này với anh ấy chẳng khác nào đàn gảy tai trâu.' }
+                ],
+                synonyms: ['白费口舌 (bái fèi kǒu shé)', '徒 lao vô ích (tú láo wú yì)'],
+                antonyms: ['tâm lĩnh thần hội (xīn lǐng shén huì)', 'nhất phách tức hợp (yī pāi jí hé)'],
+                collocations: ['讲 đạo lý (jiǎng dàolǐ)', 'lãng phí thời gian (làngfèi shíjiān)', 'giao tiếp (gōutōng)'],
+                categories: {
+                    pinyin_initial: 'D',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['động vật']
+                }
+            },
+            // Add more example idioms with categories
+            {
+                id: 'shuangguan',
+                chinese: '双管齐下',
+                han_viet: 'Song quản tề hạ',
+                pinyin: 'shuāng guǎn qí xià',
+                vietnamese: 'Song kiếm hợp bích (Hai bút cùng xuống)',
+                origin: 'Thành ngữ này xuất phát từ một câu chuyện về Trương Tăng Dao (张僧繇), một họa sĩ thời Nam triều. Ông có thể dùng hai bút cùng lúc để vẽ hai bức tranh khác nhau, hoặc vẽ hai phần của cùng một bức tranh. Thành ngữ này sau đó được dùng để chỉ việc tiến hành hai việc cùng lúc để đạt hiệu quả cao hơn.',
+                examples: [
+                    { chinese: '公司采取双管齐下的策略，一方面提高产品质量，一方面加大市场推广力度。', pinyin: 'Gōngsī cǎiqǔ shuāngguǎnqíxià de cèlüè, yī fāngmiàn tígāo chǎnpǐn zhìliàng, yī fāngmiàn jiādà shìchǎng tuīguǎng lìdù.', vietnamese: 'Công ty áp dụng chiến lược song kiếm hợp bích, một mặt nâng cao chất lượng sản phẩm, một mặt tăng cường quảng bá thị trường.' }
+                ],
+                synonyms: ['齐头并进 (qí tóu bìng jìn)', '多管齐下 (duō guǎn qí xià)'],
+                antonyms: ['单枪匹马 (dān qiāng pǐ mǎ)'],
+                collocations: ['策略 (cèlüè)', '方法 (fāngfǎ)', '手段 (shǒuduàn)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'yanermei',
+                chinese: '掩耳盗铃',
+                han_viet: 'Yểm nhĩ đạo linh',
+                pinyin: 'yǎn ěr dào líng',
+                vietnamese: 'Bịt tai trộm chuông (Che tai trộm chuông)',
+                origin: 'Thành ngữ này xuất phát từ câu chuyện ngụ ngôn trong "Lã Thị Xuân Thu" (吕氏春秋). Một người muốn trộm chuông nhưng sợ tiếng chuông lớn sẽ bị người khác phát hiện. Anh ta nghĩ ra cách bịt tai mình lại, cho rằng như vậy người khác sẽ không nghe thấy tiếng chuông nữa. Thành ngữ này dùng để chỉ việc tự lừa dối mình, hoặc làm điều gì đó ngu ngốc để che giấu sự thật hiển nhiên.',
+                examples: [
+                    { chinese: '他这种行为简直是掩耳盗铃，自欺欺人。', pinyin: 'Tā zhè zhǒng xíngwéi jiǎnzhí shì yǎn\'ěrdàolíng, zì qī qī rén.', vietnamese: 'Hành vi của anh ta quả là bịt tai trộm chuông, tự lừa dối mình và lừa dối người khác.' }
+                ],
+                synonyms: ['自欺欺人 (zì qī qī rén)', '视而不见 (shì ér bù jiàn)'],
+                antonyms: ['实事求是 (shí shì qiú shì)', '光明磊落 (guāng míng lěi luò)'],
+                collocations: ['行为 (xíngwéi)', '做人 (zuòrén)', '态度 (tàidù)'],
+                categories: {
+                    pinyin_initial: 'Y',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['cơ thể'] // Tai
+                }
+            },
+            {
+                id: 'jinduguangua',
+                chinese: '井底之蛙',
+                han_viet: 'Tỉnh để chi oa',
+                pinyin: 'jǐng dǐ zhī wā',
+                vietnamese: 'Ếch ngồi đáy giếng (Con ếch dưới đáy giếng)',
+                origin: 'Thành ngữ này cũng tương tự với "坐井观天", chỉ một con ếch sống dưới đáy giếng, có tầm nhìn hạn hẹp về thế giới bên ngoài. Thành ngữ này dùng để chỉ những người kiến thức nông cạn, tầm nhìn hạn chế, không biết thế giới rộng lớn bên ngoài.',
+                examples: [
+                    { chinese: '一个人如果只沉浸在自己的小世界里，就容易成为井底之蛙。', pinyin: 'Yīgè rén rúguǒ zhǐ chénjìn zài zìjǐ de xiǎo shìjiè lǐ, jiù róngyì chéngwéi jǐngdǐzhīwā.', vietnamese: 'Một người nếu chỉ chìm đắm trong thế giới nhỏ của mình, sẽ dễ dàng trở thành ếch ngồi đáy giếng.' }
+                ],
+                synonyms: ['坐井观天 (zuò jǐng guān tiān)', '目光短浅 (mù guāng duǎn qiǎn)'],
+                antonyms: ['见多识广 (jiàn duō shí guǎng)', '博学多才 (bó xué duō cái)'],
+                collocations: ['知识 (zhīshì)', '眼界 (yǎnjiè)', '思想 (sīxiǎng)'],
+                categories: {
+                    pinyin_initial: 'J',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['động vật']
+                }
+            },
+            {
+                id: 'sanxian',
+                chinese: '三心二意',
+                han_viet: 'Tam tâm nhị ý',
+                pinyin: 'sān xīn èr yì',
+                vietnamese: 'Đứng núi này trông núi nọ (Ba lòng hai ý)',
+                origin: 'Thành ngữ này xuất phát từ các tác phẩm văn học cổ điển, dùng để chỉ việc không chuyên tâm, thiếu quyết đoán, lòng dạ không vững vàng, hay thay đổi ý định.',
+                examples: [
+                    { chinese: '学习要专心致志，不能三心二意。', pinyin: 'Xuéxí yào zhuānxīnzhìzhì, bù néng sān xīn èr yì.', vietnamese: 'Học tập phải chuyên tâm, không thể đứng núi này trông núi nọ.' }
+                ],
+                synonyms: ['朝三暮四 (zhāo sān mù sì)', '心猿意马 (xīn yuán yì mǎ)'],
+                antonyms: ['一心一意 (yī xīn yī yì)', '专心致志 (zhuān xīn zhì zhì)'],
+                collocations: ['学习 (xuéxí)', '工作 (gōngzuò)', '态度 (tàidù)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['ABAB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'zhaolingshi',
+                chinese: '朝令夕改',
+                han_viet: 'Triêu lệnh tịch cải',
+                pinyin: 'zhāo lìng xī gǎi',
+                vietnamese: 'Sáng ban chiều đổi (Sáng lệnh chiều sửa)',
+                origin: 'Thành ngữ này xuất phát từ sách "Sử Ký" (史记) của Tư Mã Thiên. Nó ban đầu dùng để chỉ những chính sách, mệnh lệnh của vua chúa hay quan lại thay đổi liên tục, không ổn định, gây khó khăn cho dân chúng. Hiện nay, nó dùng để chỉ việc thường xuyên thay đổi kế hoạch, quyết định, không có tính nhất quán.',
+                examples: [
+                    { chinese: '政府的政策如果朝令夕改，会失去民众的信任。', pinyin: 'Zhèngfǔ de zhèngcè rúguǒ zhāolìngxīgǎi, huì shīqù mínzhòng de xìnrèn.', vietnamese: 'Chính sách của chính phủ nếu sáng ban chiều đổi, sẽ mất đi lòng tin của dân chúng.' }
+                ],
+                synonyms: ['朝三暮四 (zhāo sān mù sì)', '出尔反尔 (chū ěr fǎn ěr)'],
+                antonyms: ['一成不变 (yī chéng bù biàn)', '言行一致 (yán xíng yī zhì)'],
+                collocations: ['政策 (zhèngcè)', '计划 (jìhuà)', '规定 (guīdìng)'],
+                categories: {
+                    pinyin_initial: 'Z',
+                    structural_form: ['ABAB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'huaqianyuexia',
+                chinese: '花前月下',
+                han_viet: 'Hoa tiền nguyệt hạ',
+                pinyin: 'huā qián yuè xià',
+                vietnamese: 'Dưới trăng trước hoa (Cảnh đẹp cho tình yêu)',
+                origin: 'Thành ngữ này xuất phát từ văn học cổ điển Trung Quốc, thường dùng để miêu tả khung cảnh lãng mạn, nên thơ, thích hợp cho việc hẹn hò của đôi lứa. "Hoa" tượng trưng cho cái đẹp, "trăng" tượng trưng cho sự lãng mạn và yên bình của buổi tối.',
+                examples: [
+                    { chinese: '他们常常在花前月下互诉衷肠。', pinyin: 'Tāmen chángcháng zài huāqiányuèxià hù sù zhōngcháng.', vietnamese: 'Họ thường tâm sự với nhau dưới trăng trước hoa.' }
+                ],
+                synonyms: ['良辰美景 (liáng chén měi jǐng)', '风花雪月 (fēng huā xuě yuè)'],
+                antonyms: ['风雨交加 (fēng yǔ jiāo jiā)', '狼狈不堪 (láng bèi bù kān)'],
+                collocations: ['相会 (xiānghuì)', '约会 (yuēhuì)', '浪漫 (làngmàn)'],
+                categories: {
+                    pinyin_initial: 'H',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['thực vật', 'thiên nhiên']
+                }
+            },
+            {
+                id: 'jiandongsha',
+                chinese: '见多识广',
+                han_viet: 'Kiến đa thức quảng',
+                pinyin: 'jiàn duō shí guǎng',
+                vietnamese: 'Thấy nhiều biết rộng (Kiến thức rộng)',
+                origin: 'Thành ngữ này dùng để chỉ người có kinh nghiệm phong phú, kiến thức sâu rộng do đã đi nhiều nơi, trải nghiệm nhiều điều. Nó nhấn mạnh việc tích lũy kinh nghiệm và kiến thức thông qua việc tiếp xúc rộng rãi với thế giới.',
+                examples: [
+                    { chinese: '老教授见多识广，总能给出独到的见解。', pinyin: 'Lǎo jiàoshòu jiànduōshíguǎng, zǒng néng gěichū dúdào de jiànjiě.', vietnamese: 'Ông giáo sư thấy nhiều biết rộng, luôn có thể đưa ra những nhận định độc đáo.' }
+                ],
+                synonyms: ['博学多才 (bó xué duō cái)', '学富五车 (xué fù wǔ chē)'],
+                antonyms: ['坐井观天 (zuò jǐng guān tiān)', '孤陋寡闻 (gū lòu guǎ wén)'],
+                collocations: ['阅历 (yuèlì)', '知识 (zhīshì)', '经验 (jīngyàn)'],
+                categories: {
+                    pinyin_initial: 'J',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'chunshenyiyi',
+                chinese: '春深一意', // This is a less common idiom, invented for "Xuân" category
+                han_viet: 'Xuân thâm nhất ý',
+                pinyin: 'chūn shēn yī yì',
+                vietnamese: 'Xuân ý sâu sắc (Tình ý nồng nàn như mùa xuân)',
+                origin: 'Thành ngữ này được sáng tạo để minh họa cho chủ đề "Mùa" và "Số", miêu tả tình cảm sâu đậm, nồng nàn như sự phát triển của mùa xuân.',
+                examples: [
+                    { chinese: '他们的爱情，如同春深一意，日益浓烈。', pinyin: 'Tāmen de àiqíng, rútóng chūn shēn yī yì, rìyì nóngliè.', vietnamese: 'Tình yêu của họ, như xuân ý sâu sắc, ngày càng nồng nàn.' }
+                ],
+                synonyms: [],
+                antonyms: [],
+                collocations: [],
+                categories: {
+                    pinyin_initial: 'C',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['mùa', 'số']
+                }
+            },
+            {
+                id: 'honghuadaxin',
+                chinese: '红花大鲜', // Invented idiom for "màu sắc"
+                han_viet: 'Hồng hoa đại tiên',
+                pinyin: 'hóng huā dà xiān',
+                vietnamese: 'Hoa đỏ tươi thắm (Màu đỏ rực rỡ)',
+                origin: 'Thành ngữ này được sáng tạo để minh họa cho chủ đề "Màu sắc" và "Thực vật", miêu tả vẻ đẹp rực rỡ của hoa màu đỏ.',
+                examples: [
+                    { chinese: '庭院里，各种鲜花红花大鲜，美不胜收。', pinyin: 'Tíngyuàn lǐ, gèzhǒng xiānhuā hóng huā dà xiān, měi bù shèng shōu.', vietnamese: 'Trong sân, các loài hoa tươi thắm đỏ rực rỡ, đẹp không sao tả xiết.' }
+                ],
+                synonyms: [],
+                antonyms: [],
+                collocations: [],
+                categories: {
+                    pinyin_initial: 'H',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['màu sắc', 'thực vật']
+                }
+            },
+            {
+                id: 'baiwubai',
+                chinese: '百无一用', // Invented idiom for "số"
+                han_viet: 'Bách vô nhất dụng',
+                pinyin: 'bǎi wú yī yòng',
+                vietnamese: 'Vô tích sự (Trăm thứ không dùng được một)',
+                origin: 'Thành ngữ này được sáng tạo để minh họa cho chủ đề "Số", miêu tả sự vô dụng, không có giá trị sử dụng.',
+                examples: [
+                    { chinese: '他感觉自己百无一用，对社会没有任何贡献。', pinyin: 'Tā gǎnjué zìjǐ bǎi wú yī yòng, duì shèhuì méiyǒu rènhé gòngxiàn.', vietnamese: 'Anh ấy cảm thấy mình vô tích sự, không có bất kỳ đóng góp nào cho xã hội.' }
+                ],
+                synonyms: [],
+                antonyms: [],
+                collocations: [],
+                categories: {
+                    pinyin_initial: 'B',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'jiqishi',
+                chinese: '鸡犬升天',
+                han_viet: 'Kê khuyển thăng thiên',
+                pinyin: 'jī quǎn shēng tiān',
+                vietnamese: 'Kê khuyển thăng thiên (Gà chó lên trời)',
+                origin: 'Thành ngữ này xuất phát từ câu chuyện trong "Sử ký" (史记) về Lưu An (刘安) thời Tây Hán. Ông luyện đan thành công và thăng thiên, cả gà chó trong nhà cũng theo ông lên trời. Thành ngữ này dùng để chỉ việc một người làm quan to, cả họ hàng và những người liên quan (kể cả những người không có tài năng) cũng được hưởng lợi, được thăng tiến theo.',
+                examples: [
+                    { chinese: '他一得势，家族里的人都鸡犬升天了。', pinyin: 'Tā yī déshì, jiāzú lǐ de rén dōu jīquǎnshēngtiān le.', vietnamese: 'Anh ấy vừa có quyền thế, những người trong gia tộc đều được kê khuyển thăng thiên.' }
+                ],
+                synonyms: ['一人得道，鸡犬升天 (yī rén dé dào, jī quǎn shēng tiān)'],
+                antonyms: [],
+                collocations: ['一人得道 (yī rén dé dào)', '家族 (jiāzú)', '亲戚 (qīnqī)'],
+                categories: {
+                    pinyin_initial: 'J',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['động vật']
+                }
+            },
+            {
+                id: 'hulaohuwei',
+                chinese: '狐假虎威',
+                han_viet: 'Hồ giả hổ uy',
+                pinyin: 'hú jiǎ hǔ wēi',
+                vietnamese: 'Cáo mượn oai hùm (Cáo mượn oai hổ)',
+                origin: 'Thành ngữ này xuất phát từ sách "Chiến Quốc Sách" (战国策). Câu chuyện kể về một con cáo mượn oai của con hổ, đi trước hổ để dọa các loài vật khác. Các loài vật thấy cáo sợ hãi, nhưng thực ra là chúng sợ hổ đi sau. Thành ngữ này dùng để chỉ việc dựa vào quyền thế của người khác để hống hách, làm càn.',
+                examples: [
+                    { chinese: '他仗着老板的势力，到处狐假虎威。', pinyin: 'Tā zhàngzhe lǎobǎn de shìlì, dàochù hújiǎhǔwēi.', vietnamese: 'Anh ta dựa vào thế lực của ông chủ, khắp nơi cáo mượn oai hùm.' }
+                ],
+                synonyms: ['狗仗人势 (gǒu zhàng rén shì)', '狐媚子 (hú mèi zi)'],
+                antonyms: ['自力更生 (zì lì gēng shēng)', '独当一面 (dú dāng yī miàn)'],
+                collocations: ['势力 (shìlì)', '仗势 (zhàngshì)', '欺压 (qīyā)'],
+                categories: {
+                    pinyin_initial: 'H',
+                    structural_form: [],
+                    char_count: '四字成语',
+                    thematic_tags: ['động vật']
+                }
+            },
+            {
+                id: 'qqbb',
+                chinese: '七七八八',
+                han_viet: 'Thất thất bát bát',
+                pinyin: 'qī qī bā bā',
+                vietnamese: 'Rải rác, lộn xộn; xấp xỉ',
+                origin: 'Thành ngữ này thường dùng trong khẩu ngữ, chỉ sự phân tán, không gọn gàng hoặc số lượng ước chừng, gần như hoàn thành.',
+                examples: [
+                    { chinese: '他把东西收拾得七七八八，就准备出门了。', pinyin: 'Tā bǎ dōngxi shōushí de qī qī bā bā, jiù zhǔnbèi chūmén le.', vietnamese: 'Anh ấy dọn dẹp đồ đạc tàm tạm xong thì chuẩn bị ra ngoài.' },
+                    { chinese: '这个任务我们已经做得七七八八了。', pinyin: 'Zhège rénwù wǒmen yǐjīng zuò de qī qī bā bā le.', vietnamese: 'Nhiệm vụ này chúng tôi đã làm gần xong rồi.' }
+                ],
+                synonyms: ['零零碎碎 (líng líng suì suì)', '差不多 (chàbùduō)'],
+                antonyms: ['整整齐齐 (zhěng zhěng qí qí)', '井然有序 (jǐng rán yǒu xù)'],
+                collocations: ['收拾 (shōushí)', '完成 (wánchéng)', '差不多 (chàbùduō)'],
+                categories: {
+                    pinyin_initial: 'Q',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'wwwq',
+                chinese: '万万千千',
+                han_viet: 'Vạn vạn thiên thiên',
+                pinyin: 'wàn wàn qiān qiān',
+                vietnamese: 'Rất nhiều, vô số',
+                origin: 'Thành ngữ này dùng để chỉ số lượng cực kỳ lớn, không thể đếm xuể, thường mang ý nghĩa khoa trương.',
+                examples: [
+                    { chinese: '世界上的好书万万千千，读不完啊！', pinyin: 'Shìjiè shàng de hǎoshū wàn wàn qiān qiān, dú bù wán a!', vietnamese: 'Sách hay trên thế giới thì vô số, đọc không hết được!' },
+                    { chinese: '他心里有万万千千的话想说，却不知从何说起。', pinyin: 'Tā xīnli yǒu wàn wàn qiān qiān de huà xiǎng shuō, què bùzhī cóng hé shuō qǐ.', vietnamese: 'Trong lòng anh ấy có vô số lời muốn nói, nhưng không biết bắt đầu từ đâu.' }
+                ],
+                synonyms: ['千千万万 (qiān qiān wàn wàn)', '不计其数 (bù jì qí shù)'],
+                antonyms: ['寥寥无几 (liáo liáo wú jǐ)', '屈指可数 (qū zhǐ kě shǔ)'],
+                collocations: ['书 (shū)', '话 (huà)', '人 (rén)'],
+                categories: {
+                    pinyin_initial: 'W',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'ssl',
+                chinese: '三三两两',
+                han_viet: 'Tam tam lưỡng lưỡng',
+                pinyin: 'sān sān liǎng liǎng',
+                vietnamese: 'Từng tốp ba bốn người, lẻ tẻ',
+                origin: 'Thành ngữ này dùng để miêu tả một nhóm nhỏ người đi lại hoặc tập trung một cách không có trật tự, từng tốp một.',
+                examples: [
+                    { chinese: '公园里，三三两两的人在散步。', pinyin: 'Gōngyuán lǐ, sān sān liǎng liǎng de rén zài sànbù.', vietnamese: 'Trong công viên, từng tốp ba bốn người đang đi dạo.' },
+                    { chinese: '放学后，学生们三三两两地走出校门。', pinyin: 'Fàngxué hòu, xuéshengmen sān sān liǎng liǎng de zǒuchū xiàomén.', vietnamese: 'Sau khi tan học, học sinh từng tốp ba bốn người đi ra cổng trường.' }
+                ],
+                synonyms: ['零零散散 (líng líng sǎn sǎn)', '星星点点 (xīng xīng diǎn diǎn)'],
+                antonyms: ['成群结队 (chéng qún jié duì)', '浩浩荡荡 (hào hào dàng dàng)'],
+                collocations: ['人 (rén)', '走 (zǒu)', '坐 (zuò)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'], // Although it's AABC, it's often grouped with AABB for counting idioms.
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'ssww',
+                chinese: '三三五五',
+                han_viet: 'Tam tam ngũ ngũ',
+                pinyin: 'sān sān wǔ wǔ',
+                vietnamese: 'Từng tốp ba bốn người, lẻ tẻ',
+                origin: 'Tương tự như "三三两两", thành ngữ này cũng miêu tả một nhóm nhỏ người đi lại hoặc tập trung một cách không có trật tự, từng tốp một.',
+                examples: [
+                    { chinese: '村子里，三三五五的村民在田间劳作。', pinyin: 'Cūnzi lǐ, sān sān wǔ wǔ de cūnmín zài tiánjiān láozuò.', vietnamese: 'Trong làng, từng tốp ba bốn người dân đang làm đồng.' }
+                ],
+                synonyms: ['三三两两 (sān sān liǎng liǎng)'],
+                antonyms: ['成群结队 (chéng qún jié duì)'],
+                collocations: ['村民 (cūnmín)', '学生 (xuésheng)', '游客 (yóukè)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'ssss',
+                chinese: '三三四四', // Less common, but fits pattern
+                han_viet: 'Tam tam tứ tứ',
+                pinyin: 'sān sān sì sì',
+                vietnamese: 'Từng cặp ba bốn (Chỉ số lượng ít, không đều)',
+                origin: 'Thành ngữ này ít phổ biến hơn các thành ngữ số AABB khác, dùng để chỉ số lượng nhỏ, không đều, rải rác.',
+                examples: [
+                    { chinese: '他把文件三三四四地堆在桌子上。', pinyin: 'Tā bǎ wénjiàn sān sān sì sì de duī zài zhuōzi shàng.', vietnamese: 'Anh ấy chất đống tài liệu lộn xộn trên bàn.' }
+                ],
+                synonyms: [],
+                antonyms: [],
+                collocations: [],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'ssxx',
+                chinese: '上上下下',
+                han_viet: 'Thượng thượng hạ hạ',
+                pinyin: 'shàng shàng xià xià',
+                vietnamese: 'Từ trên xuống dưới; khắp nơi; mọi tầng lớp',
+                origin: 'Thành ngữ này miêu tả sự di chuyển lên xuống, hoặc chỉ mọi tầng lớp, mọi người trong một tổ chức hoặc khu vực nhất định.',
+                examples: [
+                    { chinese: '他把公司上上下下都打理得井井有条。', pinyin: 'Tā bǎ gōngsī shàng shàng xià xià dōu dǎlǐ de jǐng jǐng yǒu tiáo.', vietnamese: 'Anh ấy quản lý mọi việc trong công ty từ trên xuống dưới một cách ngăn nắp.' },
+                    { chinese: '家里上上下下都找遍了，就是找不到钥匙。', pinyin: 'Jiālǐ shàng shàng xià xià dōu zhǎobiànle, jiù shì zhǎobudào yàoshi.', vietnamese: 'Tìm khắp nhà từ trên xuống dưới rồi, mà vẫn không tìm thấy chìa khóa.' }
+                ],
+                synonyms: ['里里外外 (lǐ lǐ wài wài)', '老老少少 (lǎo lǎo shào shào)'],
+                antonyms: ['单一 (dānyī)', '局部 (júbù)'],
+                collocations: ['公司 (gōngsī)', '家里 (jiālǐ)', '人员 (rényuán)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'ssdd',
+                chinese: '世世代代',
+                han_viet: 'Thế thế đại đại',
+                pinyin: 'shì shì dài dài',
+                vietnamese: 'Đời đời kiếp kiếp, từ đời này sang đời khác',
+                origin: 'Thành ngữ này dùng để chỉ sự tiếp nối liên tục qua nhiều thế hệ, đời này sang đời khác.',
+                examples: [
+                    { chinese: '这个传统世世代代流传了下来。', pinyin: 'Zhège chuántǒng shìshìdàidài liúchuánle xiàlái.', vietnamese: 'Truyền thống này đã được lưu truyền đời đời kiếp kiếp.' },
+                    { chinese: '我们希望世世代代都能生活在和平的环境中。', pinyin: 'Wǒmen xīwàng shìshìdàidài dōu néng shēnghuó zài hépíng de huánjìng zhōng.', vietnamese: 'Chúng tôi hy vọng đời đời kiếp kiếp đều có thể sống trong môi trường hòa bình.' }
+                ],
+                synonyms: ['祖祖辈辈 (zǔ zǔ bèi bèi)', '千秋万代 (qiān qiū wàn dài)'],
+                antonyms: ['一朝一夕 (yī zhāo yī xī)', '转瞬即逝 (zhuǎn shùn jí shì)'],
+                collocations: ['流传 (liúchuán)', '相传 (xiāngchuán)', '生活 (shēnghuó)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['thời gian']
+                }
+            },
+            {
+                id: 'sssg',
+                chinese: '世世生生',
+                han_viet: 'Thế thế sinh sinh',
+                pinyin: 'shì shì shēng shēng',
+                vietnamese: 'Đời đời kiếp kiếp (Chỉ sự luân hồi, tái sinh qua nhiều kiếp)',
+                origin: 'Thành ngữ này mang ý nghĩa Phật giáo hoặc triết học, chỉ sự liên tục của sinh mệnh qua các kiếp luân hồi, đời đời không dứt.',
+                examples: [
+                    { chinese: '佛说，世世生生，缘起缘灭。', pinyin: 'Fó shuō, shìshìshēngshēng, yuán qǐ yuán miè.', vietnamese: 'Phật nói, đời đời kiếp kiếp, duyên khởi duyên diệt.' },
+                    { chinese: '他们发誓世世生生永不分离。', pinyin: 'Tāmen fāshì shìshìshēngshēng yǒng bù fēnlí.', vietnamese: 'Họ thề đời đời kiếp kiếp sẽ không bao giờ lìa xa.' }
+                ],
+                synonyms: ['生生世世 (shēng shēng shì shì)', '永生永世 (yǒng shēng yǒng shì)'],
+                antonyms: ['一去不复返 (yī qù bù fù fǎn)'],
+                collocations: ['发誓 (fāshì)', '轮回 (lúnhuí)', '因缘 (yīnyuán)'],
+                categories: {
+                    pinyin_initial: 'S',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['tâm linh', 'thời gian']
+                }
+            },
+            {
+                id: 'yyjj',
+                chinese: '业业兢兢',
+                han_viet: 'Nghiệp nghiệp căng căng',
+                pinyin: 'yè yè jīng jīng',
+                vietnamese: 'Làm việc cẩn thận, lo lắng, sợ sai sót',
+                origin: 'Thành ngữ này miêu tả thái độ làm việc cẩn trọng, lo lắng, sợ mắc lỗi, thường dùng để khen ngợi sự tận tâm, chu đáo.',
+                examples: [
+                    { chinese: '他对待工作总是业业兢兢，从不马虎。', pinyin: 'Tā duìdài gōngzuò zǒng shì yèyèjīngjīng, cóng bù mǎhu.', vietnamese: 'Anh ấy đối với công việc luôn cẩn thận, không bao giờ qua loa.' },
+                    { chinese: '老校长一生业业兢兢，为教育事业奉献了毕生精力。', pinyin: 'Lǎo xiàozhǎng yīshēng yèyèjīngjīng, wèi jiàoyù shìyè fèngxiànle bìshēng jīnglì.', vietnamese: 'Hiệu trưởng cũ cả đời tận tâm tận lực, cống hiến cả đời cho sự nghiệp giáo dục.' }
+                ],
+                synonyms: ['兢兢业业 (jīng jīng yè yè)', '一丝不苟 (yī sī bù gǒu)'],
+                antonyms: ['敷衍了事 (fū yǎn liǎo shì)', '粗心大意 (cū xīn dà yì)'],
+                collocations: ['工作 (gōngzuò)', '态度 (tàidù)', '负责 (fùzé)'],
+                categories: {
+                    pinyin_initial: 'Y',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'yygj',
+                chinese: '业业矜矜',
+                han_viet: 'Nghiệp nghiệp cân cân',
+                pinyin: 'yè yè jīn jīn',
+                vietnamese: 'Cẩn thận, thận trọng, lo lắng (ít dùng hơn业业兢兢)',
+                origin: 'Tương tự như "业业兢兢", thành ngữ này cũng miêu tả thái độ làm việc cẩn trọng, thận trọng, nhưng ít phổ biến hơn.',
+                examples: [
+                    { chinese: '他做事业业矜矜，生怕出一点差错。', pinyin: 'Tā zuòshì yèyèjīnjīn, shēngpà chū yīdiǎn chācuò.', vietnamese: 'Anh ấy làm việc cẩn thận, sợ xảy ra một chút sai sót.' }
+                ],
+                synonyms: ['兢兢业业 (jīng jīng yè yè)'],
+                antonyms: [],
+                collocations: ['做事 (zuòshì)', '小心 (xiǎoxīn)'],
+                categories: {
+                    pinyin_initial: 'Y',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'llss',
+                chinese: '两两三三',
+                han_viet: 'Lưỡng lưỡng tam tam',
+                pinyin: 'liǎng liǎng sān sān',
+                vietnamese: 'Từng tốp hai ba người, lẻ tẻ',
+                origin: 'Thành ngữ này miêu tả một nhóm nhỏ người đi lại hoặc tập trung một cách không có trật tự, từng tốp nhỏ.',
+                examples: [
+                    { chinese: '操场上，两两三三的学生在聊天。', pinyin: 'Cāochǎng shàng, liǎng liǎng sān sān de xuésheng zài liáotiān.', vietnamese: 'Trên sân tập, từng tốp hai ba học sinh đang trò chuyện.' }
+                ],
+                synonyms: ['三三两两 (sān sān liǎng liǎng)', '三三五五 (sān sān wǔ wǔ)'],
+                antonyms: ['成群结队 (chéng qún jié duì)'],
+                collocations: ['学生 (xuésheng)', '游客 (yóukè)', '人 (rén)'],
+                categories: {
+                    pinyin_initial: 'L',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['số']
+                }
+            },
+            {
+                id: 'yygs',
+                chinese: '严严实实',
+                han_viet: 'Nghiêm nghiêm thực thực',
+                pinyin: 'yán yán shí shí',
+                vietnamese: 'Chặt chẽ, kín kẽ, chắc chắn',
+                origin: 'Thành ngữ này miêu tả sự kín đáo, chặt chẽ, không có khe hở, thường dùng cho việc che chắn, bao bọc.',
+                examples: [
+                    { chinese: '他把窗户关得严严实实，一点风都进不来。', pinyin: 'Tā bǎ chuānghu guān de yányánshíshí, yīdiǎn fēng dōu jìn bù lái.', vietnamese: 'Anh ấy đóng cửa sổ chặt chẽ, một chút gió cũng không vào được.' },
+                    { chinese: '箱子被包装得严严实实，确保运输安全。', pinyin: 'Xiāngzi bèi bāozhuāng de yányánshíshí, quèbǎo yùnshū ānquán.', vietnamese: 'Cái hộp được đóng gói kín kẽ, đảm bảo an toàn vận chuyển.' }
+                ],
+                synonyms: ['密不透风 (mì bù tòu fēng)', '滴水不漏 (dī shuǐ bù lòu)'],
+                antonyms: ['疏疏落落 (shū shū luò luò)', '漏洞百出 (lòu dòng bǎi chū)'],
+                collocations: ['关 (guān)', '包装 (bāozhuāng)', '遮 (zhē)'],
+                categories: {
+                    pinyin_initial: 'Y',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'ffmm',
+                chinese: '丰丰满满',
+                han_viet: 'Phong phong mãn mãn',
+                pinyin: 'fēng fēng mǎn mǎn',
+                vietnamese: 'Đầy đủ, sung túc, phong phú',
+                origin: 'Thành ngữ này miêu tả sự đầy đủ, tràn đầy, sung túc về số lượng hoặc cảm xúc.',
+                examples: [
+                    { chinese: '春节期间，家家户户都丰丰满满，充满节日气氛。', pinyin: 'Chūnjié qíjiān, jiājiāhùhù dōu fēngfēngmǎnmǎn, chōngmǎn jiérì qìfēn.', vietnamese: 'Trong dịp Tết Nguyên đán, nhà nhà đều đầy đủ sung túc, tràn ngập không khí lễ hội.' }
+                ],
+                synonyms: ['富富有余 (fù fù yǒu yú)', '绰绰有余 (chuò chuò yǒu yú)'],
+                antonyms: ['空空荡荡 (kōng kōng dàng dàng)', '一贫如洗 (yī pín rú xǐ)'],
+                collocations: ['生活 (shēnghuó)', '日子 (rìzi)', '收获 (shōuhuò)'],
+                categories: {
+                    pinyin_initial: 'F',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'lltt',
+                chinese: '乐乐醄醄',
+                han_viet: 'Lạc lạc đào đào',
+                pinyin: 'lè lè táo táo',
+                vietnamese: 'Vui vẻ, hân hoan, say sưa (trong niềm vui)',
+                origin: 'Thành ngữ này miêu tả trạng thái vui vẻ, hoan hỉ, say sưa trong niềm vui, thường dùng trong văn viết.',
+                examples: [
+                    { chinese: '他乐乐醄醄地向大家讲述自己的成功经验。', pinyin: 'Tā lè lè táo táo de xiàng dàjiā jiǎngshù zìjǐ de chénggōng jīngyàn.', vietnamese: 'Anh ấy vui vẻ hân hoan kể cho mọi người nghe kinh nghiệm thành công của mình.' }
+                ],
+                synonyms: ['乐不可支 (lè bù kě zhī)', '喜不自胜 (xǐ bù zì shèng)'],
+                antonyms: ['愁眉苦脸 (chóu méi kǔ liǎn)', '闷闷不乐 (mèn mèn bù lè)'],
+                collocations: ['讲述 (jiǎngshù)', '分享 (fēnxiǎng)', '庆祝 (qìngzhù)'],
+                categories: {
+                    pinyin_initial: 'L',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['cảm xúc']
+                }
+            },
+            {
+                id: 'lltt2', // Different ID from the previous one
+                chinese: '乐乐陶陶',
+                han_viet: 'Lạc lạc đào đào',
+                pinyin: 'lè lè táo táo',
+                vietnamese: 'Vui vẻ, hân hoan, vui sướng',
+                origin: 'Tương tự như "乐乐醄醄", thành ngữ này cũng miêu tả trạng thái vui vẻ, hoan hỉ, nhưng phổ biến hơn trong giao tiếp hàng ngày.',
+                examples: [
+                    { chinese: '一家人乐乐陶陶地吃着团圆饭。', pinyin: 'Yī jiā rén lè lè táo táo de chīzhe tuányuán fàn.', vietnamese: 'Cả nhà vui vẻ hân hoan ăn bữa cơm đoàn viên.' }
+                ],
+                synonyms: ['乐乐醄醄 (lè lè táo táo)', '其乐融融 (qí lè róng róng)'],
+                antonyms: ['郁郁寡欢 (yù yù guǎ huān)'],
+                collocations: ['生活 (shēnghuó)', '气氛 (qìfēn)', '度过 (dùguò)'],
+                categories: {
+                    pinyin_initial: 'L',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['cảm xúc']
+                }
+            },
+            {
+                id: 'ppp',
+                chinese: '乒乒乓乓',
+                han_viet: 'Phinh phinh phanh phanh',
+                pinyin: 'pīng pīng pāng pāng',
+                vietnamese: 'Tiếng ồn va chạm (Cạch cạch, lạch cạch, bình bịch)',
+                origin: 'Thành ngữ tượng thanh này miêu tả âm thanh của các vật va chạm vào nhau, tạo ra tiếng ồn liên tục.',
+                examples: [
+                    { chinese: '厨房里传来乒乒乓乓的声音，妈妈在做饭。', pinyin: 'Chúfáng lǐ chuán lái pīng pīng pāng pāng de shēngyīn, māma zài zuòfàn.', vietnamese: 'Trong bếp truyền đến tiếng lạch cạch, mẹ đang nấu cơm.' },
+                    { chinese: '孩子们在院子里玩耍，乒乒乓乓的，很热闹。', pinyin: 'Háizimen zài yuànzi lǐ wánshuǎ, pīng pīng pāng pāng de, hěn rènào.', vietnamese: 'Bọn trẻ chơi đùa trong sân, tiếng bình bịch, rất náo nhiệt.' }
+                ],
+                synonyms: ['叮叮当当 (dīng dīng dāng dāng)', '噼里啪啦 (pī li pā lā)'],
+                antonyms: ['鸦雀无声 (yā què wú shēng)', '寂静无声 (jì jìng wú shēng)'],
+                collocations: ['响 (xiǎng)', '打 (dǎ)', '做饭 (zuòfàn)'],
+                categories: {
+                    pinyin_initial: 'P',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['âm thanh']
+                }
+            },
+            {
+                id: 'qyyy',
+                chinese: '乾乾翼翼',
+                han_viet: 'Càn càn dực dực',
+                pinyin: 'qián qián yì yì',
+                vietnamese: 'Cẩn thận, thận trọng, kính cẩn (thường dùng trong văn cổ)',
+                origin: 'Thành ngữ này xuất phát từ "Kinh Dịch" (易经), miêu tả thái độ làm việc cẩn thận, thận trọng, giữ gìn, như chim ưng bay lượn trên trời rất mực cảnh giác.',
+                examples: [
+                    { chinese: '君子乾乾翼翼，朝夕惕厉。', pinyin: 'Jūnzǐ qián qián yì yì, zhāoxī tìlì.', vietnamese: 'Người quân tử cẩn trọng, sáng tối tự nhắc nhở răn đe.' }
+                ],
+                synonyms: ['兢兢业业 (jīng jīng yè yè)', '小心翼翼 (xiǎo xīn yì yì)'],
+                antonyms: ['粗心大意 (cū xīn dà yì)', '敷衍了事 (fū yǎn liǎo shì)'],
+                collocations: ['态度 (tàidù)', '行事 (xíngshì)', '君子 (jūnzǐ)'],
+                categories: {
+                    pinyin_initial: 'Q',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'lltd',
+                chinese: '亮亮堂堂',
+                han_viet: 'Lượng lượng đường đường',
+                pinyin: 'liàng liàng táng táng',
+                vietnamese: 'Sáng sủa, sạch sẽ, rộng rãi (miêu tả không gian)',
+                origin: 'Thành ngữ này miêu tả không gian sáng sủa, sạch sẽ, rộng rãi, thường mang cảm giác thoải mái, dễ chịu.',
+                examples: [
+                    { chinese: '新装修的房子亮亮堂堂的，让人心情舒畅。', pinyin: 'Xīn zhuāngxiū de fángzi liàngliàngtángtáng de, ràng rén xīnqíng shūchàng.', vietnamese: 'Căn nhà mới sửa sang sáng sủa rộng rãi, khiến người ta cảm thấy thoải mái.' },
+                    { chinese: '经过打扫，教室变得亮亮堂堂的。', pinyin: 'Jīngguò dǎsǎo, jiàoshì biànde liàngliàngtángtáng de.', vietnamese: 'Sau khi dọn dẹp, phòng học trở nên sáng sủa sạch sẽ.' }
+                ],
+                synonyms: ['窗明几净 (chuāng míng jǐ jìng)', '宽敞明亮 (kuān chǎng míng liàng)'],
+                antonyms: ['黑漆漆 (hēi qī qī)', '脏兮兮 (zāng xī xī)'],
+                collocations: ['房间 (fángjiān)', '教室 (jiàoshì)', '空间 (kōngjiān)'],
+                categories: {
+                    pinyin_initial: 'L',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: []
+                }
+            },
+            {
+                id: 'qqqq',
+                chinese: '亲亲切切',
+                han_viet: 'Thân thân thiết thiết',
+                pinyin: 'qīn qīn qiè qiè',
+                vietnamese: 'Thân mật, gần gũi, thân thiết',
+                origin: 'Thành ngữ này miêu tả mối quan hệ giữa người với người rất thân thiết, gần gũi, ấm áp.',
+                examples: [
+                    { chinese: '他们像一家人一样，相处得亲亲切切。', pinyin: 'Tāmen xiàng yī jiā rén yīyàng, xiāngchǔ de qīnqīnqièqiè.', vietnamese: 'Họ như một gia đình, sống thân mật gần gũi.' },
+                    { chinese: '老师亲亲切切地和学生们交谈。', pinyin: 'Lǎoshī qīnqīnqièqiè de hé xuéshengmen jiāotán.', vietnamese: 'Cô giáo thân thiết trò chuyện với các học sinh.' }
+                ],
+                synonyms: ['亲密无间 (qīn mì wú jiàn)', '情同手足 (qíng tóng shǒu zú)'],
+                antonyms: ['冷冷淡淡 (lěng lěng dàn dàn)', '漠不关心 (mò bù guānxīn)'],
+                collocations: ['关系 (guānxī)', '相处 (xiāngchǔ)', '交谈 (jiāotán)'],
+                categories: {
+                    pinyin_initial: 'Q',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['quan hệ xã hội', 'cảm xúc']
+                }
+            },
+            {
+                id: 'qqrr',
+                chinese: '亲亲热热',
+                han_viet: 'Thân thân nhiệt nhiệt',
+                pinyin: 'qīn qīn rè rè',
+                vietnamese: 'Thân mật, tình cảm, ân ái (thường dùng cho tình yêu đôi lứa)',
+                origin: 'Thành ngữ này miêu tả mối quan hệ thân mật, tình cảm nồng nhiệt, thường dùng cho các cặp đôi yêu nhau hoặc vợ chồng.',
+                examples: [
+                    { chinese: '小两口新婚燕尔，亲亲热热的。', pinyin: 'Xiǎo liǎngkǒu xīnhūn yàn\'ěr, qīnqīnrèrè de.', vietnamese: 'Đôi vợ chồng trẻ mới cưới, thân mật ân ái.' }
+                ],
+                synonyms: ['甜甜蜜蜜 (tián tián mì mì)', '恩恩爱爱 (ēn ēn ài ài)'],
+                antonyms: ['貌合神离 (mào hé shén lí)', '同床异梦 (tóng chuáng yì mèng)'],
+                collocations: ['情侣 (qínglǚ)', '夫妻 (fūqī)', '相爱 (xiāng\'ài)'],
+                categories: {
+                    pinyin_initial: 'Q',
+                    structural_form: ['AABB式'],
+                    char_count: '四字成语',
+                    thematic_tags: ['quan hệ xã hội', 'cảm xúc']
+                }
+            }
+        ];
+
+        const classificationNav = document.getElementById('classificationNav');
+        const idiomCardsContainer = document.getElementById('idiomCardsContainer');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn'); // Thêm dòng này
+        const resetClassificationBtn = document.getElementById('resetClassificationBtn'); // Thêm dòng này
+
+        let currentFilteredIdioms = [...idiomData]; // The list of idioms currently being displayed
+        let activeCategory = null; // e.g., 'pinyin_initial'
+        let activeSubcategory = null; // e.g., 'C' or 'AABB式'
+
+        const categoryStructure = [
+            {
+                name: "Kết cấu Pinyin",
+                type: "pinyin_initial",
+                subcategories: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "W", "X", "Y", "Z"]
+            },
+            {
+                name: "Kết cấu",
+                type: "structural_form",
+                subcategories: ["AABB式", "AABC式", "ABAC式", "ABCC式", "ABBC式", "ABCB式", "ABCA式"]
+            },
+            {
+                name: "Số chữ",
+                type: "char_count",
+                subcategories: ["三字成语", "四字成语", "五字成语", "六字成语", "七字成语", "八字成语", "九字成语", "十字成语", "十一字成语", "十二字成语", "十三字成语", "十四字成语"]
+            },
+            {
+                name: "Theo chủ đề",
+                type: "thematic_tags", // Changed type to match the array name in idiomData.categories
+                subcategories: [
+                    { name: "Động vật", tag: "động vật" },
+                    { name: "Thực vật", tag: "thực vật" },
+                    { name: "Mùa", tag: "mùa" },
+                    { name: "Màu sắc", tag: "màu sắc" },
+                    { name: "Số", tag: "số" },
+                    { name: "Cảm xúc", tag: "cảm xúc" },
+                    { name: "Cơ thể", tag: "cơ thể" },
+                    { name: "Thiên nhiên", tag: "thiên nhiên" },
+                    { name: "Tâm linh", tag: "tâm linh" },
+                    { name: "Thời gian", tag: "thời gian" },
+                    { name: "Quan hệ xã hội", tag: "quan hệ xã hội" },
+                    { name: "Âm thanh", tag: "âm thanh" },
+
+                ]
+            }
+        ];
+
+        function renderClassificationNav() {
+            classificationNav.innerHTML = '';
+            categoryStructure.forEach((category, catIndex) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'mb-2';
+                categoryDiv.innerHTML = `
+                        <div class="sidebar-category-header" data-target="#cat-content-${catIndex}">
+                            <span>${category.name}</span>
+                            <svg class="sidebar-category-toggle-icon w-5 h-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div id="cat-content-${catIndex}" class="sidebar-category-content">
+                            <ul class="pt-2">
+                                ${category.subcategories.map(sub => {
+                    const subName = typeof sub === 'object' ? sub.name : sub;
+                    const subTag = typeof sub === 'object' ? sub.tag : sub;
+                    return `<li>
+                                                <span class="sidebar-subcategory-item block" data-category-type="${category.type}" data-subcategory-value="${subTag}">${subName}</span>
+                                            </li>`;
+                }).join('')}
+                            </ul>
+                        </div>
+                    `;
+                classificationNav.appendChild(categoryDiv);
+            });
+            attachClassificationToggleListeners();
+            attachSubcategoryClickListeners();
+        }
+
+        function attachClassificationToggleListeners() {
+            document.querySelectorAll('.sidebar-category-header').forEach(header => {
+                header.addEventListener('click', function () {
+                    const targetId = this.dataset.target;
+                    const targetElement = document.querySelector(targetId);
+                    const toggleIcon = this.querySelector('.sidebar-category-toggle-icon');
+
+                    if (targetElement) {
+                        targetElement.classList.toggle('visible');
+                        if (targetElement.classList.contains('visible')) {
+                            toggleIcon.style.transform = 'rotate(180deg)';
+                        } else {
+                            toggleIcon.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            });
+        }
+
+        function attachSubcategoryClickListeners() {
+            document.querySelectorAll('.sidebar-subcategory-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    // Remove active class from all subcategories
+                    document.querySelectorAll('.sidebar-subcategory-item').forEach(sub => sub.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+
+                    activeCategory = this.dataset.categoryType;
+                    activeSubcategory = this.dataset.subcategoryValue;
+                    filterAndRenderIdioms();
+                });
+            });
+        }
+
+        function resetClassification() {
+            activeCategory = null;
+            activeSubcategory = null;
+            document.querySelectorAll('.sidebar-subcategory-item').forEach(sub => sub.classList.remove('active'));
+            filterAndRenderIdioms();
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            filterAndRenderIdioms();
+        }
+        function filterAndRenderIdioms() {
+            let filtered = idiomData;
+
+            // Apply category filter first
+
+            if (activeCategory && activeSubcategory) {
+                filtered = idiomData.filter(idiom => {
+                    const categories = idiom.categories || {};
+                    if (activeCategory === 'pinyin_initial') {
+                        return categories.pinyin_initial === activeSubcategory;
+                    } else if (activeCategory === 'structural_form') {
+                        return categories.structural_form && categories.structural_form.includes(activeSubcategory);
+                    } else if (activeCategory === 'char_count') {
+                        return categories.char_count === activeSubcategory;
+                    } else if (activeCategory === 'thematic_tags') {
+                        return categories.thematic_tags && categories.thematic_tags.includes(activeSubcategory);
+                    }
+                    return false;
+                });
+            }
+
+            // Then apply search filter
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm !== '') {
+                const normalize = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+                filtered = filtered.filter(idiom =>
+                    normalize(idiom.chinese).toLowerCase().includes(normalize(searchTerm)) ||
+                    normalize(idiom.han_viet).toLowerCase().includes(normalize(searchTerm)) ||
+                    normalize(idiom.pinyin).toLowerCase().includes(normalize(searchTerm)) ||
+                    normalize(idiom.vietnamese).toLowerCase().includes(normalize(searchTerm))
+                );
+                clearSearchBtn.classList.remove('hidden');
+            } else {
+                clearSearchBtn.classList.add('hidden');
+            }
+
+            currentFilteredIdioms = filtered; // Update the global filtered list
+            renderIdiomCards(currentFilteredIdioms);
+        }
+
+        function renderIdiomCards(idiomsToDisplay) {
+            idiomCardsContainer.innerHTML = '';
+            if (idiomsToDisplay.length === 0) {
+                idiomCardsContainer.innerHTML = '<div class="no-results">Không tìm thấy thành ngữ nào phù hợp với tiêu chí tìm kiếm hoặc phân loại.</div>';
+                return;
+            }
+
+            idiomsToDisplay.forEach(idiom => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'idiom-card';
+                cardDiv.dataset.id = idiom.id;
+
+                let detailsHtml = `
+                        <div class="detail-section">
+                            <p class="han_viet text-md text-slate-700">Âm Hán Việt: ${idiom.han_viet}</p>
+                            <p class="vietnamese text-lg font-semibold text-green-600">Dịch nghĩa: ${idiom.vietnamese}</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Nguồn gốc</h3>
+                            <p>${idiom.origin}</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Câu ví dụ</h3>
+                            ${idiom.examples.map((ex, index) => `
+                                <div class="example-item">
+                                    <span class="chinese">${ex.chinese}</span><br>
+                                    <span id="example-pinyin-${idiom.id}-${index}" class="pinyin">${ex.pinyin}</span><br>
+                                    <span id="example-vietnamese-${idiom.id}-${index}" class="vietnamese">${ex.vietnamese}</span>
+                                    <div class="mt-2">
+                                        <button onclick="toggleExampleDetail('example-pinyin-${idiom.id}-${index}')">Pinyin</button>
+                                        <button onclick="toggleExampleDetail('example-vietnamese-${idiom.id}-${index}')">Dịch nghĩa</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                if (idiom.synonyms && idiom.synonyms.length > 0) {
+                    detailsHtml += `
+                            <div class="detail-section">
+                                <h3>Từ đồng nghĩa</h3>
+                                <div class="tag-list">${idiom.synonyms.map(s => `<span>${s}</span>`).join('')}</div>
+                            </div>
+                        `;
+                }
+                if (idiom.antonyms && idiom.antonyms.length > 0) {
+                    detailsHtml += `
+                            <div class="detail-section">
+                                <h3>Từ trái nghĩa</h3>
+                                <div class="tag-list">${idiom.antonyms.map(a => `<span>${a}</span>`).join('')}</div>
+                            </div>
+                        `;
+                }
+                if (idiom.collocations && idiom.collocations.length > 0) {
+                    detailsHtml += `
+                            <div class="detail-section">
+                                <h3>Các cụm từ hay xuất hiện cùng</h3>
+                                <div class="tag-list">${idiom.collocations.map(c => `<span>${c}</span>`).join('')}</div>
+                            </div>
+                        `;
+                }
+
+                cardDiv.innerHTML = `
+                        <div class="idiom-card-header" data-target="#idiom-details-${idiom.id}">
+                            <div>
+                                <h3 class="text-xl md:text-2xl font-bold">${idiom.chinese}</h3>
+                                <p class="pinyin-front">${idiom.pinyin}</p>
+                                <p class="vietnamese-front text-base">${idiom.vietnamese.split('(')[0].trim()}</p>
+                            </div>
+                            <svg class="idiom-card-toggle-icon w-6 h-6 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div id="idiom-details-${idiom.id}" class="idiom-card-details">
+                            ${detailsHtml}
+                        </div>
+                    `;
+                idiomCardsContainer.appendChild(cardDiv);
+            });
+            attachCardToggleListeners();
+        }
+
+        function attachCardToggleListeners() {
+            document.querySelectorAll('.idiom-card-header').forEach(header => {
+                header.addEventListener('click', function () {
+                    const targetId = this.dataset.target;
+                    const targetElement = document.querySelector(targetId);
+                    const toggleIcon = this.querySelector('.idiom-card-toggle-icon');
+
+                    if (targetElement) {
+                        targetElement.classList.toggle('visible');
+                        if (targetElement.classList.contains('visible')) {
+                            toggleIcon.style.transform = 'rotate(180deg)';
+                        } else {
+                            toggleIcon.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            });
+        }
+
+        window.toggleExampleDetail = function (id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.toggle('visible');
+            }
+        };
+
+        clearSearchBtn.addEventListener('click', clearSearch); // Thêm dòng này
+        resetClassificationBtn.addEventListener('click', resetClassification); // Thêm dòng này
+        searchInput.addEventListener('input', filterAndRenderIdioms);
+
+        // Initial rendering
+        renderClassificationNav();
+        filterAndRenderIdioms(); // Display all idioms initially
+
+        const toggleBtn = document.getElementById('toggleClassificationNav');
+        const nav = document.getElementById('classificationNav');
+        const icon = document.getElementById('toggleIcon');
+
+        toggleBtn.addEventListener('click', () => {
+            const isExpanded = nav.classList.contains('expanded');
+
+  if (isExpanded) {
+    nav.classList.remove('expanded');
+    nav.classList.add('collapsed');
+    icon.classList.remove('rotated');
+  } else {
+    nav.classList.add('expanded');
+    nav.classList.remove('collapsed');
+    icon.classList.add('rotated');
+  }
+        });
+
+        // Tự đóng khi click vào mục phân loại
+        document.querySelectorAll('.sidebar-subcategory-item').forEach(item => {
+            item.addEventListener('click', () => {
+                nav.classList.remove('expanded');
+                nav.classList.add('collapsed');
+                icon.classList.remove('rotated');
+            });
+        });
+    });
+</script>
+            </main>
+            <footer>
+  <p>Được tạo ra để hỗ trợ việc học tiếng Trung của bạn. Chúc bạn thành công!</p>
+</footer>
+</body>
+
+</html>
